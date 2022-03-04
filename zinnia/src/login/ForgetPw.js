@@ -1,0 +1,3 @@
+/*
+This js is for forget password
+*/
