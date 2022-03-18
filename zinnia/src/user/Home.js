@@ -12,28 +12,29 @@ import Forum from "./Forum";
 import Profile from "./Profile";
 import SearchUser from "./SearchUser";
 
-import {Switch, Route, BrowserRouter as Router, Link} from 'react-router-dom';
+import {Route,Routes,Link} from 'react-router-dom';
 
 
 class Home extends React.Component{
     render(){
         return(
             <div>
-                <h1>Zinnia</h1>
-                <Router>
-                <div>
-                    <Link to="/">Forum</Link>
-                    <Link to="/profile">Profile</Link>
-                    <Link to="/searchUser">Search User</Link>
-                    <Link to="/chat">Chat</Link>
-                    <Switch>
-                        <Route exact path = "/"><Forum /></Route>
-                        <Route exact path = "/profile"><Profile /></Route>
-                        <Route exact path = "/searchUser"><SearchUser /></Route>
-                        <Route exact path = "/chat"><Chat /></Route>
-                    </Switch>
-                </div>    
-                </Router>
+                <h1 className = "bg-light">Zinnia</h1>
+                
+                <ul className = "nav nav-tabs bg-light">
+                    <Link to="/user" className = "nav-link">Forum</Link>
+                    <Link to="/user/profile" className = "nav-link">Profile</Link>
+                    <Link to="/user/searchUser" className = "nav-link">SearchUser</Link>
+                    <Link to="/user/chat" className = "nav-link">Chat</Link>
+                    <Link to="/" className = "nav-link">Logout</Link>
+                </ul>
+                <Routes>
+                    <Route path = "/" element={<Forum />}/>
+                    <Route path = "/profile" element={<Profile />}/>
+                    <Route path = "/searchUser" element={<SearchUser/>}/>
+                    <Route path = "/chat" element={< Chat/>}/>
+                </Routes>
+            
             </div>
         );
     }
