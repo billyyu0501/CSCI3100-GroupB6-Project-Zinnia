@@ -2,6 +2,7 @@
 
 ## Ways to run different code 
 Please type the following commands in your terminal to run corresponding code.
+
 Node.js (backend)
 1. cd zinnia/backend
 2. node server
@@ -13,6 +14,7 @@ Client web (frontend)
 
 ## Frontend
 Code Position： zinnia/src
+
 Useful Files/Folder:
 1. Admin
     - AdminHome.js: holding the admin home page
@@ -33,6 +35,7 @@ Useful Files/Folder:
 
 ## Backend 
 Code Position: zinnia/backend
+
 Useful Files/Folder:
 1. models
     - constructing the basic models/structure of the database
