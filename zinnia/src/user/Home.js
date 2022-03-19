@@ -20,7 +20,6 @@ class Home extends React.Component{
         return(
             <div>
                 <h1 className = "bg-light">Zinnia</h1>
-                
                 <ul className = "nav nav-tabs bg-light">
                     <Link to="/user" className = "nav-link">Forum</Link>
                     <Link to="/user/profile" className = "nav-link">Profile</Link>
@@ -34,6 +33,7 @@ class Home extends React.Component{
                     <Route path = "/searchUser" element={<SearchUser/>}/>
                     <Route path = "/chat" element={< Chat/>}/>
                 </Routes>
+
             
             </div>
         );
