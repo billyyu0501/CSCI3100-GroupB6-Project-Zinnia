@@ -10,7 +10,7 @@ Node.js (backend)
 Client web (frontend)
 1. cd zinnia
 2. npm start 
-
+* if you cannot run the code, please try to run npm install react-scripts in your terminal 
 
 ## Frontend
 Code Position： zinnia/src
