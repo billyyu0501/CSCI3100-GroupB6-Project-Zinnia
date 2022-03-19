@@ -1,14 +1,8 @@
 const router = require('express').Router();
 let User = require("../models/user.model")
 
-/*
 
-*/ 
-router.get("/",function(req,res){
-    res.send('get')
-})
-
-//create user
+//register
 router.post("/register",function(req,res){
     console.log(req.body)
     var currentId = 1;

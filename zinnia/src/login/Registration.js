@@ -35,7 +35,7 @@ function Registration(){
                 headers: {
                 'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({emailAddress: email,username:username,password: password,isAdmin:false}),
+                body: JSON.stringify({email: email,username:username,password: password,isAdmin:false}),
                 mode: 'cors'
             })
             .then(response =>response.json())

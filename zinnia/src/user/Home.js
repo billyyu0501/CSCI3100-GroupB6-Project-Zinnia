@@ -7,10 +7,10 @@ The logout button will be put on this page.
 
 import React from "react";
 
-import Chat from "./Chat";
-import Forum from "./Forum";
-import Profile from "./Profile";
-import SearchUser from "./SearchUser";
+import Chat from "./chat/Chat";
+import Forum from "./forum/Forum";
+import Profile from "./profile/Profile";
+import SearchUser from "./searchUser/SearchUser";
 
 import {Route,Routes,Link} from 'react-router-dom';
 

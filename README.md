@@ -4,7 +4,7 @@
 Please type the following commands in your terminal to run corresponding code.
 
 Node.js (backend)
-1. cd zinnia/backend
+1. cd backend
 2. node server
 
 Client web (frontend)
@@ -25,11 +25,11 @@ Useful Files/Folder:
     - LoginPage.js
     - Registratopn.js
 3. User
-    - Chat.js
-    - Forum.js
+    - Chat
+    - Forum
+    - Profile
+    - SearchUser
     - Home.js
-    - Profile.js
-    - SearchUser.js
 4. App.js: holding the whole App
 5. index.js: Render the react app and is linked to the html file
 
@@ -44,9 +44,6 @@ Useful Files/Folder:
     - chatroom.model.js: chatroom database
 2. routes
     - includes operations for different databases, such as CRUD operation 
-    - user.js: user database operation
-    - post.js: post database operation
-    - chatroom.js: chatroom database operation
 3. server.js
     - connected to and hold all backend js file. It is the core file of backend 
 4. .env

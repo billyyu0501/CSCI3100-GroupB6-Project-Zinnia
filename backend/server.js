@@ -25,13 +25,13 @@ connection.once('open',()=>{
     console.log("MongoDB database connection established successfully");
 })
 
-const usersRouter = require('./routes/user')
 
-app.use('/user',usersRouter)
+//import routes
+const register = require('./routes/register')
+const post = require("./routes/post")
 
-const postRouter = require("./routes/post")
-
-app.use("/post",postRouter)
+app.use(register)
+app.use(post)
 
 
 app.listen(port, ()=>{

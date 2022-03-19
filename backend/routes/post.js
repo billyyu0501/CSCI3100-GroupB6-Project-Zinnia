@@ -2,7 +2,13 @@ const router = require('express').Router();
 const { application } = require('express');
 let {Post, Comment} = require("../models/post.model");
 
-
+/*
+1. create Post
+2. list out all post title
+3. search post by post title/post id 
+4. list the content and all comment of a specific post 
+5. create comment 
+*/
 router.post("/createPost",function(req,res){
     Post.create({
         title:"First Post",
