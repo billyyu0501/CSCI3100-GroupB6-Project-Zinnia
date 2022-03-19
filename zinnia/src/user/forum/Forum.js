@@ -12,7 +12,9 @@ class Forum extends React.Component{
     render(){
         return(
             <div>
-                <span>Forum</span>
+                <span style={{fontFamily: 'Quicksand'}}>Forum</span>
+
+
 
             </div>
         );

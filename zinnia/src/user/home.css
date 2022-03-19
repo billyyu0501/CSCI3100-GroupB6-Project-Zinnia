@@ -1,0 +1,17 @@
+h1{
+    font-family: 'Quicksand', sans-serif;
+    color: white;
+}
+a{
+    color:white;
+    text-decoration: none;
+}
+a:hover{
+    color: white;
+    text-decoration: underline;
+}
+div{
+    background-color: rgb(64,66,79);
+    color: white;
+    font-family: 'Quicksand', sans-serif;
+}
