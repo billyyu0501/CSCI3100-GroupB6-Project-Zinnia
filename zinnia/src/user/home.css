@@ -1,12 +1,15 @@
+
+
 h1{
     font-family: 'Quicksand', sans-serif;
     color: white;
+    text-decoration: none;
 }
-a{
+h1 a{
     color:white;
     text-decoration: none;
 }
-a:hover{
+h1 a:hover{
     color: white;
     text-decoration: underline;
 }
@@ -15,3 +18,20 @@ div{
     color: white;
     font-family: 'Quicksand', sans-serif;
 }
+.icon-bar{
+    width: 100%;
+    overflow: auto;
+}
+
+.icon-bar a{
+    float: right;
+    width:5%;
+    color: white;
+    text-align: center;
+    padding: 5px 0;
+    font-size: 25px;
+}
+
+.icon-bar a:hover {
+    color: black;
+  }

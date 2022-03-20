@@ -16,7 +16,7 @@ function LoginPage(){
         <>
         <div >
             <br/>
-            <h3 className ="d-flex justify-content-center">Zinnia</h3>
+            <h3 className ="d-flex justify-content-center">ZINNIA</h3>
             <br/>
             <div className = "d-flex justify-content-center align-middle">
                 <form onSubmit={handleSubmit}>
