@@ -6,8 +6,8 @@ let User = require("../models/user.model")
 
 const CommentSchema = new Schema({
     commenter:{type:Schema.Types.ObjectId, ref:"User"},
-    comments: {type:String, required:true},
-    like:{type:Number,default:0}
+    comment: {type:String, required:true},
+    like:[{type:Schema.Types.ObjectId,ref:"User"}]
 },{
     timestamps:true,
 })
@@ -20,7 +20,7 @@ const PostSchema = new Schema({
     writer:{type:Schema.Types.ObjectId,ref:"User",required:true},
     content:{type:String,required:true},
     comment:[{type:Schema.Types.ObjectId,ref:"Comment"}],
-    like:{type:Number,default:0}
+    like:[{type:Schema.Types.ObjectId,ref:"User"}]
 }, {
     timestamps: true,
 });
