@@ -11,8 +11,8 @@ import React from "react";
 class Forum extends React.Component{
     render(){
         return(
-            <div>
-                <span style={{fontFamily: 'Quicksand'}}>Forum</span>
+            <div class="container">
+                <a href="/user" class="btn" style={{color:"white"}}> Create Post</a>
 
 
 
