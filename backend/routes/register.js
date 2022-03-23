@@ -33,7 +33,8 @@ router.post("/register", async (req,res) => {
             userId: currentId,
             username: req.body.username,
             password: hashedPassword,
-            email: req.body.email
+            email: req.body.email,
+            photo: req.body.photo
         },function(err){
             if (err){
                 res.json(Object.keys(err.keyPattern))
