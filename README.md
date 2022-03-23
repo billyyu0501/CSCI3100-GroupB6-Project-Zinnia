@@ -3,7 +3,11 @@
 ## Ways to run different code 
 Please type the following commands in your terminal to run corresponding code.
 
-Node.js (backend)
+npm install bcrypt --save
+npm install crypto --save
+npm install nodemailer --save
+
+Node.js (backend) http://localhost:8080
 1. cd backend
 2. node server
 

@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt')
 
 require('dotenv').config();
 
@@ -29,9 +30,11 @@ connection.once('open',()=>{
 //import routes
 const register = require('./routes/register')
 const post = require("./routes/post")
+const login = require("./routes/login")
 
 app.use(register)
 app.use(post)
+app.use(login)
 
 
 app.listen(port, ()=>{
