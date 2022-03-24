@@ -1,7 +1,7 @@
 const router = require('express').Router();
 let {Post, Comment} = require("../models/post.model");
-let User = require("../models/user.model")
 
+let getUserObjectId = require("../common")
 /*
 1. create Post [done]
 2. list out all post [done]
@@ -12,17 +12,6 @@ let User = require("../models/user.model")
 7. search post by post title/post id [hold]
 */
 
-// Converting UserId to corresponding ObjectId
-var getUserObjectId = async(userId)=>{
-    var writerId = ""
-    try{
-        const response = await User.findOne({userId:userId});
-        if (response !=null){writerId = response._id}
-    }catch(err){
-        console.log(err)
-    }
-    return writerId;
-}
 
 //Post 
 
@@ -160,19 +149,21 @@ router.get("/post/:userId/:postObjectId",async(req,res)=>{
     const userObjectId = await getUserObjectId(req.params.userId)
     if (userObjectId ==""){
         res.status(400).json("User doesn't exist")
+    }else{
+        Post.findOne({_id:req.params.postObjectId})
+        .populate({path:"writer",select:["userId","username"]})
+        .populate({path:"comment",populate:{path:"commenter",select:["userId","username"]},options:{sort:{"createdAt":1}}})
+        .exec(function(err,result){
+            if(err){
+                res.status(400).json("Sth goes wrong")
+            }else if(result == null){
+                res.status(400).json("The post doesn't exist")
+            }else{
+                res.status(200).json(result)
+            }
+        })        
     }
-    Post.findOne({_id:req.params.postObjectId})
-    .populate({path:"writer",select:["userId","username"]})
-    .populate({path:"comment",populate:{path:"commenter",select:["userId","username"]},options:{sort:{"createdAt":1}}})
-    .exec(function(err,result){
-        if(err){
-            res.status(400).json("Sth goes wrong")
-        }else if(result == null){
-            res.status(400).json("The post doesn't exist")
-        }else{
-            res.status(200).json(result)
-        }
-    })
+
 })
 
 module.exports = router;

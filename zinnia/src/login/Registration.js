@@ -22,17 +22,16 @@ class Registration extends React.Component{
     }
     handleSubmit(event){
         event.preventDefault();
-        console.log(JSON.stringify({email: this.state.email,username:this.state.username,password: this.state.password,isAdmin:false,photo:this.state.photo}))
+        //console.log(JSON.stringify({email: this.state.email,username:this.state.username,password: this.state.password,isAdmin:false,photo:this.state.photo}))
         if(this.state.email==="" || this.state.username==="" || this.state.password === ""||this.state.confirmPw ===""){
             this.setState({alert:"Please fill in all the blanks"})
+            this.setState({IsWrong:true})
         }else if (this.state.password !== this.state.confirmPw){
             this.setState({alert:"Confirmed Password is not match with Password"})
-        }else{
-            this.setState({IsWrong:false})
-        }   
-        if (!this.state.IsWrong){
-            console.log("go")
             this.setState({IsWrong:true})
+        }else{
+            console.log("go")
+            this.setState({IsWrong:false})
             fetch("http://localhost:8080/register",{
                 method: "POST",
                 headers: {
@@ -45,11 +44,19 @@ class Registration extends React.Component{
             .then(df =>{                
                 console.log(df)
             })
-        }
+        }   
     }
     getFile(file){
         if (file!=null)
         this.setState({photo:file.base64})
+    }
+    //check whether user has input a photo or not 
+    HvPhoto(){
+        if (this.state.photo != ""){
+            return true
+        }else{
+            return false
+        }
     }
     render(){
         return(
@@ -57,6 +64,14 @@ class Registration extends React.Component{
             <h1>Registration</h1>
             <div className = "d-flex  align-middle">
                 <form onSubmit={this.handleSubmit}>
+                    <label>
+                        Photo:
+                        <br/>
+                        <img width="250" height = "250"src = {this.HvPhoto()?this.state.photo:"./img/blankProfilePic.png"}/>
+                        <br/>
+                        <FileBase64 multiple={false} onDone={this.getFile} />
+                    </label>
+                    <br/>
                     <label>
                         Email:
                         <input type='text' name = 'email' value ={this.state.email} onChange={this.handleChange} className = 'form-control' />
@@ -77,14 +92,10 @@ class Registration extends React.Component{
                         <input type='password' name = "confirmPw" value ={this.state.confirmPw}  onChange={this.handleChange} className = 'form-control' />
                     </label>
                     <br/>
-                    <label>
-                        Photo:
-                        <br/>
-                        <FileBase64 multiple={false} onDone={this.getFile} />
-                    </label>
+
                     <br/><br/>
                     <div className="d-flex ">
-                    <button type = 'submit'  className = "btn btn-primary">Login</button>
+                    <button type = 'submit'  className = "btn btn-primary">Register</button>
                     </div>
                     {this.state.IsWrong?<div className="text-danger">{this.state.alert}</div>:<></>}
                 </form>
