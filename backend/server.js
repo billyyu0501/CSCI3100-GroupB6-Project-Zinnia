@@ -33,12 +33,14 @@ const post = require("./routes/post")
 const login = require("./routes/login")
 const search = require("./routes/search")
 const profile = require("./routes/profile")
+const verify = require("./routes/verify")
 
 app.use(register)
 app.use(post)
 app.use(login)
 app.use(search)
 app.use(profile)
+app.use(verify)
 
 
 app.listen(port, ()=>{

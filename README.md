@@ -6,6 +6,7 @@ Please type the following commands in your terminal to run corresponding code.
 npm install bcrypt --save
 npm install crypto --save
 npm install nodemailer --save
+npm i passport passport-local express-session express-flash
 
 Node.js (backend) http://localhost:8080
 1. cd backend

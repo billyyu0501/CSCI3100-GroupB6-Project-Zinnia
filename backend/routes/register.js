@@ -35,43 +35,48 @@ router.post("/register", async (req,res) => {
             password: hashedPassword,
             email: req.body.email,
             photo: req.body.photo
-        },function(err){
+        },function(err, results){
             if (err){
                 res.json(Object.keys(err.keyPattern))
             }else{
-                res.json("Account created ")
-                console.log("created")
-            }
+                //res.json("Account created ")
+                //console.log("created")
+                var token = new Token({
+                    _id: results._id,
+                    token: crypto.randomBytes(16).toString('hex')
+                })
+                token.save ((err) => {
+                    if(err){ 
+                        return res.json({msg: "token fail"})
+                        //return res.status(500).send({msg: err.message});
+                    }
+                    const transporter = nodemailer.createTransport({
+                        service: "gmail",
+                        auth: {
+                            user: process.env.AUTH_EMAIL,
+                            pass: process.env.AUTH_PASSWORD
+                        }
+                    })
+            
+                    var mailOptions = { 
+                        from: process.env.AUTH_EMAIL, 
+                        to: results.email,
+                        //to: "leoleung337.jp@gmail.com", 
+                        subject: 'Account Verification Link', 
+                        text: 'Hello '+',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/localhost:8080\/verify\/' + results.email + '\/' + token.token + '\n\nThank You!\n' };
+                        transporter.sendMail(mailOptions, function (err) {
+                        if (err) { 
+                            return res.status(500).send({msg:'Technical Issue!, Please click on resend for verify your Email.'});
+                         }
+                        return res.status(200).send('A verification email has been sent to ' + results.email + '. It will be expire after one day. If you not get verification Email click on resend token.');
+                    });
+                })
+            } 
+            
         })
     })
-   /*  var token = new Token({
-        _id: User._id,
-        token: crypto.randomBytes(16).toString('hex')
-    })
-    token.save ((err) => {
-        if(err){
-            return res.status(500).send({msg: err.message});
-        }
-        const transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-                user: process.env.AUTH_EMAIL,
-                pass: process.env.AUTH_PASSWORD
-            }
-        })
+   
 
-        var mailOptions = { from: process.env.AUTH_EMAIL, 
-            to: User.email, 
-            subject: 'Account Verification Link', 
-            text: 'Hello '+',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + token.token + '\/confirmation\/' + User.email + '\/' + token.token + '\n\nThank You!\n' };
-        transporter.sendMail(mailOptions, function (err) {
-            if (err) { 
-                return res.status(500).send({msg:'Technical Issue!, Please click on resend for verify your Email.'});
-             }
-            return res.status(200).send('A verification email has been sent to ' + User.email + '. It will be expire after one day. If you not get verification Email click on resend token.');
-        });
-    })
- */
 })
 
 
