@@ -12,7 +12,7 @@ router.get("/:userId/profile", (req, res) => {
     .exec(function(err,results){
         if (err){
             console.log(err)
-            res.status(400).json("Sth goes wrong")
+            res.status(400).json({msg:"Sth goes wrong"})
         }else{
             res.status(200).send(results)
         }
@@ -29,9 +29,9 @@ router.post("/:userId/updateProfile", (req, res) => {
     },function(err,result){
         if(err){
             console.log(err)
-            res.status(400).json("Sth goes wrong")
+            res.status(400).json({msg:"Sth goes wrong"})
         }else{
-            res.status(200).json("updated")
+            res.status(200).json({msg:"updated"})
         }
     })
 })
@@ -44,9 +44,9 @@ router.post("/:userId/resetPassword",(req,res) =>{
     },function(err,result){
         if(err){
             console.log(err)
-            res.status(400).json("Sth goes wrong")
+            res.status(400).json({msg:"Sth goes wrong"})
         }else{
-            res.status(200).json("updated")
+            res.status(200).json({msg:"updated"})
         }
     })
 })
