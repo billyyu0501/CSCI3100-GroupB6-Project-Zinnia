@@ -46,7 +46,7 @@ router.post("/private/createChat",async(req,res)=>{
     }
     PrivateChat.create({user:[user1,user2]},function(err,results){
         if(err){
-            res.json("Sth goes wrong")
+            res.json({msg:"Sth goes wrong"})
         }else{
             res.json(results)
         }
