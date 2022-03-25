@@ -13,7 +13,8 @@ const nodemailer = require('nodemailer');
 //2. send email
 //3. email verification
 
-
+//register
+//input: username, email, password
 router.post("/register", async (req,res) => {
     console.log(req.body)
     
@@ -25,6 +26,7 @@ router.post("/register", async (req,res) => {
     if (emailExisted != null) return res.status(400).json({msg: "email existed."})
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    //assign user id
     var currentId = 1;
     User.findOne().sort({userId:-1}).exec(function(err,user){
         if(user!=null){currentId= user.userId +1}
@@ -41,6 +43,8 @@ router.post("/register", async (req,res) => {
             }else{
                 //res.json("Account created ")
                 //console.log("created")
+
+                //generate token
                 var token = new Token({
                     _id: results._id,
                     token: crypto.randomBytes(16).toString('hex')
@@ -50,6 +54,8 @@ router.post("/register", async (req,res) => {
                         return res.json({msg: "token fail"})
                         //return res.status(500).send({msg: err.message});
                     }
+
+                    //send verification email
                     const transporter = nodemailer.createTransport({
                         service: "gmail",
                         auth: {

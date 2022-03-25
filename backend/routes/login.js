@@ -9,6 +9,8 @@ const bcrypt = require('bcrypt')
 4. Logout [do it in frontend]
 */
 
+//login
+//input: email, password
 router.post("/login", (req, res) => {
     User.findOne({ email: req.body.email }, (err, user) => {
         if (err){
