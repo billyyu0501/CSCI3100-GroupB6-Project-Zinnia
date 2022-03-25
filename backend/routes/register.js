@@ -16,7 +16,7 @@ const nodemailer = require('nodemailer');
 //register
 //input: username, email, password
 router.post("/register", async (req,res) => {
-    console.log(req.body)
+    //console.log(req.body)
     
     //check existed username or email 
     const userExisted = await User.findOne({username: req.body.username})
@@ -72,9 +72,9 @@ router.post("/register", async (req,res) => {
                         text: 'Hello '+',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/localhost:8080\/verify\/' + results.email + '\/' + token.token + '\n\nThank You!\n' };
                         transporter.sendMail(mailOptions, function (err) {
                         if (err) { 
-                            return res.status(500).send({msg:'Technical Issue!, Please click on resend for verify your Email.'});
+                            return res.status(500).json({msg:'Technical Issue!, Please click on resend for verify your Email.'});
                          }
-                        return res.status(200).send('A verification email has been sent to ' + results.email + '. It will be expire after one day. If you not get verification Email click on resend token.');
+                        return res.status(200).json({msg:'A verification email has been sent to ' + results.email + '. It will be expire after one day. If you not get verification Email click on resend token.'});
                     });
                 })
             } 

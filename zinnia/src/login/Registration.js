@@ -30,7 +30,7 @@ class Registration extends React.Component{
             this.setState({alert:"Confirmed Password is not match with Password"})
             this.setState({IsWrong:true})
         }else{
-            console.log("go")
+            console.log(this.state.photo)
             this.setState({IsWrong:false})
             fetch("http://localhost:8080/register",{
                 method: "POST",
@@ -40,14 +40,18 @@ class Registration extends React.Component{
                 body: JSON.stringify({email: this.state.email,username:this.state.username,password: this.state.password,photo:this.state.photo}),
                 mode: 'cors'
             })
-            .then(response =>response.json())
-            .then(df =>{                
-                console.log(df)
+            .then(response =>{
+                /*if(response.status==200){
+                this.setState({email:"",username:"",password:"",confirmPw:"",photo:""})
+                }*/
+                response.json().then(df=>{
+                    window.alert(df.msg)
+                })
             })
+
         }   
     }
     getFile(file){
-        if (file!=null)
         this.setState({photo:file.base64})
     }
     //check whether user has input a photo or not 

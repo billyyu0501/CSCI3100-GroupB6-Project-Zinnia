@@ -19,11 +19,11 @@ let getUserObjectId = require("../common")
 router.post("/createPost",async(req,res)=>{
     const userObjectId = await getUserObjectId(req.body.userId);
     if (userObjectId ==""){
-        res.status(400).json("User doesn't exist")
+        res.status(400).json({msg:"User doesn't exist"})
     }else if(req.body.title == ""){
-        res.status(400).json("Title can't be blank")
+        res.status(400).json({msg:"Title can't be blank"})
     }else if(req.body.content == ""){
-        res.status(400).json("Content can't be blank")
+        res.status(400).json({msg:"Content can't be blank"})
     }else{
         Post.create({
             title:req.body.title,
@@ -32,9 +32,9 @@ router.post("/createPost",async(req,res)=>{
         },function(err){
             if (err){
                 console.log(err)
-                res.status(400).json("sth goes wrong, can't post")
+                res.status(400).json({msg:"sth goes wrong, can't post"})
             }else{
-                res.status(200).json("Posted")
+                res.status(200).json({msg:"Posted"})
             }
         })
     }
@@ -50,7 +50,7 @@ router.get("/listAllPost",function(req,res){
     .exec(function(err,docs){
         if (err){
             console.log(err)
-            res.status(400).json("sth goes wrong")
+            res.status(400).json({msg:"sth goes wrong"})
         }else{
             res.status(200).json(docs)
         }
@@ -62,24 +62,24 @@ router.get("/listAllPost",function(req,res){
 router.post("/likePost",async(req,res)=>{
     const userObjectId = await getUserObjectId(req.body.userId);
     if (userObjectId ==""){
-        res.status(400).json("User doesn't exist")
+        res.status(400).json({msg:"User doesn't exist"})
     }
      Post.findOne({
         _id:req.body.postObjectId
     },function(err,post){
         if(err){
             console.log(err)
-            res.status(400).json("sth goes wrong")
+            res.status(400).json({msg:"sth goes wrong"})
         }else if (post == null){
-            res.status(400).json("The post doesn't exist")
+            res.status(400).json({msg:"The post doesn't exist"})
         }else{
             const currentLike = post.like
             if (currentLike.includes(userObjectId)){
-                res.status(200).json("Already liked this post")
+                res.status(200).json({msg:"Already liked this post"})
             }else{
                 post.like.push(userObjectId)
                 post.save()
-                res.status(200).json("Liked!")
+                res.status(200).json({msg:"Liked!"})
             }
         }
     })
@@ -92,9 +92,9 @@ router.post("/likePost",async(req,res)=>{
 router.post("/comment",async(req,res)=>{
     const userObjectId = await getUserObjectId(req.body.userId);
     if (userObjectId ==""){
-        res.status(400).json("User doesn't exist")
+        res.status(400).json({msg:"User doesn't exist"})
     }else if(req.body.comment == ""){
-        res.status(400).json("comment can't be blank")
+        res.status(400).json({msg:"comment can't be blank"})
     }else{
         Comment.create({
             commenter: userObjectId,
@@ -104,11 +104,11 @@ router.post("/comment",async(req,res)=>{
             .exec(function(err,post){
                 if(post == null){
                     Comment.deleteOne({_id:comment._id}).exec()
-                    res.status(400).json("The post doesn't exist")
+                    res.status(400).json({msg:"The post doesn't exist"})
                 }else{
                     post.comment.push(comment._id)
                     post.save()
-                    res.status(200).json("Commented Successfully")
+                    res.status(200).json({msg:"Commented Successfully"})
                 }
             })
         })
@@ -120,24 +120,24 @@ router.post("/comment",async(req,res)=>{
 router.post("/likeComment",async(req,res)=>{
     const userObjectId = await getUserObjectId(req.body.userId);
     if (userObjectId ==""){
-        res.status(400).json("User doesn't exist")
+        res.status(400).json({msg:"User doesn't exist"})
     }
     Comment.findOne({
         _id:req.body.commentObjectId
     },function(err,comment){
         if(err){
             console.log(err)
-            res.status(400).json("sth goes wrong")
+            res.status(400).json({msg:"sth goes wrong"})
         }else if (comment == null){
-            res.status(400).json("The comment doesn't exist")
+            res.status(400).json({msg:"The comment doesn't exist"})
         }else{
             const currentLike = comment.like
             if (currentLike.includes(userObjectId)){
-                res.status(200).json("Already liked this comment")
+                res.status(200).json({msg:"Already liked this comment"})
             }else{
                 comment.like.push(userObjectId)
                 comment.save()
-                res.status(200).json("Liked!")
+                res.status(200).json({msg:"Liked!"})
             }
         }
     })
@@ -148,16 +148,16 @@ router.post("/likeComment",async(req,res)=>{
 router.get("/post/:userId/:postObjectId",async(req,res)=>{
     const userObjectId = await getUserObjectId(req.params.userId)
     if (userObjectId ==""){
-        res.status(400).json("User doesn't exist")
+        res.status(400).json({msg:"User doesn't exist"})
     }else{
         Post.findOne({_id:req.params.postObjectId})
         .populate({path:"writer",select:["userId","username"]})
         .populate({path:"comment",populate:{path:"commenter",select:["userId","username"]},options:{sort:{"createdAt":1}}})
         .exec(function(err,result){
             if(err){
-                res.status(400).json("Sth goes wrong")
+                res.status(400).json({msg:"Sth goes wrong"})
             }else if(result == null){
-                res.status(400).json("The post doesn't exist")
+                res.status(400).json({msg:"The post doesn't exist"})
             }else{
                 res.status(200).json(result)
             }

@@ -35,6 +35,7 @@ const search = require("./routes/search")
 const profile = require("./routes/profile")
 const verify = require("./routes/verify")
 const forgotpw = require("./routes/forgotpw")
+const chat = require("./routes/chat")
 
 app.use(register)
 app.use(post)
@@ -44,6 +45,7 @@ app.use(profile)
 app.use(verify)
 app.use(forgotpw)
 
+app.use(chat)
 
 app.listen(port, ()=>{
     console.log(`Server is running on port: ${port}`);
