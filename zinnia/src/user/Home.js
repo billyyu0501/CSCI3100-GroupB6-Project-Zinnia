@@ -13,7 +13,7 @@ import Forum from "./forum/Forum";
 import Profile from "./profile/Profile";
 import SearchUser from "./searchUser/SearchUser";
 
-import {Route,Routes,Link} from 'react-router-dom';
+import {Route,Routes} from 'react-router-dom';
 
 
 
@@ -28,6 +28,7 @@ class Home extends React.Component{
                 <a href="/user/chat"><i class="fa fa-envelope"></i></a> 
                 <a href="/user/searchUser" ><i class="fa fa-search"></i></a> 
                 </div>
+
 
                 <Routes>
                     <Route path = "/" element={<Forum />}/>
