@@ -15,7 +15,8 @@ let getUserObjectId = require("../common")
 
 //Post 
 
-// create new post, body input:[userId,title,content], warning are done
+// create new post, 
+// body input:[userId,title,content], warning are done
 router.post("/createPost",async(req,res)=>{
     const userObjectId = await getUserObjectId(req.body.userId);
     if (userObjectId ==""){

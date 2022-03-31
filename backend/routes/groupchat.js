@@ -4,7 +4,9 @@
 . send message in a chat [done]
 . del a group chat [done]
 . quit group [done]
-. invite member to the group [done]
+. invite member to the group (send notification to invited member )[done]
+. accept/decline invitation [done]
+. display all invitation [done]
 . list out all message in a group [done]
 */
 
@@ -15,7 +17,7 @@ let getUserObjectId = require("../common")
 
 //create a group chat
 //host is also inclued in the member array
-//body input: hostId, memberId (array,can be null), room,   
+//body input: hostId, room,   
 router.post("/group/createGroup",async(req,res)=>{
     let hostObjectId = await getUserObjectId(req.body.hostId)
     let memberObjectId = []
@@ -25,17 +27,6 @@ router.post("/group/createGroup",async(req,res)=>{
     }
     memberObjectId.push(hostObjectId)
 
-    //push member to memberObjectId if it exists and has not included in the array
-    for (id of req.body.memberId){
-        objectId = await getUserObjectId(id)
-        if (objectId ==""){
-            return res.status(400).json({msg: 'UserId:' + id+' doesnt exist'})
-        }
-        if (JSON.stringify(memberObjectId).includes(JSON.stringify(objectId))){
-            return res.json("UserId:" + id + " already in the group")
-        }
-        memberObjectId.push(objectId)
-    }
     //Create the groupchat
     GroupChat.create({
         host:hostObjectId,
@@ -44,9 +35,9 @@ router.post("/group/createGroup",async(req,res)=>{
     },function(err,results){
         if(err){
             console.log(err)
-            res.json({msg:"Sth goes wrong"})
+            return res.status(400).json({msg:"Sth goes wrong"})
         }else{
-            res.json("Room: " + req.body.room + " is created")
+            return res.status(200).json("Room: " + req.body.room + " is created")
         }
     })
 
@@ -69,10 +60,99 @@ router.post("/group/inviteMember",async(req,res)=>{
         }else{
             if (results.member.includes(userObjectId)){
                 return res.status(400).json({msg:"The user has already been in this group"})
+            }else{
+                User.findOne({_id:userObjectId}).exec(function(err,user){
+                    if(err){
+                        console.log(err)
+                        res.status(400).json({msg:"Sth goes wrong"})
+                    }else{
+                        if(JSON.stringify(user.gpInvitation).includes(req.body.roomObjectId)){
+                            return res.status(400).json({msg:"Invitation has already been sent. Please wait for response"})
+                        }else{
+                            user.gpInvitation.push({room:req.body.roomObjectId,time:Date()})
+                            user.save()
+                            return res.status(200).json({msg:"Invitation is sent out "})
+                        }
+                    }
+                })
             }
-            results.member.push(userObjectId)
-            results.save()
-            return res.status(200).json({msg:"added successfully"})
+        }
+    })
+})
+
+// user accept/reject group invitation
+//body input: roomObjectId, userId, IsAccepted(boolean)
+router.post("/group/acceptInvitation",async(req,res)=>{
+    userObjectId = await getUserObjectId(req.body.userId)
+    if (userObjectId==""){
+        return res.status(400).json({msg:"This user doesn't exist"})
+    }
+    User.findOne({_id:userObjectId}).exec(function(err,results){
+        if (err){
+            console.log(err)
+            res.status(400).json({msg:"Sth goes wrong"})
+        }else{
+            let existInvitation = false
+            //pop out all invitation with the required inviter from the gpinvitation list 
+            for(invitation of results.gpInvitation){
+                if (invitation.room.equals(req.body.roomObjectId)){
+                    results.gpInvitation.pop(invitation)
+                    results.save()
+                    existInvitation = true
+                }
+            }
+            // return if the invitation is not found in the list 
+            if (existInvitation==false){
+                return res.status(400).json({msg:"This Invitation doesn't exist"})
+            }
+
+            if(req.body.IsAccepted){
+                GroupChat.findOne({_id:req.body.roomObjectId}).exec(function(err,room){
+                    if(err){
+                        console.log(err)
+                        return res.status(400).json({msg:"Sth goes wrong"})
+                    }else{
+                        if (room==""){
+                            return res.status(400).json({msg:"This room doesn't exist"})
+                        }else{
+                            room.member.push(userObjectId)
+                            room.save()
+                            return res.status(200).json({msg:"Accepted"})
+                        }
+                    }
+                })
+            }else{
+                res.status(200).json({msg:"Rejected"})
+            }  
+        }
+    })
+})
+
+// list all group invitation of a specific user
+router.get("/:userId/gpInvitation",async(req,res)=>{
+    userObjectId = await getUserObjectId(req.body.userId)
+    if (userObjectId==""){
+        return res.status(400).json({msg:"This user doesn't exist"})
+    }
+    User.findOne({_id:userObjectId},["username","userId","gpInvitation"])
+    .populate({
+        path:"gpInvitation",
+        populate:{
+            path:"room",
+            select:["host","member","room"],
+            populate:[
+                {path:'host',select:["userId","username"]},
+                {path:"member",select:["userId","username"]}
+            ]
+        },
+        options:{sort:{'time':-1}}
+    })
+    .exec(function(err,results){
+        if (err){
+            console.log(err)
+            return res.status(400).json({msg:"Sth goes wrong"})
+        }else{
+            return res.status(200).json(results)
         }
     })
 })

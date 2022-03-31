@@ -10,8 +10,10 @@ const userSchema = new Schema({
     email:{type: String, required: true, trim: true},
     photo:{type:Buffer, contentType: String},
     description:{type: String, required:true, default:"Welcome to my page"},
-    isVerified:{type: Boolean, default: false}
-    
+    isVerified:{type: Boolean, default: false},
+    gpInvitation:[{room:{ type: Schema.Types.ObjectId, ref: "GroupChat"},time:Date}],
+    frdInvitation:[{inviter:{ type: Schema.Types.ObjectId, ref: "User"},time:Date}],
+    friend:[{ type: Schema.Types.ObjectId, ref: "User"}]
 }, {
     timestamps: true,
 });
