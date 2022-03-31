@@ -1,17 +1,13 @@
 /* 
 1. list out all private chat that a specific user have [done][not check]
-2. list out all group chat that a specific user have 
-3. send message in a chat[done]/groupchat
+3. send message in a chat[done]
 4. create a private chat [done]
-5. create a group chat 
-6. update group member of a groupchat [for quit group]
-7. del a group chat 
-8. list out all message that a chat/groupchat have
+8. list out all message that a chat have[ done]
 
 */
 const router = require('express').Router();
 let User = require("../models/user.model")
-let {PrivateChat,GroupChat} = require("../models/chat.model") 
+let {PrivateChat} = require("../models/chat.model") 
 let getUserObjectId = require("../common")
 //start a Private Chat
 
@@ -87,7 +83,7 @@ router.post("/private/sendMessage",async(req,res)=>{
             console.log(err)
             return res.status(400).json({msg:"Sth goes wrong"})
         }else{
-            if(results==""){
+            if(results== null){
                 return res.status(400).json({msg:"This Chat doesn't exist"})
             }
             results.chatHistory.push({speaker:userObjectId,text:req.body.content,time:Date()})

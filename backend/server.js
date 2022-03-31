@@ -36,6 +36,7 @@ const profile = require("./routes/profile")
 const verify = require("./routes/verify")
 const forgotpw = require("./routes/forgotpw")
 const chat = require("./routes/chat")
+const groupchat = require("./routes/groupchat")
 
 app.use(register)
 app.use(post)
@@ -44,8 +45,8 @@ app.use(search)
 app.use(profile)
 app.use(verify)
 app.use(forgotpw)
-
 app.use(chat)
+app.use(groupchat)
 
 app.listen(port, ()=>{
     console.log(`Server is running on port: ${port}`);
