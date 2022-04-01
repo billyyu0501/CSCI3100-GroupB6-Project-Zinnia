@@ -1,25 +1,42 @@
 // This is the admin Home Page
 
 import React from "react";
-import {Route,Routes,Link} from 'react-router-dom';
-
-import PostManage from "./PostManage";
-import UserManage from "./UserMange";
+import {Route,Routes,Link, useParams,useLocation,useNavigate} from 'react-router-dom';
+import ManageChat from "./ManageChat";
+import ManagePost from "./ManagePost";
+import ManageUser from "./ManageUser";
+import ManageProfile from "./ManageProfile";
+import Postdetail from "./Postdetail";
 
 class Home extends React.Component{
+
     render(){
+        const CallProfile = (props) =>{
+            const params = useParams();
+            return <ManageProfile {...{...props,match:{params}}}/>
+        }
+        const CallPost = (props) =>{
+            const params = useParams();
+            return <Postdetail {...{...props,match:{params}}}/>
+        }
         return(
             <div>
-                <h1 className = "bg-light">AdminPage</h1>
-                <ul className = "nav nav-tabs bg-light">
+                <h1>AdminPage</h1>
+                <br/>
+                <ul className = "nav nav-tabs text-light">
+                    
                     <Link to="/admin" className = "nav-link">Manage User</Link>
-                    <Link to="/admin/postManage" className = "nav-link">Manage Post</Link>
+                    <Link to="/admin/ManagePost" className = "nav-link">Manage Post</Link>
+                    <Link to="/admin/ManageChat" className = "nav-link">Manage Chat</Link>
                     <Link to="/" className = "nav-link">Logout</Link>
                 </ul>
+                <br/>
                 <Routes>
-                    <Route path = "/" element={<UserManage />}/>
-                    <Route path = "/postManage" element={<PostManage />}/>
-                    
+                    <Route path = "/" element={<ManageUser />}/>
+                    <Route path = "/ManagePost" element={<ManagePost />}/>
+                    <Route path = "/ManageChat" element = {<ManageChat/>}/>
+                    <Route path = "/:userId/profile" element = {<CallProfile/>}/>
+                    <Route path = "/:postId/post" element = {<CallPost/>}/>
                 </Routes>
 
             

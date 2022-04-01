@@ -146,14 +146,18 @@ router.post("/likeComment",async(req,res)=>{
 
 // list all content of a specific post [title,content, writer, all comments]
 // url link input, all comments are initially sorted at ascending order by time 
-router.get("/post/:userId/:postObjectId",async(req,res)=>{
-    const userObjectId = await getUserObjectId(req.params.userId)
-    if (userObjectId ==""){
-        res.status(400).json({msg:"User doesn't exist"})
-    }else{
+router.get("/post/:postObjectId",async(req,res)=>{
         Post.findOne({_id:req.params.postObjectId})
         .populate({path:"writer",select:["userId","username"]})
-        .populate({path:"comment",populate:{path:"commenter",select:["userId","username"]},options:{sort:{"createdAt":1}}})
+        .populate({
+            path:"comment",
+            populate:[
+                {path:"commenter",select:["userId","username"]},
+                {path:"like",select:['userId',"username"]}
+            ],
+            options:{sort:{"createdAt":1}}
+        })
+        .populate({path:"like",select:['userId',"username"]})
         .exec(function(err,result){
             if(err){
                 res.status(400).json({msg:"Sth goes wrong"})
@@ -163,8 +167,6 @@ router.get("/post/:userId/:postObjectId",async(req,res)=>{
                 res.status(200).json(result)
             }
         })        
-    }
-
 })
 
 module.exports = router;
