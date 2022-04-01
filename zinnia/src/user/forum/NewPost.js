@@ -29,9 +29,13 @@ class NewPost extends React.Component{
             title: 'hi',
             content: "bye"
         }
-        await fetch('/http://localhost:8000/user/createPost', {
+        await fetch('http://localhost:8080/createPost', {
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+                },
             body: JSON.stringify(databody),
+            mode:"cors"
         })
         .then(res=>res.json())
         .then(res=>{

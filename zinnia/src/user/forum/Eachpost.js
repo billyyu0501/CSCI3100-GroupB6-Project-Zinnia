@@ -38,7 +38,7 @@ function Showpost(){
     useEffect(() =>{
         
         const fetchPost = async () => {
-            const response = await fetch(`http://localhost:8080/post/${userId}/${postId}`);
+            const response = await fetch(`http://localhost:8080/post/${postId}`);
             const res = await response.json();
             
                 setPostObjId(res._id) 
