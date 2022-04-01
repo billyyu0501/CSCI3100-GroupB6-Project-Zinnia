@@ -2,29 +2,63 @@
 This js is for the forum service
 expected function:
 1. Post
-    ViewPost, editPost, newPost, display post 
+    ViewPost (can't fetch), editPost (X), newPost (Post), display post (Like,Time)
 2. Comment and like
     newComment, showComment,likePost,likeComment, 
 */ 
 import React from "react";
-import NewPost from "./NewPost";
-import {Route,Routes} from 'react-router-dom';
+import './forum.css'
+
 
 
 class Forum extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={posts:[],revposts:[], likes:""}
+    }
+
+ 
+    async componentDidMount(){
+        const response = await fetch(`http://localhost:8080/listAllPost`)
+        await response.json()
+
+        .then(json=>{
+            this.setState({posts:json})
+            console.log(json) 
+            console.log(this.state.posts[0].writer.userId) 
+        })
+        
+        this.setState({revposts:this.state.posts.reverse()})
+    }
+
     render(){
-        return(
-            <div className="container">
-                <a href="/user/newpost" class="btn" style={{color:"white"}}> Create Post</a>
+        return( 
+        <div className="container">
+            <a href="/user/newpost"> <button  id ="createbutton"className="button" style={{color:"white"}}> Create Post </button></a>
+            <div style={{paddingTop:60}}/>
+            {this.state.revposts.map(function(post,index){
 
-            <Routes>
-                <Route path = "/user/newpost" element={<NewPost/>}/>
-            </Routes>
+                return <a href={"/user/post/"+post.writer.userId +"/"+post._id } key={index} id="postlink" >
+                    <div className="card" id="forumpost">
+                        <div className="card-body">
+                            <p id="postContent"> {post.writer.username} <span style={{fontSize:14}}>{post.createdAt}</span></p>
+                            <h4 id="postTitle">{post.title} </h4>
+                            <p><i class="fa fa-thumbs-up fa-xs"> No. </i></p>
+                           
+                        </div>
+                    </div>
+                    </a>
 
-            </div>
+                    })}
+                    
+            
+      </div>
+         
               
         );
     }
 }
+
+
 
 export default Forum

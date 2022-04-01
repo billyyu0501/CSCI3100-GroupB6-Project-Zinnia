@@ -1,1 +1,23 @@
+#forumpost, #everypost{
+    margin-top: 15px;
+    background-color: rgb(64,66,79);
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+    border-top-color: rgb(155, 155, 155);
+}
 
+#forumpost:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+
+#postlink{
+    text-decoration: none;
+    background-color: rgb(77, 79, 94);
+    cursor: pointer;
+    color:white;
+}
+
+.fa-thumbs-up{
+    float: right;
+}
