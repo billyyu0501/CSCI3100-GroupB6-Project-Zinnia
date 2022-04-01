@@ -31,7 +31,7 @@ function LoginPage(){
                     </label>
                     <br/><br/>
                     <div className="d-flex justify-content-center">
-                    <button type = 'submit'  className = "btn btn-primary">Login</button>
+                    <button type = 'submit'  className = "button">Login</button>
                     </div>
                     
                 </form>

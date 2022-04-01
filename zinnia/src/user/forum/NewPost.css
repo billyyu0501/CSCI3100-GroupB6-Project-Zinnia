@@ -1,4 +1,27 @@
-h1 {
-    color:white;
-    text-decoration: none;
+h3 {
+    text-align: center;
+ 
 }
+label{
+    font-size:20px;
+    margin-top: 15px;
+   
+}
+.button{
+    border: none;
+    color: white;
+    background-color: rgb(54, 54, 54);
+    padding: 8px 15px;
+    text-align: center;
+    margin-top: 15px;
+    float: right;
+    cursor: pointer;
+    margin: 15px 5px;
+    display:block;
+    
+    
+}
+.button:hover {
+    background-color: rgb(32, 32, 32); /* Green */
+    
+  }
