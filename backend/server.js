@@ -3,6 +3,9 @@ const cors = require('cors');
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt')
+const passport = require('passport')
+const flash = require('express-flash')
+const session = require('express-session')
 
 require('dotenv').config();
 
@@ -38,6 +41,12 @@ const forgotpw = require("./routes/forgotpw")
 const chat = require("./routes/chat")
 const groupchat = require("./routes/groupchat")
 const admin = require("./routes/admin")
+const initializePassport = require('./passport-config');
+/* const User = require('./models/user.model');
+initializePassport(passport, 
+    email => User.find(user => user.email === email)
+    )
+app.use(flash()) */
 
 app.use(register)
 app.use(post)
