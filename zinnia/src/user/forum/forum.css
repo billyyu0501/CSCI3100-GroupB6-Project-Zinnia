@@ -11,6 +11,16 @@
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   }
 
+  .card:hover{
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    
+  }
+
+  #username {
+     
+      text-decoration-thickness: 1px;
+    
+  }
 #postlink{
     text-decoration: none;
     background-color: rgb(77, 79, 94);
@@ -20,4 +30,7 @@
 
 .fa-thumbs-up{
     float: right;
+}
+#commentbox{
+    size: 100;
 }

@@ -25,9 +25,9 @@ class NewPost extends React.Component{
 
     async createPost (){
         let databody ={
-            userId:"3",
-            title: 'hi',
-            content: "bye"
+            userId:"1",
+            title: this.state.title,
+            content: this.state.content
         }
         await fetch('http://localhost:8080/createPost', {
             method: 'POST',

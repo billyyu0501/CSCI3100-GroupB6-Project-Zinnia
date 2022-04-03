@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from "react";
 import {useParams} from 'react-router-dom';
 import './forum.css'
-import Popup from "./Comment";
-import axios from "axios";
+import Fromnow from 'react-fromnow';
+import Dialog from "@material-ui/core/Dialog";
+import { makeStyles } from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
+import DialogTitle from '@mui/material/DialogTitle';
 
-/*
-  
-    useEffect(() =>{
-        axios
-        .get(`http://localhost:8080/post/${userId}/${postId}`)
-        data2 = JSON.stringify(response)
-        .then(res => {
-            console.log(res.data)
-            setPosts(data2)
-        })
-        .catch(err => {
-            console.log(err)
-        })
-    },[])
+
+import { border } from "@mui/material/node_modules/@mui/system";
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    padding: "40px",
    
+    borderTop:"30",
+    backgroundColor: 'rgb(64,66,79)'
+   
+  }
+}));
 
-*/
 
 function Showpost(){
     const {userId, postId} = useParams();
@@ -33,7 +32,18 @@ function Showpost(){
     const [comment, setComment]= useState([]);
     const [createdAt, setCreatedAt]= useState([]);
 
-    const [openPopup, setOpenPopup] = useState(false)  //popout form failed
+    const classes = useStyles();
+    const [open, setOpen] = React.useState(false);
+
+    const handleOpen = () => {
+    setOpen(true);
+     };
+
+    const handleClose = () => {
+    setOpen(false);
+     };
+
+
     
     useEffect(() =>{
         
@@ -57,56 +67,71 @@ function Showpost(){
         
         
     },[]);
-    <Popup
-    title="Employee Form"
-    openPopup={openPopup}
-    setOpenPopup={setOpenPopup}
-></Popup>
-    
+   
 
     return(
         <>
-           
-        <a href="/user"> <button  className="button" > Add Comment </button></a>
+      
+      <a href="#"> <button  className="button"onClick={handleOpen} > Add Comment </button></a>
+
+
+      <Dialog open={open}>
+        <Box className={classes.paper}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleClose();
+            }}>
+
+            <div>
+            
+
+                <p>Comment: {title}</p>
+              <textarea name="comment" id="commentbox" />
+            </div>
+
+              <button className="button" type="submit">Post</button>
+        
+          </form>
+        </Box>
+        </Dialog>
+      
         <div style={{paddingTop:60}}/>
         <div className="card" id="everypost">
             <div className="card-body">
             
                 <h3>{title}</h3>
-                <p>{username} { createdAt}</p>
+               
+                <p > #1 <span style={{fontSize:20}} id="username">{username} </span><span style={{fontSize:14}}> - <Fromnow date ={createdAt}/></span></p>
+
                 <p>{content}</p>
+                <p><i class="fa fa-thumbs-up fa-xs" >  {likes.length}</i></p>
+                </div>
+        </div>
+                {comment.map((comment,index)=>
                 
+                    <div className="card" id="everypost"key ={index} >
+                    <div className="card-body">
+                    <p > #{index+2} <span style={{fontSize:20}} id="username">{comment.commenter.username} </span><span style={{fontSize:14}}> - <Fromnow date ={comment.createdAt}/></span></p>
+
+              
+                    <p>{comment.comment}</p>
+                    <p><i class="fa fa-thumbs-up fa-xs"> {comment.like.length}</i></p>
+                    
+                    </div>
+                    </div>
+                
+                )}
                 
                 <h4></h4>
                          
-            </div>
-        </div>
+           
         
   
         
         </>
     )
 }
-
-/*
-1.
-     {posts.map((postData)=>{
-           <div>{postData.title}</div>
-
-       }
-       
-       )}
-
-2.
-{posts.comment.map((posts)=>(
-    <div>
-        {posts.title}
-
-    </div>
-)
-)}
-*/
-
 
 
 // can't tale URL params by using Class component
@@ -147,7 +172,7 @@ class Eachpost extends React.Component{
 }
 
 
-export {Eachpost,Showpost};
+export {Showpost};
 
 
 

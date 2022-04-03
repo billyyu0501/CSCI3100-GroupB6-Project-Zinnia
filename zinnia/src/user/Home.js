@@ -13,7 +13,7 @@ import Forum from "./forum/Forum";
 import Profile from "./profile/Profile";
 import SearchUser from "./searchUser/SearchUser";
 import NewPost from "./forum/NewPost";
-import { Showpost, Eachpost } from "./forum/Eachpost";
+import { Showpost } from "./forum/Eachpost";
 import {Route,Routes} from 'react-router-dom';
 
 

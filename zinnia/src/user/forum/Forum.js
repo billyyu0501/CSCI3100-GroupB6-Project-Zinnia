@@ -8,6 +8,7 @@ expected function:
 */ 
 import React from "react";
 import './forum.css'
+import Fromnow from 'react-fromnow';
 
 
 
@@ -36,14 +37,14 @@ class Forum extends React.Component{
         <div className="container">
             <a href="/user/newpost"> <button  id ="createbutton"className="button" style={{color:"white"}}> Create Post </button></a>
             <div style={{paddingTop:60}}/>
-            {this.state.revposts.map(function(post,index){
+            {this.state.posts.map(function(post,index){
 
                 return <a href={"/user/post/"+post.writer.userId +"/"+post._id } key={index} id="postlink" >
                     <div className="card" id="forumpost">
                         <div className="card-body">
-                            <p id="postContent"> {post.writer.username} <span style={{fontSize:14}}>{post.createdAt}</span></p>
+                            <p > <span style={{fontSize:20}} id="username">{post.writer.username} </span><span style={{fontSize:14}}> - <Fromnow date ={post.createdAt}/></span></p>
                             <h4 id="postTitle">{post.title} </h4>
-                            <p><i class="fa fa-thumbs-up fa-xs"> No. </i></p>
+                            <p><i class="fa fa-thumbs-up fa-xs"> {post.like.length} </i></p>
                            
                         </div>
                     </div>
