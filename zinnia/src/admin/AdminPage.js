@@ -5,7 +5,7 @@ import {Route,Routes,Link, useParams,useLocation,useNavigate} from 'react-router
 import ManageChat from "./ManageChat";
 import ManagePost from "./ManagePost";
 import ManageUser from "./ManageUser";
-import ManageProfile from "./ManageProfile";
+import UserDetail from "./UserDetail";
 import Postdetail from "./Postdetail";
 
 class Home extends React.Component{
@@ -13,7 +13,7 @@ class Home extends React.Component{
     render(){
         const CallProfile = (props) =>{
             const params = useParams();
-            return <ManageProfile {...{...props,match:{params}}}/>
+            return <UserDetail {...{...props,match:{params}}}/>
         }
         const CallPost = (props) =>{
             const params = useParams();
@@ -34,7 +34,7 @@ class Home extends React.Component{
                 <Routes>
                     <Route path = "/" element={<ManageUser />}/>
                     <Route path = "/ManagePost" element={<ManagePost />}/>
-                    <Route path = "/ManageChat" element = {<ManageChat/>}/>
+                    <Route path = "/ManageChat/*" element = {<ManageChat/>}/>
                     <Route path = "/:userId/profile" element = {<CallProfile/>}/>
                     <Route path = "/:postId/post" element = {<CallPost/>}/>
                 </Routes>
