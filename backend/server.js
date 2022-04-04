@@ -3,6 +3,9 @@ const cors = require('cors');
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt')
+const passport = require('passport')
+const flash = require('express-flash')
+const session = require('express-session')
 
 require('dotenv').config();
 
@@ -37,6 +40,13 @@ const verify = require("./routes/verify")
 const forgotpw = require("./routes/forgotpw")
 const chat = require("./routes/chat")
 const groupchat = require("./routes/groupchat")
+const admin = require("./routes/admin")
+const initializePassport = require('./passport-config');
+/* const User = require('./models/user.model');
+initializePassport(passport, 
+    email => User.find(user => user.email === email)
+    )
+app.use(flash()) */
 
 app.use(register)
 app.use(post)
@@ -47,6 +57,8 @@ app.use(verify)
 app.use(forgotpw)
 app.use(chat)
 app.use(groupchat)
+app.use(admin)
+
 
 app.listen(port, ()=>{
     console.log(`Server is running on port: ${port}`);
