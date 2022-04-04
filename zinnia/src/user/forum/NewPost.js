@@ -2,32 +2,34 @@
 import React from "react";
 import './NewPost.css'
 
-
-
-
 class NewPost extends React.Component{
     constructor(props){
         super(props);
-        this.state={user:"3",title:props.title, content:props.content}
-
+        this.state={user:"3",title:"", content:""}
+        this.handleTitleChange = this. handleTitleChange.bind(this)
+        this.handleContentChange = this. handleContentChange.bind(this)
     }
     handleTitleChange(event){
-     this.state.title = event.target.value;
-     this.setState({ title: this.state.title });
+     this.setState({ title: event.target.value});
         
     }
 
     handleContentChange(event){
-        this.state.content = event.target.value;
-        this.setState({ content: this.state.content });
+        this.setState({ content: event.target.value });
            
        }
+
+       handleSubmit(event) {
+        alert('Your Post' + this.state.title +"has been created!");
+        event.preventDefault();
+        console.log(this.state)
+      }
 
     async createPost (){
         let databody ={
             userId:"1",
             title: this.state.title,
-            content: this.state.content
+            content: this.state.content,
         }
         await fetch('http://localhost:8080/createPost', {
             method: 'POST',
@@ -45,8 +47,6 @@ class NewPost extends React.Component{
             console.log('failed',error)
         });
 
-            
-    
     }
 
     render(){
@@ -54,17 +54,17 @@ class NewPost extends React.Component{
             <div className="container">
                  <div style={{paddingTop:10}}/>
                 <h3>Create Post</h3>
-                <form method="POST"></form>
+                <form method="POST" onSubmit={this.handleSubmit}></form>
                 <div class="form-group">
                     <label for="title" >Title</label>
-                    <input type="text" onChange={this.handleTitleChange.bind(this)} name="title" id="title" class="form-control" required />
+                    <input type="text" value={this.state.title} onChange={this.handleTitleChange.bind(this)} name="title" id="title" class="form-control" required autoFocus />
                 </div>
                 
                 <div class="form-group">
                     <label for="content">Content</label>
-                    <textarea name="content" onChange={this.handleContentChange.bind(this)} id="content" class="form-control" placeholder="Write Something..." rows={10} required></textarea>
+                    <textarea name="content" value={this.state.content} onChange={this.handleContentChange.bind(this)} id="content" class="form-control" placeholder="Write Something..." rows={10} required></textarea>
                 </div>
-                <button type="submit" class="button" onClick={this.createPost} >Submit</button>
+                <a href="/user"> <button type="submit" class="button" onClick={this.createPost} >Submit</button> </a>
                 <a href="/user"> <button class="button">Cancel </button> </a>
 
             

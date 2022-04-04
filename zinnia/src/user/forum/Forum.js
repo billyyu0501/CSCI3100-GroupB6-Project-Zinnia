@@ -2,9 +2,9 @@
 This js is for the forum service
 expected function:
 1. Post
-    ViewPost (can't fetch), editPost (X), newPost (Post), display post (Like,Time)
+    ViewPost (OK), editPost (*), newPost (Post), display post (OK)
 2. Comment and like
-    newComment, showComment,likePost,likeComment, 
+    newComment (POST), showComment (OK),likePost (*),likeComment (*), 
 */ 
 import React from "react";
 import './forum.css'
@@ -37,8 +37,8 @@ class Forum extends React.Component{
         <div className="container">
             <a href="/user/newpost"> <button  id ="createbutton"className="button" style={{color:"white"}}> Create Post </button></a>
             <div style={{paddingTop:60}}/>
+            
             {this.state.posts.map(function(post,index){
-
                 return <a href={"/user/post/"+post.writer.userId +"/"+post._id } key={index} id="postlink" >
                     <div className="card" id="forumpost">
                         <div className="card-body">

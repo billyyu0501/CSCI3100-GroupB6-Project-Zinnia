@@ -13,7 +13,8 @@ h1 a{
 }
 h1 a:hover{
     color: white;
-    text-decoration: underline;
+    font-weight: bold;
+  
 }
 div{
     background-color: rgb(64,66,79);
@@ -28,12 +29,12 @@ div{
 .icon-bar a{
     float: right;
     width:5%;
-    color: white;
+    color: rgb(125, 129, 151);
     text-align: center;
     padding: 5px 0;
     font-size: 25px;
 }
 
 .icon-bar a:hover {
-    color: black;
+    color: rgb(255, 255, 255);
   }
