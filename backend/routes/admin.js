@@ -94,4 +94,27 @@ router.post("/admin/delete/comment",async(req,res)=>{
     })
 })
 
+//delete privateChat
+router.post("/admin/delete/privateChat",async(req,res)=>{
+    PrivateChat.findOneAndDelete({_id:req.body.chatObjectId}).exec(function(err){
+        if(err){
+            console.log(err)
+            return res.status(400).json({msg:"sth goes wrong"})
+        }else{
+            return res.status(200).json({msg:"chat deleted"})
+        }
+    })
+})
+
+//delete groupChat
+router.post("/admin/delete/groupChat",async(req,res)=>{
+    GroupChat.findOneAndDelete({_id:req.body.roomObjectId}).exec(function(err){
+        if(err){
+            console.log(err)
+            return res.status(400).json({msg:"sth goes wrong"})
+        }else{
+            return res.status(200).json({msg:"group deleted"})
+        }
+    })
+})
 module.exports = router;

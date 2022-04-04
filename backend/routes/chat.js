@@ -42,9 +42,9 @@ router.post("/private/createChat",async(req,res)=>{
     }
     PrivateChat.create({user:[user1,user2]},function(err,results){
         if(err){
-            res.json({msg:"Sth goes wrong"})
+            res.status(400).json({msg:"Sth goes wrong"})
         }else{
-            res.json(results)
+            res.status(200).json(results)
         }
     }) 
 })
@@ -100,6 +100,7 @@ router.post("/private/displayMessage",async(req,res)=>{
     .select(["chatHistory"])
     .sort({"chatHistory.time":-1})
     .populate("chatHistory.speaker",["username","userId"])
+    .populate("user",['username','userId'])
     .exec(function(err,results){
         if (err){
             console.log(err)

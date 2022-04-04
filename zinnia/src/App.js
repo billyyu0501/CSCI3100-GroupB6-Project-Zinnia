@@ -9,10 +9,10 @@ const App =() =>{
     return(
         <div>
             <Routes>
-                <Route path = '/' element = {<LoginPage/>}/>
+                <Route path = '/' element = {<LoginPage isUser={false}/>}/>
                 <Route path ="/registration"element = {<Registration/>}/>
                 <Route path ="/forgotPassword" element={<ForgotPw/>}/>
-                <Route path = '/user/*' element = {<Home/>}/>
+                <Route path = '/user/:userId/*' element = {<Home isUser={false}/>}/>
                 <Route path = "/admin/*" element = {<AdminPage/>}/>
             </Routes>
         </div>
