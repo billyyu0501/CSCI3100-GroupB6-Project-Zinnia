@@ -238,7 +238,7 @@ router.get("/group/:userId/viewAllGroup",async(req,res)=>{
 })
 
 // send message in a group chat
-// body input: userId[speaker],rooomObjectId, content
+// body input: userId[speaker],roomObjectId, content
 router.post("/group/sendMessage",async(req,res)=>{
     //convert UserId to UserObjectId if it exists. Check the content is blank or not
     const userObjectId = await getUserObjectId(req.body.userId)
@@ -269,15 +269,18 @@ router.post("/group/sendMessage",async(req,res)=>{
 //body input: userId?(need to discuss), roomObjectId 
 router.post("/group/displayMessage",async(req,res)=>{
     GroupChat.findOne({_id:req.body.roomObjectId})
-    .select(["chatHistory"])
+    .select(["chatHistory","room"])
     .sort({"chatHistory.time":-1})
     .populate("chatHistory.speaker",["username","userId"])
+    .populate("host",['username','userId'])
+    .populate("member",["username","userId"])
     .exec(function(err,results){
         if (err){
             console.log(err)
             return res.status(400).json({msg:"Sth goes wrong"})
         }else{
             res.status(200).json(results)
+            console.log('done')
         }
     })
 })

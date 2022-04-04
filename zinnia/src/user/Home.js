@@ -14,15 +14,30 @@ import Profile from "./profile/Profile";
 import SearchUser from "./searchUser/SearchUser";
 import NewPost from "./forum/NewPost";
 import { Showpost } from "./forum/Eachpost";
-import {Route,Routes} from 'react-router-dom';
+import {Route,Routes,useNavigate,Navigate} from 'react-router-dom';
 
 
 
 class Home extends React.Component{
+    constructor(props){
+        super(props)
+        
+        console.log(this.props)
+    }
     render(){
+        const BackToLoginPage = async()=>{
+            return(
+                <div>
+                    {this.state.isUser?<></>:<Navigate to="/" />}
+                </div>
+                
+            )
+        }
         return(
+            
             <div className="container">
-                <h1 > <a href="/user">ZINNIA</a></h1>
+                
+            <h1 > <a href="/user">ZINNIA</a></h1>
                 <div className="icon-bar" >  
                 <a href="/" ><i className="fa fa-sign-out" ></i></a> 
                 <a href="/user/profile"><i className="fa fa-user"></i></a> 

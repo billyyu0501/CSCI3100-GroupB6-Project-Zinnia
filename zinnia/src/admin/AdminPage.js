@@ -7,7 +7,7 @@ import ManagePost from "./ManagePost";
 import ManageUser from "./ManageUser";
 import UserDetail from "./UserDetail";
 import Postdetail from "./Postdetail";
-
+import ChatDetail from "./ChatDetail";
 class Home extends React.Component{
 
     render(){
@@ -18,6 +18,10 @@ class Home extends React.Component{
         const CallPost = (props) =>{
             const params = useParams();
             return <Postdetail {...{...props,match:{params}}}/>
+        }
+        const CallChat =(props)=>{
+            const params = useParams();
+            return <ChatDetail {...{...props,match:{params}}}/>
         }
         return(
             <div>
@@ -37,6 +41,7 @@ class Home extends React.Component{
                     <Route path = "/ManageChat/*" element = {<ManageChat/>}/>
                     <Route path = "/:userId/profile" element = {<CallProfile/>}/>
                     <Route path = "/:postId/post" element = {<CallPost/>}/>
+                    <Route path = "/:chatId/:chatType" element = {<CallChat/>}/>
                 </Routes>
 
             

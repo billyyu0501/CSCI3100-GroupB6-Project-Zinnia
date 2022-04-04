@@ -1,8 +1,10 @@
 
 import React from "react";
 import {Link,Routes,Route} from "react-router-dom";
+import moment from "moment";
+import { deletePrivateChat,deleteGroupChat} from "./deleteFunc";
 
-class ManageChat extends React.Component{
+export default class ManageChat extends React.Component{
     constructor(props){
         super(props);
     }
@@ -26,6 +28,7 @@ class PrivateChat extends React.Component{
     constructor(props){
         super(props);
         this.state = {data:[]}
+        this.handleDelete = this.handleDelete.bind(this)
     }
     componentDidMount(){
         fetch("http://localhost:8080/admin/private/viewAllChat",{
@@ -41,15 +44,27 @@ class PrivateChat extends React.Component{
                 this.setState({data:json})
             })
     }
+    async handleDelete(event){
+        console.log(event.target.value)
+        await deletePrivateChat(event.target.value)
+        this.componentDidMount()
+    }
     render(){
         return(
             <div>
-                <h1>Private Chat</h1>
+                <div className="d-flex justify-content-between">
+                    <h1>Private Chat</h1>
+                    <button type="button" className="btn btn-info" onClick={()=>{window.location.reload(false)}}>
+                    <i className="bi bi-arrow-clockwise bg-info"/> refresh
+                    </button>
+                </div>
+                
                 <table className="table text-light">
                     <thead>
                         <th>Room Id</th>
                         <th>Member 1</th>
                         <th>Member 2</th>
+                        <th>Updated At</th>
                     </thead>
                     <tbody>
                         {this.state.data.map((chat,index)=>
@@ -57,6 +72,9 @@ class PrivateChat extends React.Component{
                             <td>{chat._id}</td>
                             <td>{chat.user[0].username}</td>
                             <td>{chat.user[1].username}</td>
+                            <td>{moment(chat.updatedAt).format("LLL")}</td>
+                            <td><Link to={`/admin/${chat._id}/private`} className = "nav-link">Go to Chat</Link></td>
+                            <td><button type="button" onClick={this.handleDelete} value={chat._id} className="btn-close btn-close-white" aria-label="Close"></button></td>
                         </tr>
                         )}
                     </tbody>
@@ -69,6 +87,7 @@ class GroupChat extends React.Component{
     constructor(props){
         super(props);
         this.state = {data:[]}
+        this.handleDelete = this.handleDelete.bind(this)
     }
     componentDidMount(){
         fetch("http://localhost:8080/admin/group/viewAllChat",{
@@ -84,15 +103,25 @@ class GroupChat extends React.Component{
                 this.setState({data:json})
             })
     }
+    async handleDelete(event){
+        await deleteGroupChat(event.target.value)
+        this.componentDidMount()
+    }
     render(){
         return(
             <div>
-                <h1>Group Chat</h1>
+                <div className="d-flex justify-content-between">
+                    <h1>Group Chat</h1>
+                    <button type="button" className="btn btn-info" onClick={()=>{window.location.reload(false)}}>
+                    <i className="bi bi-arrow-clockwise bg-info"/> refresh
+                    </button>
+                </div>
                 <table className="table text-light">
                     <thead>
                         <th>Group Id</th>
-                        <th>Group Name</th>
+                        <th>Name</th>
                         <th>Host</th>
+                        <th>Updated At</th>
                     </thead>
                     <tbody>
                         {this.state.data.map((group,index)=>
@@ -100,6 +129,9 @@ class GroupChat extends React.Component{
                             <td>{group._id}</td>
                             <td>{group.room}</td>
                             <td>{group.host.username}</td>
+                            <td>{moment(group.updatedAt).format("LLL")}</td>
+                            <td><Link to={`/admin/${group._id}/group`} className = "nav-link">Go to Group</Link></td>
+                            <td><button type="button" onClick={this.handleDelete} value={group._id} className="btn-close btn-close-white" aria-label="Close"></button></td>
                         </tr>
                         )}
                     </tbody>
@@ -108,4 +140,5 @@ class GroupChat extends React.Component{
         );
     }
 }
-export default ManageChat;
+
+//export default ManageChat;

@@ -50,3 +50,37 @@ export async function deleteComment(commentObjectId){
                 })
             })
 }
+
+export async function deletePrivateChat(chatObjectId){
+    await fetch("http://localhost:8080/admin/delete/privateChat",{
+                method: "POST",
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({chatObjectId:chatObjectId}),
+                mode: 'cors'
+            })
+            .then(response =>{
+                //console.log(response.status)
+                response.json().then(df=>{
+                        window.alert(df.msg)
+                })
+            })
+}
+
+export async function deleteGroupChat(roomObjectId){
+    await fetch("http://localhost:8080/admin/delete/groupChat",{
+                method: "POST",
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({roomObjectId:roomObjectId}),
+                mode: 'cors'
+            })
+            .then(response =>{
+                //console.log(response.status)
+                response.json().then(df=>{
+                        window.alert(df.msg)
+                })
+            })
+}

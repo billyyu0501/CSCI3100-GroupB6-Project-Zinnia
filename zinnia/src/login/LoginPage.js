@@ -5,28 +5,31 @@ according to users' action
 */
 
 import React from "react";
-import {Link,useNavigate} from "react-router-dom";
+import {Link,Navigate,useNavigate} from "react-router-dom";
 
 class LoginPage extends React.Component{
     constructor(props){
         super(props)
         this.state = {email: "",
-                      passport: ""
+                      passport: "",
+                      isUser:this.props.isUser,
+                      userId: ""
                     }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        console.log(this.state)
     }
     handleChange(event){
         this.setState({[event.target.name]:event.target.value})
     }
-    handleSubmit(event){
+    async handleSubmit(event){
         event.preventDefault();
         console.log(this.state.email);
         console.log(this.state.password);
         if (this.state.email === "" || this.state.password === ""){
             window.alert("Please fill in all the blanks")
         } else {
-            fetch("http://localhost:8080/login", {
+            await fetch("http://localhost:8080/login", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -37,14 +40,21 @@ class LoginPage extends React.Component{
             .then(response => {
                 response.json().then(df => {
                     window.alert(df.msg)
+                    if (response.status==200){
+                        this.setState({userId:df.userId})
+                        this.setState({isUser:true})
+                        
+                    } 
                 })
             })
         }
     }
 
     render(){
+
         return(
             <>
+            {this.state.isUser?<Navigate to={`user/${this.state.userId}`}/>:<></>}
             <div >
                 <br/>
                 <h3 className ="d-flex justify-content-center">ZINNIA</h3>
@@ -64,7 +74,6 @@ class LoginPage extends React.Component{
                         <div className="d-flex justify-content-center">
                         <button type = 'submit'  className = "button">Login</button>
                         </div>
-                        
                     </form>
                 </div>
                 
