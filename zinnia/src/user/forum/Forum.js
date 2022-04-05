@@ -15,7 +15,8 @@ import Fromnow from 'react-fromnow';
 class Forum extends React.Component{
     constructor(props){
         super(props);
-        this.state={posts:[],revposts:[], likes:""}
+        this.state={posts:[],revposts:[], likes:"",userId:""}
+        this.setState({userId:this.props.userId})
     }
 
  
@@ -35,11 +36,11 @@ class Forum extends React.Component{
     render(){
         return( 
         <div className="container">
-            <a href="/user/newpost"> <button  id ="createbutton"className="button" style={{color:"white"}}> Create Post </button></a>
+            <a href={`/user/${this.props.userId}/newPost`}> <button  id ="createbutton"className="button" style={{color:"white"}}> Create Post </button></a>
             <div style={{paddingTop:60}}/>
             
-            {this.state.posts.map(function(post,index){
-                return <a href={"/user/post/"+post.writer.userId +"/"+post._id } key={index} id="postlink" >
+            {this.state.posts.map((post,index)=>{
+                return <a href={`/user/${this.props.userId}/post/${post.writer.userId}/${post._id}`} key={index} id="postlink" >
                     <div className="card" id="forumpost">
                         <div className="card-body">
                             <p > <span style={{fontSize:20}} id="username">{post.writer.username} </span><span style={{fontSize:14}}> - <Fromnow date ={post.createdAt}/></span></p>

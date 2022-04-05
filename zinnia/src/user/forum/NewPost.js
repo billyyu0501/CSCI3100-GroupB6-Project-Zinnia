@@ -8,6 +8,7 @@ class NewPost extends React.Component{
         this.state={user:"3",title:"", content:""}
         this.handleTitleChange = this. handleTitleChange.bind(this)
         this.handleContentChange = this. handleContentChange.bind(this)
+        this.createPost = this.createPost.bind(this)
     }
     handleTitleChange(event){
      this.setState({ title: event.target.value});
@@ -16,13 +17,14 @@ class NewPost extends React.Component{
 
     handleContentChange(event){
         this.setState({ content: event.target.value });
-           
+        
        }
 
        handleSubmit(event) {
         alert('Your Post' + this.state.title +"has been created!");
         event.preventDefault();
-        console.log(this.state)
+        //console.log(this.state)
+        this.createPost()
       }
 
     async createPost (){
@@ -31,6 +33,8 @@ class NewPost extends React.Component{
             title: this.state.title,
             content: this.state.content,
         }
+        console.log(databody)
+        
         await fetch('http://localhost:8080/createPost', {
             method: 'POST',
             headers: {
@@ -41,12 +45,13 @@ class NewPost extends React.Component{
         })
         .then(res=>res.json())
         .then(res=>{
-            console.log('success',res)
+            window.alert(res.msg)
         })
         .catch((error)=>{
             console.log('failed',error)
         });
-
+        window.location.reload()
+        
     }
 
     render(){
@@ -54,7 +59,7 @@ class NewPost extends React.Component{
             <div className="container">
                  <div style={{paddingTop:10}}/>
                 <h3>Create Post</h3>
-                <form method="POST" onSubmit={this.handleSubmit}></form>
+                <form onSubmit={this.handleSubmit}>
                 <div class="form-group">
                     <label for="title" >Title</label>
                     <input type="text" value={this.state.title} onChange={this.handleTitleChange.bind(this)} name="title" id="title" class="form-control" required autoFocus />
@@ -64,7 +69,9 @@ class NewPost extends React.Component{
                     <label for="content">Content</label>
                     <textarea name="content" value={this.state.content} onChange={this.handleContentChange.bind(this)} id="content" class="form-control" placeholder="Write Something..." rows={10} required></textarea>
                 </div>
-                <a href="/user"> <button type="submit" class="button" onClick={this.createPost} >Submit</button> </a>
+                
+                </form>
+                <button type="submit" class="button" onClick={this.createPost}>Submit</button>
                 <a href="/user"> <button class="button">Cancel </button> </a>
 
             
