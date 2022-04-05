@@ -9,6 +9,7 @@ class NewPost extends React.Component{
         this.handleTitleChange = this. handleTitleChange.bind(this)
         this.handleContentChange = this. handleContentChange.bind(this)
         this.createPost = this.createPost.bind(this)
+        this.setState({userId:this.props.userId})
     }
     handleTitleChange(event){
      this.setState({ title: event.target.value});
@@ -29,7 +30,7 @@ class NewPost extends React.Component{
 
     async createPost (){
         let databody ={
-            userId:"1",
+            userId:this.props.userId,
             title: this.state.title,
             content: this.state.content,
         }
@@ -46,11 +47,12 @@ class NewPost extends React.Component{
         .then(res=>res.json())
         .then(res=>{
             window.alert(res.msg)
+           
         })
         .catch((error)=>{
             console.log('failed',error)
         });
-        window.location.reload()
+        window.location.assign(`/user/${this.props.userId}`)
         
     }
 
@@ -72,7 +74,7 @@ class NewPost extends React.Component{
                 
                 </form>
                 <button type="submit" class="button" onClick={this.createPost}>Submit</button>
-                <a href="/user"> <button class="button">Cancel </button> </a>
+                <a href={`/user/${this.props.userId}`}> <button class="button">Cancel </button> </a>
 
             
             

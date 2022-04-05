@@ -30,7 +30,7 @@ class Forum extends React.Component{
             console.log(this.state.posts[0].writer.userId) 
         })
         
-        this.setState({revposts:this.state.posts.reverse()})
+    
     }
 
     render(){
@@ -43,7 +43,7 @@ class Forum extends React.Component{
                 return <a href={`/user/${this.props.userId}/post/${post.writer.userId}/${post._id}`} key={index} id="postlink" >
                     <div className="card" id="forumpost">
                         <div className="card-body">
-                            <p > <span style={{fontSize:20}} id="username">{post.writer.username} </span><span style={{fontSize:14}}> - <Fromnow date ={post.createdAt}/></span></p>
+                            <p > <span style={{fontSize:20}} id="username">{post.writer.username} </span><span style={{fontSize:14}}> - <Fromnow date ={post.updatedAt}/></span></p>
                             <h4 id="postTitle">{post.title} </h4>
                             <p><i class="fa fa-thumbs-up fa-xs"> {post.like.length} </i></p>
                            

@@ -73,13 +73,13 @@ function Showpost(){
       
     }
     
-    const likecomment =(commentId) =>{
+    const likecomment =async(commentId) =>{
       
       let data={
        userId:userId,
        commentObjectId:commentId
       }
-      fetch('http://localhost:8080/likeComment', {
+      await fetch('http://localhost:8080/likeComment', {
        method: 'POST',
        headers: {
            'Content-Type': 'application/json'
@@ -90,6 +90,7 @@ function Showpost(){
      })
      .then(res=>res.json())
      .then(res=>{
+          window.alert(res.msg)
          console.log('liked a post',res)
      })
      .catch((error)=>{
@@ -116,7 +117,9 @@ function Showpost(){
 
    })
    .then(res=>res.json())
+   
    .then(res=>{
+
        console.log('posted a comment',res)
    })
    .catch((error)=>{
@@ -158,7 +161,7 @@ function Showpost(){
       <Dialog open={open}>
         <Box className={classes.paper}>
           <form
-            onSubmit={(e) => {
+            onSubmit={(e) => {           
               e.preventDefault();
               addcomment(e.target[0].value);
               handleClose();
@@ -166,13 +169,14 @@ function Showpost(){
 
             <div>
                 <p style={{fontSize:24}}>Comment: #1 {title}</p>
-              < textarea name="comment" id="commentbox" class="form-control" placeholder="Write Something..." rows={6} cols={100} autoFocus  />
+              < textarea name="comment" type="text" id="comment" class="form-control" placeholder="Write Something..." rows={6} cols={100} autoFocus  required />
             </div>
        
               <button className="button" type="submit">Post</button>
-              <button className="button" > Cancel</button>
+              </form>
+              <button className="button" onClick={()=>handleClose()}  > Cancel</button>
         
-          </form>
+          
         </Box>
         </Dialog>
       
