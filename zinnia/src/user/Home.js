@@ -14,50 +14,48 @@ import Profile from "./profile/Profile";
 import SearchUser from "./searchUser/SearchUser";
 import NewPost from "./forum/NewPost";
 import { Showpost } from "./forum/Eachpost";
-import {Route,Routes,useNavigate,Navigate} from 'react-router-dom';
+import {Route,Routes,useNavigate,Navigate, useParams} from 'react-router-dom';
 
 
 
 class Home extends React.Component{
     constructor(props){
         super(props)
-        
-        console.log(this.props)
     }
     render(){
-        const BackToLoginPage = async()=>{
+        const CallRoute = (props)=>{
+            let params = useParams().userId
+            console.log(params)
             return(
-                <div>
-                    {this.state.isUser?<></>:<Navigate to="/" />}
+            <div className="container">
+                <div style={{paddingTop:20}}/>
+                <h1 style={{fontSize:45}}> <a href="/user">ZINNIA</a></h1>
+                <div className="icon-bar" >  
+                    <a href="/" ><i className="fa fa-sign-out" ></i></a> 
+                    <a href={`/user/${params}/profile`}><i className="fa fa-user"></i></a> 
+                    <a href={`/user/${params}/chat`}><i className="fa fa-envelope"></i></a> 
+                    <a href={`/user/${params}/searchUser`} ><i className="fa fa-search"></i></a> 
                 </div>
-                
+               
+           
+                <Routes>
+                    <Route path = "/*" element={<Forum />}/>
+                    <Route path = "/profile" element={<Profile userId={params}/>}/>
+                    <Route path = "/searchUser" element={<SearchUser />}/>
+                    <Route path = "/chat" element={< Chat />}/>
+                    <Route path = "/newpost" element={<NewPost />}/>
+                    <Route path = "/post/:userId/:postId" element={<Showpost />}/>
+                </Routes>
+                </div>
             )
         }
         return(
-            
-            <div className="container">
-                 <div style={{paddingTop:20}}/>
-                <h1 style={{fontSize:45}}> <a href="/user">ZINNIA</a></h1>
-                <div className="icon-bar" >  
-                <a href="/" ><i className="fa fa-sign-out" ></i></a> 
-                <a href="/user/profile"><i className="fa fa-user"></i></a> 
-                <a href="/user/chat"><i className="fa fa-envelope"></i></a> 
-                <a href="/user/searchUser" ><i className="fa fa-search"></i></a> 
-                </div>
-
-
-                <Routes>
-                    <Route path = "/*" element={<Forum />}/>
-                    <Route path = "/profile" element={<Profile />}/>
-                    <Route path = "/searchUser" element={<SearchUser/>}/>
-                    <Route path = "/chat" element={< Chat/>}/>
-                    <Route path = "/newpost" element={<NewPost/>}/>
-                    <Route path = "/post/:userId/:postId" element={<Showpost/>}/>
-                </Routes>
-            </div>
+            <CallRoute />  
         );
     }
 }
 
+
+        
 
 export default Home

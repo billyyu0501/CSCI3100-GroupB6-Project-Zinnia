@@ -15,6 +15,7 @@ class Profile extends React.Component{
     constructor(props){
         super(props);
         this.state={data:[],userId:"",img:""}
+        console.log(this.props.userId)
     }
     async componentDidMount(){
         //get the userId and search the database by the UserId, async function is used as setState takes time
