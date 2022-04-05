@@ -30,7 +30,7 @@ class Forum extends React.Component{
             console.log(this.state.posts[0].writer.userId) 
         })
         
-        this.setState({revposts:this.state.posts.reverse()})
+        //this.setState({revposts:this.state.posts.reverse()})
     }
 
     render(){

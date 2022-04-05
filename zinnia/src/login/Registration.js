@@ -2,8 +2,9 @@
 This js is for registration 
 */
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link,Navigate} from "react-router-dom";
 import FileBase64 from "react-file-base64";
+
 /*To-do list: 
 (1)photo 
 (2)warning handle(either do it here or throw to backend)
@@ -12,7 +13,7 @@ import FileBase64 from "react-file-base64";
 class Registration extends React.Component{
     constructor(props){
         super(props);
-        this.state={email:"",username:"",password:"",confirmPw:"",photo:"",IsWrong:false,alert:""}
+        this.state={email:"",username:"",password:"",confirmPw:"",photo:"",IsWrong:false,alert:"",redirect:false}
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.getFile = this.getFile.bind(this);
@@ -41,11 +42,10 @@ class Registration extends React.Component{
                 mode: 'cors'
             })
             .then(response =>{
-                /*if(response.status==200){
-                this.setState({email:"",username:"",password:"",confirmPw:"",photo:""})
-                }*/
                 response.json().then(df=>{
                     window.alert(df.msg)
+                    this.setState({redirect:true})
+                    console.log(this.state.redirect)
                 })
             })
 
@@ -107,6 +107,7 @@ class Registration extends React.Component{
             
             <br/>
             <Link to="/">Back to Login Page</Link>
+            {this.state.redirect?<Navigate to="/"/>:null}
         </div>    
         )
     }

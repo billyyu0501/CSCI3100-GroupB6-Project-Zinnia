@@ -7,9 +7,10 @@ import {Link,Navigate,useNavigate} from "react-router-dom";
 class ForgotPw extends React.Component{
     constructor(props){
         super(props)
-        this.state = {email: ""}
+        this.state = {email: "",redirect:false}
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        console.log(this.state)
     }
     handleChange(event){
         this.setState({[event.target.name]:event.target.value})
@@ -29,11 +30,13 @@ class ForgotPw extends React.Component{
                 body: JSON.stringify({ email: this.state.email }),
                 mode: 'cors'
             })
-            .then(response => {
-                response.json().then(df => {
+            .then(response => response.json())
+            .then(df => {
                     window.alert(df.msg)
+                    this.setState({redirect:true})
+                    console.log(this.state.redirect)
                 })
-            })
+
         }
     }
     render(){
@@ -57,6 +60,7 @@ class ForgotPw extends React.Component{
                         </div>
                     </form>
                 </div>
+                {this.state.redirect?<Navigate to="/"/>:null}
             </div>    
             </>
         )
