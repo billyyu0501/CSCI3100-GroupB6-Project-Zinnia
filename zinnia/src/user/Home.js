@@ -39,12 +39,12 @@ class Home extends React.Component{
                
            
                 <Routes>
-                    <Route path = "/*" element={<Forum />}/>
+                    <Route path = "/*" element={<Forum userId={params}/>}/>
                     <Route path = "/profile" element={<Profile userId={params}/>}/>
-                    <Route path = "/searchUser" element={<SearchUser />}/>
-                    <Route path = "/chat" element={< Chat />}/>
-                    <Route path = "/newpost" element={<NewPost />}/>
-                    <Route path = "/post/:userId/:postId" element={<Showpost />}/>
+                    <Route path = "/searchUser" element={<SearchUser userId={params}/>}/>
+                    <Route path = "/chat" element={< Chat userId={params}/>}/>
+                    <Route path = "/newpost" element={<NewPost userId={params}/>}/>
+                    <Route path = "/post/:userId/:postId" element={<Showpost userId={params}/>}/>
                 </Routes>
                 </div>
             )
