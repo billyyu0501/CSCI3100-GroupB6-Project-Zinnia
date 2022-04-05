@@ -29,7 +29,7 @@ class Home extends React.Component{
             return(
             <div className="container">
                 <div style={{paddingTop:20}}/>
-                <h1 style={{fontSize:45}}> <a href="/user">ZINNIA</a></h1>
+                <h1 style={{fontSize:45}}> <a href={`/user/${params}`}>ZINNIA</a></h1>
                 <div className="icon-bar" >  
                     <a href="/" ><i className="fa fa-sign-out" ></i></a> 
                     <a href={`/user/${params}/profile`}><i className="fa fa-user"></i></a> 

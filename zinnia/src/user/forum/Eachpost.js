@@ -44,13 +44,13 @@ function Showpost(){
     setOpen(false);
      };
 
-     const likepost =() =>{
+     const likepost =async() =>{
        
        let data={
         userId:userId,
         postObjectId:postId
        }
-       fetch('http://localhost:8080/likePost', {
+       await fetch('http://localhost:8080/likePost', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -61,10 +61,10 @@ function Showpost(){
       })
       .then(res=>res.json())
       .then(res=>{
-          console.log('liked a post',res)
+          window.alert(res.msg)
       })
       .catch((error)=>{
-          console.log('failed to like a post',error)
+          window.alert("failed to like a post:"+error)
       });
       const reloadPage = () => {
         window.location.reload()
