@@ -10,11 +10,11 @@ const App =() =>{
     return(
         <div>
             <Routes>
-                <Route path = '/' element = {<LoginPage isUser={false}/>}/>
+                <Route path = '/' element = {<LoginPage />}/>
                 <Route path ="/registration"element = {<Registration/>}/>
                 <Route path ="/forgotPassword" element={<ForgotPw/>}/>
                 <Route path ="/forgotPassword/:email/:token" element={<ForgotPwSubmit/>}/>
-                <Route path = '/user/:userId/*' element = {<Home isUser={false}/>}/>
+                <Route path = '/user/:userId/*' element = {<Home/>}/>
                 <Route path = "/admin/*" element = {<AdminPage/>}/>
             </Routes>
         </div>

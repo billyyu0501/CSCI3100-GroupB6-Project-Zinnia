@@ -6,26 +6,35 @@ according to users' action
 
 import React from "react";
 import {Link,Navigate,useNavigate} from "react-router-dom";
-
+import { instanceOf } from "prop-types";
+import Cookies from "universal-cookie"
 class LoginPage extends React.Component{
     constructor(props){
         super(props)
         this.state = {email: "",
                       passport: "",
-                      isUser:this.props.isUser,
-                      userId: ""
+                      isUser:false,
+                      userId: "",
                     }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
-        console.log(this.state)
+
+    }
+    //the cookie will expire in 30 min 
+    setToken(userId, role){
+        const d = new Date();
+        const cookies = new Cookies();
+        d.setTime(d.getTime() + 30*60*1000)
+        cookies.set("userId",userId,{path:"/",expires:d})
+        cookies.set("role",role,{path:"/",expires:d})
     }
     handleChange(event){
         this.setState({[event.target.name]:event.target.value})
     }
     async handleSubmit(event){
         event.preventDefault();
-        console.log(this.state.email);
-        console.log(this.state.password);
+        //console.log(this.state.email);
+        //console.log(this.state.password);
         if (this.state.email === "" || this.state.password === ""){
             window.alert("Please fill in all the blanks")
         } else {
@@ -43,7 +52,8 @@ class LoginPage extends React.Component{
                     if (response.status==200){
                         this.setState({userId:df.userId})
                         this.setState({isUser:true})
-                        
+                        //saved the login info in session 
+                        this.setToken(this.state.userId,"user")
                     } 
                 })
             })

@@ -26,12 +26,14 @@
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.2.1",
+    "react-cookie": "^4.1.1",
     "react-dom": "^17.0.2",
     "react-file-base64": "^1.0.3",
     "react-fromnow": "^4.2.0",
     "react-icons": "^4.3.1",
     "react-router-dom": "^6.2.2",
     "react-scripts": "^5.0.0",
+    "universal-cookie": "^4.0.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

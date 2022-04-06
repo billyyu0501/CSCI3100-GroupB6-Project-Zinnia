@@ -36,7 +36,6 @@ class ForgotPw extends React.Component{
                     this.setState({redirect:true})
                     console.log(this.state.redirect)
                 })
-
         }
     }
     render(){

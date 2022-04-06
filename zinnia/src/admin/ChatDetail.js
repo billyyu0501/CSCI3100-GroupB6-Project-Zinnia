@@ -2,6 +2,7 @@ import React from "react"
 import moment from "moment"
 import { deleteGroupChat,deletePrivateChat } from "./deleteFunc"
 import {Navigate} from "react-router-dom"
+
 export default class ChatDetail extends React.Component{
     constructor(props){
         super(props)

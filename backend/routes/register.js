@@ -26,6 +26,7 @@ router.post("/register", async (req,res) => {
     if (emailExisted != null) return res.status(400).json({msg: "email existed."})
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    
     //assign user id
     var currentId = 1;
     User.findOne().sort({userId:-1}).exec(function(err,user){

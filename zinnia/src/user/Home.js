@@ -15,6 +15,8 @@ import SearchUser from "./searchUser/SearchUser";
 import NewPost from "./forum/NewPost";
 import { Showpost } from "./forum/Eachpost";
 import {Route,Routes,useNavigate,Navigate, useParams} from 'react-router-dom';
+import LoginPage from "../login/LoginPage";
+import Cookies from "universal-cookie";
 
 
 
@@ -25,13 +27,22 @@ class Home extends React.Component{
     render(){
         const CallRoute = (props)=>{
             let params = useParams().userId
-            console.log(params)
+            const cookie = new Cookies()
+            let tokenUserId= cookie.get('userId')
+            if (!tokenUserId){
+                window.alert("please login first")
+                return(<Navigate to="/"/>)
+            }
+            if (tokenUserId!=params){
+                window.alert("You can't access other users' page")
+                return <Navigate to="/"/>
+            }
             return(
             <div className="container">
                 <div style={{paddingTop:20}}/>
                 <h1 style={{fontSize:45}}> <a href={`/user/${params}`}>ZINNIA</a></h1>
                 <div className="icon-bar" >  
-                    <a href="/" ><i className="fa fa-sign-out" ></i></a> 
+                    <a href="/" onClick={sessionStorage.clear()}><i className="fa fa-sign-out" ></i></a> 
                     <a href={`/user/${params}/profile`}><i className="fa fa-user"></i></a> 
                     <a href={`/user/${params}/chat`}><i className="fa fa-envelope"></i></a> 
                     <a href={`/user/${params}/searchUser`} ><i className="fa fa-search"></i></a> 
