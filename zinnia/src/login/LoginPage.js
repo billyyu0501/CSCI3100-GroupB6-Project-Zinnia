@@ -17,16 +17,23 @@ class LoginPage extends React.Component{
                       userId: "",
                     }
         this.handleChange = this.handleChange.bind(this)
-        this.handleSubmit = this.handleSubmit.bind(this)
-
+        this.handleSubmit = this.handleSubmit.bind(this)  
+                  
     }
     //the cookie will expire in 30 min 
     setToken(userId, role){
-        const d = new Date();
-        const cookies = new Cookies();
+        const d = new Date()
+        const cookies = new Cookies()
         d.setTime(d.getTime() + 30*60*1000)
         cookies.set("userId",userId,{path:"/",expires:d})
         cookies.set("role",role,{path:"/",expires:d})
+        
+    }
+    componentDidMount(){
+        const cookies = new Cookies()
+        if(cookies.get("userId")!=null){
+            this.setState({isUser:true,userId:cookies.get("userId")})
+        }
     }
     handleChange(event){
         this.setState({[event.target.name]:event.target.value})

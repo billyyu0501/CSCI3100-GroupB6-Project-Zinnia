@@ -24,11 +24,18 @@ class Home extends React.Component{
     constructor(props){
         super(props)
     }
+    removeCookies =() =>{
+        const c= new Cookies()
+        c.remove("userId", { path: '/' })
+        c.remove("role", { path: '/' })
+        console.log('remove')
+    }
     render(){
         const CallRoute = (props)=>{
             let params = useParams().userId
             const cookie = new Cookies()
             let tokenUserId= cookie.get('userId')
+
             if (!tokenUserId){
                 window.alert("please login first")
                 return(<Navigate to="/"/>)
@@ -42,7 +49,7 @@ class Home extends React.Component{
                 <div style={{paddingTop:20}}/>
                 <h1 style={{fontSize:45}}> <a href={`/user/${params}`}>ZINNIA</a></h1>
                 <div className="icon-bar" >  
-                    <a href="/" onClick={sessionStorage.clear()}><i className="fa fa-sign-out" ></i></a> 
+                    <a href="/" onClick={this.removeCookies}><i className="fa fa-sign-out" ></i></a> 
                     <a href={`/user/${params}/profile`}><i className="fa fa-user"></i></a> 
                     <a href={`/user/${params}/chat`}><i className="fa fa-envelope"></i></a> 
                     <a href={`/user/${params}/searchUser`} ><i className="fa fa-search"></i></a> 
