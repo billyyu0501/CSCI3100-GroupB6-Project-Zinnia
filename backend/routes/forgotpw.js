@@ -31,12 +31,12 @@ router.post("/forgotpw", (req,res) => {
                     to: results.email,
                     //to: "leoleung337.jp@gmail.com", 
                     subject: 'Forgot Password Reset Link', 
-                    text: 'Hello '+',\n\n' + 'Please reset your password by clicking the link: \nhttp:\/\/localhost:8080\/forgotpw\/' + results.email + '\/' + token.token + '\n\nThank You!\n' };
+                    text: 'Hello '+',\n\n' + 'Please reset your password by clicking the link: \n http:\/\/localhost:3000\/forgotPassword\/' + results.email + '\/' + token.token + '\n\nPlease copy this token to reset your password:\n' + token.token + '\n\nThank You!\n' };
                     transporter.sendMail(mailOptions, function (err) {
                     if (err) { 
                         return res.status(500).send({msg:'Something go wrong. Please try again later!'});
                     }
-                    return res.status(200).send('A reset password email has been sent to ' + results.email + '. Please check your email.');
+                    return res.status(200).send({msg: 'A reset password email has been sent to ' + results.email + '. Please check your email.'});
             
                 })
 
@@ -57,7 +57,7 @@ router.post("/forgotpw/:email/:token", (req, res) => {
         else{
             User.findOne({_id: token._id, email: req.params.email},  async (err, user) => {
                 if(!user){
-                    return res.status(401).send({msg: "We cannot find this user for reset password. Please check your link!"})
+                    return res.status(401).send({msg: "We cannot find this email for reset password."})
                 }
                 //update password
                 else{
@@ -68,7 +68,7 @@ router.post("/forgotpw/:email/:token", (req, res) => {
                             return res.status(500).send({msg: err.message});
                         }
                         else{
-                            return res.status(200).send('Your password has been successfully reset');
+                            return res.status(200).send({msg: "Your password has been successfully reset"});
 
                         }
                     })
