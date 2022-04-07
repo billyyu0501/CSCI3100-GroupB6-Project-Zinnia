@@ -57,6 +57,9 @@ class ForgotPw extends React.Component{
                         <div className="d-flex justify-content-center">
                         <button type = 'submit'  className = "button">Submit</button>
                         </div>
+                        <br/>
+            <Link to="/" id="link" className="d-flex justify-content-center" >Back to Login Page</Link>
+            {this.state.redirect?<Navigate to="/"/>:null}
                     </form>
                 </div>
                 {this.state.redirect?<Navigate to="/"/>:null}

@@ -4,6 +4,7 @@ This js is for registration
 import React from "react";
 import {Link,Navigate} from "react-router-dom";
 import FileBase64 from "react-file-base64";
+import './Registration.css'
 
 /*To-do list: 
 (1)photo 
@@ -65,18 +66,19 @@ class Registration extends React.Component{
     render(){
         return(
             <div>
-            <h1>Registration</h1>
-            <div className = "d-flex  align-middle">
+            <h1> Account Registration</h1>
+            <div style={{ textAlign: 'center' }}>
                 <form onSubmit={this.handleSubmit}>
-                    <label>
+                   
                         Photo:
                         <br/>
-                        <img width="250" height = "250"src = {this.HvPhoto()?this.state.photo:"./img/blankProfilePic.png"}/>
+                        <img width="120" height = "120"src = {this.HvPhoto()?this.state.photo:"./img/blankProfilePic.png"}/>
                         <br/>
                         <FileBase64 multiple={false} onDone={this.getFile} />
-                    </label>
+                    
                     <br/>
-                    <label>
+                    <div >
+                    <label id="emai;">
                         Email:
                         <input type='text' name = 'email' value ={this.state.email} onChange={this.handleChange} className = 'form-control' />
                     </label>
@@ -95,18 +97,18 @@ class Registration extends React.Component{
                         Confirmed Password:
                         <input type='password' name = "confirmPw" value ={this.state.confirmPw}  onChange={this.handleChange} className = 'form-control' />
                     </label>
+                    </div>
                     <br/>
 
-                    <br/><br/>
-                    <div className="d-flex ">
-                    <button type = 'submit'  className = "btn btn-primary">Register</button>
+                    <div className="d-flex justify-content-center ">
+                    <button type = 'submit button'  className = "button" id="register">Register </button>
                     </div>
                     {this.state.IsWrong?<div className="text-danger">{this.state.alert}</div>:<></>}
                 </form>
             </div>
             
             <br/>
-            <Link to="/">Back to Login Page</Link>
+            <Link to="/" id="link" className="d-flex justify-content-center" >Back to Login Page</Link>
             {this.state.redirect?<Navigate to="/"/>:null}
         </div>    
         )

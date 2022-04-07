@@ -8,6 +8,8 @@ import React from "react";
 import {Link,Navigate,useNavigate} from "react-router-dom";
 import { instanceOf } from "prop-types";
 import Cookies from "universal-cookie"
+
+
 class LoginPage extends React.Component{
     constructor(props){
         super(props)
@@ -95,12 +97,16 @@ class LoginPage extends React.Component{
                 </div>
                 
                 <br/>
-                <div className="d-flex justify-content-center">
-                    <li><Link to="/registration" >Don't have an account?</Link></li>
-                    <li><Link to="/forgotPassword" >Forgot Password?</Link></li>
+                <div className="d-flex justify-content-center" id="login">
+                    <li style={{ listStyleType: "none"}}><Link to="/registration" id="link" >Don't have an account?</Link></li>
+                    <col/>
+                    </div>
+                    <div className="d-flex justify-content-center">
+                    <li style={{ listStyleType: "none" }}><Link to="/forgotPassword"  id="link">Forgot Password?</Link></li>
                 </div>
+                <div style={{paddingTop:20}}> </div>
                 <div className="d-flex justify-content-center">
-                    <li><Link to="/admin" >Temporary Link for AdminPage</Link></li>
+                    <li style={{ listStyleType: "none" }}><Link to="/admin"  id="link" >Temporary Link for AdminPage</Link></li>
                 </div>
             </div>    
             </>
