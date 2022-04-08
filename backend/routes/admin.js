@@ -124,7 +124,7 @@ router.post("/admin/:userId/profile", (req, res) => {
         return res.status(400).send({msg: "Please fill in the blanks if you want to update your profile."})
     }
 
-    if (req.body.changeUsername != ""){
+    if (req.body.changeUsername != "" && req.body.changeDescription == ""){
         User.findOne({ username: req.body.changeUsername }, (err, user) => {
             if (user){
                 return res.status(401).send({msg: "Username existed. Please choose another username."})
@@ -141,14 +141,14 @@ router.post("/admin/:userId/profile", (req, res) => {
                         return res.status(500).send({msg: err.message});
                     }
                     else{
-                        return res.status(201).send({msg: "Profile has been update"});
+                        return res.status(201).send({msg: "Username has been update"});
     
                     }
                 })
             }
         })
     }
-    if (req.body.changeDescription != ""){
+    if (req.body.changeUsername == "" && req.body.changeDescription != ""){
         User.findOne({ userId: req.params.userId, }, (err, user) => {
             if(!user){
                 return res.status(401).send({msg: "We cannot find this user to update."})
@@ -160,13 +160,42 @@ router.post("/admin/:userId/profile", (req, res) => {
                         return res.status(500).send({msg: err.message});
                     }
                     else{
-                        return res.status(200).send({msg: "Profile has been update"});
+                        return res.status(200).send({msg: "Description has been update"});
 
                     }
                 })
             }
 
         })
+    }
+
+    if (req.body.changeUsername != "" && req.body.changeDescription != ""){
+        User.findOne({ username: req.body.changeUsername }, (err, user) => {
+            if (user){
+                return res.status(401).send({msg: "Username existed. Please choose another username."})
+            }  
+        })
+
+        User.findOne({ userId: req.params.userId, }, (err, user) => {
+            if(!user){
+                return res.status(401).send({msg: "We cannot find this user to update."})
+            }
+            else {
+                user.username = req.body.changeUsername
+                user.description = req.body.changeDescription
+                user.save(() => {
+                    if (err){
+                        return res.status(500).send({msg: err.message});
+                    }
+                    else{
+                        return res.status(201).send({msg: "Profile has been update"});
+    
+                    }
+                })
+            }
+        })
+
+
     }
 })
 module.exports = router;
