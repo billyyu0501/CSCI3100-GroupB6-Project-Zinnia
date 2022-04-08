@@ -11,6 +11,7 @@ let User = require("../models/user.model");
 let {PrivateChat,GroupChat} = require("../models/chat.model")
 let getUserObjectId = require("../common");
 let {Post,Comment} = require("../models/post.model");
+const { findOneAndUpdate } = require('../models/user.model');
 
 /*
 1. login
@@ -116,5 +117,56 @@ router.post("/admin/delete/groupChat",async(req,res)=>{
             return res.status(200).json({msg:"group deleted"})
         }
     })
+})
+
+router.post("/admin/:userId/profile", (req, res) => {
+    if (req.body.changeUsername == "" && req.body.changeDescription == ""){
+        return res.status(400).send({msg: "Please fill in the blanks if you want to update your profile."})
+    }
+
+    if (req.body.changeUsername != ""){
+        User.findOne({ username: req.body.changeUsername }, (err, user) => {
+            if (user){
+                return res.status(401).send({msg: "Username existed. Please choose another username."})
+            }  
+        })
+        User.findOne({ userId: req.params.userId, }, (err, user) => {
+            if(!user){
+                return res.status(401).send({msg: "We cannot find this user to update."})
+            }
+            else {
+                user.username = req.body.changeUsername
+                user.save(() => {
+                    if (err){
+                        return res.status(500).send({msg: err.message});
+                    }
+                    else{
+                        return res.status(201).send({msg: "Profile has been update"});
+    
+                    }
+                })
+            }
+        })
+    }
+    if (req.body.changeDescription != ""){
+        User.findOne({ userId: req.params.userId, }, (err, user) => {
+            if(!user){
+                return res.status(401).send({msg: "We cannot find this user to update."})
+            }
+            else{
+                user.description = req.body.changeDescription
+                user.save(() => {
+                    if (err){
+                        return res.status(500).send({msg: err.message});
+                    }
+                    else{
+                        return res.status(200).send({msg: "Profile has been update"});
+
+                    }
+                })
+            }
+
+        })
+    }
 })
 module.exports = router;

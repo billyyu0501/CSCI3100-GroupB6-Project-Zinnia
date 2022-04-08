@@ -39,6 +39,9 @@ class LoginPage extends React.Component{
     }
     handleChange(event){
         this.setState({[event.target.name]:event.target.value})
+        console.log(this.state.email)
+        console.log(event.target.name)
+        console.log(event.target)
     }
     async handleSubmit(event){
         event.preventDefault();

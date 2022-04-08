@@ -10,10 +10,16 @@ class UserDetail extends React.Component{
             data:[],
             img:"",
             update:false,
-            change:{username:"",description:"",isVerified:null}
+            changeUsername:"",
+            changeDescription: ""
         }
+        this.getFile = this.getFile.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this)
         this.cancelUpdate = this.cancelUpdate.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        
+        
     }
     async componentDidMount(){
         //console.log(this.state.userId)
@@ -28,17 +34,37 @@ class UserDetail extends React.Component{
             console.log(this.state.img=="")
         })
     }
+    getFile(file){
+        this.setState({img:file.base64})
+    }
     handleUpdate(){
         this.setState({update:true})
     }
     cancelUpdate(){
         this.setState({update:false})   
     }
-    handleSubmit(){
-        console.log("submit")
+    async handleSubmit(event){
+        event.preventDefault();
+        console.log(this.state.userId);
+        await fetch(`http://localhost:8080/admin/${this.state.userId}/profile`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ changeUsername: this.state.changeUsername,
+                                    changeDescription: this.state.changeDescription }),
+            mode: 'cors'
+        })
+        .then(response => response.json())
+        .then(df => {
+                window.alert(df.msg)
+            })
+        
     }
-    handleChange(){
-        console.log("change")
+    handleChange(event){
+        this.setState({[event.target.name]:event.target.value})
+        console.log(this.state.changeUsername)
+        console.log(this.state.changeDescription)
     }
     render(){
         return(
@@ -108,22 +134,22 @@ class UserDetail extends React.Component{
                             <br/>
                             <label>
                                 Username:
-                                <input type="text" name = "username" value ={this.state.change.username}  onChange={this.handleChange} className = 'form-control' />
+                                <input type="text" name = "changeUsername" value ={this.state.changeUsername}  onChange={this.handleChange} className = 'form-control' />
                             </label>
                             
                             <label>
-                                description:
-                                <input type='text' name = "password" value ={this.state.change.description} onChange={this.handleChange} className = 'form-control' />
+                                Description:
+                                <input type='text' name = "changeDescription" value ={this.state.changeDescription} onChange={this.handleChange} className = 'form-control' />
                             </label>
                            
-                            <label>
+{/*                             <label>
                                 isVerified:
                                 <input type='text' name = "confirmPw" value ={this.state.change.isVerified}  onChange={this.handleChange} className = 'form-control' />
-                            </label>
+                            </label> */}
                             
                             <div className="d-flex ">
-                            <button type = 'submit'  className = "btn btn-primary">Update</button>
-                            <button className="btn btn-primary" onClick={this.cancelUpdate}>Cancel</button>
+                                <button type = 'submit'  className = "btn btn-primary">Update</button>
+                                <button className="btn btn-primary" onClick={this.cancelUpdate}>Cancel</button>
                             </div>
                         </div>
                     </form>
