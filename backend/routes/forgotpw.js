@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 let User = require("../models/user.model")
 const mongoose = require("mongoose");
 let Token = require("../models/token.model")
