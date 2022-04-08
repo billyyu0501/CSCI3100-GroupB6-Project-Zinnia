@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Showpost(){
+function Showpost(props){
     const {userId, postId} = useParams();
     const [postObjId, setPostObjId]= useState([]);
     const [title, setTitle]= useState([]);
@@ -47,7 +47,7 @@ function Showpost(){
      const likepost =async() =>{
        
        let data={
-        userId:userId,
+        userId:props.userId,
         postObjectId:postId
        }
        await fetch('http://localhost:8080/likePost', {
@@ -76,7 +76,7 @@ function Showpost(){
     const likecomment =async(commentId) =>{
       
       let data={
-       userId:userId,
+       userId:props.userId,
        commentObjectId:commentId
       }
       await fetch('http://localhost:8080/likeComment', {
@@ -91,6 +91,7 @@ function Showpost(){
      .then(res=>res.json())
      .then(res=>{
           window.alert(res.msg)
+          console.log(userId)
          console.log('liked a post',res)
      })
      .catch((error)=>{
@@ -103,7 +104,7 @@ function Showpost(){
    }
    const addcomment =(text) =>{
     let data={
-     userId:userId,
+     userId:props.userId,
      postObjectId:postObjId,
      comment:text,
     }
