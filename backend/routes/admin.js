@@ -121,7 +121,7 @@ router.post("/admin/delete/groupChat",async(req,res)=>{
 
 router.post("/admin/:userId/profile", (req, res) => {
     if (req.body.changeUsername == "" && req.body.changeDescription == ""){
-        return res.status(400).send({msg: "Please fill in the blanks if you want to update your profile."})
+        return res.status(400).send({msg: "Please fill in the blanks if you want to update profile."})
     }
 
     if (req.body.changeUsername != "" && req.body.changeDescription == ""){
