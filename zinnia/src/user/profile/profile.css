@@ -1,0 +1,39 @@
+* {
+  background-color: rgb(64, 66, 79);
+}
+
+h1 {
+  font-family: "Quicksand", sans-serif;
+  color: white;
+  text-decoration: none;
+}
+h1 a {
+  color: white;
+  text-decoration: none;
+}
+h1 a:hover {
+  color: white;
+  font-weight: bold;
+}
+div {
+  background-color: rgb(64, 66, 79);
+  color: white;
+  font-family: "Quicksand", sans-serif;
+}
+.icon-bar {
+  width: 100%;
+  overflow: auto;
+}
+
+.icon-bar a {
+  float: right;
+  width: 5%;
+  color: rgb(125, 129, 151);
+  text-align: center;
+  padding: 5px 0;
+  font-size: 25px;
+}
+
+.icon-bar a:hover {
+  color: rgb(255, 255, 255);
+}
