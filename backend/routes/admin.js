@@ -1,10 +1,3 @@
-/*
-
-1. del specific user 
-2. del specific post 
-3. del specific comment 
-
-*/
 
 const router = require('express').Router();
 let User = require("../models/user.model");
@@ -12,7 +5,7 @@ let {PrivateChat,GroupChat} = require("../models/chat.model")
 let getUserObjectId = require("../common");
 let {Post,Comment} = require("../models/post.model");
 const { findOneAndUpdate } = require('../models/user.model');
-
+let bcrypt = require("bcryptjs")
 /*
 1. login
 2. forgotPw
@@ -197,5 +190,24 @@ router.post("/admin/:userId/profile", (req, res) => {
 
 
     }
+})
+
+//not done reset password
+router.post("/admin/:userId/resetPw",async(req,res)=>{
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    console.log(req.params.userId)
+    User.findOne({userId:req.params.userId}).exec(function(err,results){
+        if(err){
+            console.log(err)
+            res.status(400).json({msg:"sth goes wrong"})
+        }else if (!results){
+            res.status(400).json({msg:"This user doesn't exist"})
+        }else{
+            results.password = hashedPassword
+            results.save()
+            res.status(200).json({msg:"password changed"})
+        }
+    })
+    
 })
 module.exports = router;

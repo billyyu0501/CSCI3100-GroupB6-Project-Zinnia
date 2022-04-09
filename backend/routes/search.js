@@ -44,6 +44,7 @@ router.post("/friend/invite",async (req,res)=>{
             console.log(err)
             return res.status(400).json({msg:"sth goes wrong"})
         }else{
+            //console.log(results)
             if (JSON.stringify(results.friend).includes(JSON.stringify(inviterObjectId))){
                 return res.status(400).json({msg:"This user has already been your friends"})
             }
@@ -51,11 +52,28 @@ router.post("/friend/invite",async (req,res)=>{
                 return res.status(400).json({msg:"You have just sent this user an invitation. Please wait"})
             }
             results.frdInvitation.push({inviter:inviterObjectId,time:Date()})
-            
+            results.save()
             return res.status(200).json({msg:"Invitation are sent"})
         }
     })
     
 })
+
+//view all friend a user hv 
+router.get("/:userId/viewAllfrd", (req, res) => {
+    //console.log(req.params.userId)
+    User.findOne({userId:req.params.userId})
+    .select("friend")
+    .populate({path:"friend",select:["userId","username"]})
+    .exec(function(err,results){
+        if (err){
+            console.log(err)
+            res.status(400).json({msg:"Sth goes wrong"})
+        }else{
+            res.status(200).send(results)
+        }
+    })
+})
+
 
 module.exports = router;

@@ -10,12 +10,12 @@ import './home.css'
 
 import Chat from "./chat/Chat";
 import Forum from "./forum/Forum";
-import Profile from "./profile/Profile";
+import {Profile} from "./profile/Profile";
 import SearchUser from "./searchUser/SearchUser";
 import NewPost from "./forum/NewPost";
 import { Showpost } from "./forum/Eachpost";
 import {Route,Routes,useNavigate,Navigate, useParams} from 'react-router-dom';
-import LoginPage from "../login/LoginPage";
+import {OtherProfile} from "./searchUser/OtherProfile";
 import Cookies from "universal-cookie";
 
 
@@ -33,9 +33,9 @@ class Home extends React.Component{
     render(){
         const CallRoute = (props)=>{
             let params = useParams().userId
+            //console.log(useParams())
             const cookie = new Cookies()
             let tokenUserId= cookie.get('userId')
-
             if (!tokenUserId){
                 window.alert("please login first")
                 return(<Navigate to="/"/>)
@@ -63,6 +63,7 @@ class Home extends React.Component{
                     <Route path = "/chat" element={< Chat userId={params}/>}/>
                     <Route path = "/newpost" element={<NewPost userId={params}/>}/>
                     <Route path = "/post/:userId/:postId" element={<Showpost userId={params}/>}/>
+                    <Route path = "/searchUser/profile/:searchedId" element ={<OtherProfile userId={params}/>} />
                 </Routes>
                 </div>
             )

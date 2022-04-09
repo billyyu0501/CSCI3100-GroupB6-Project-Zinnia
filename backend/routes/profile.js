@@ -78,7 +78,7 @@ router.post("/friend/handleInvitation",async(req,res)=>{
             //pop out all invitation with the required inviter from the invitation list 
             for(invitation of results.frdInvitation){
                 if (invitation.inviter.equals(inviterObjectId)){
-                    results.frdInvitation.pop(invitation)
+                    results.frdInvitation = results.frdInvitation.filter(e=>!e.equals(invitation))
                     results.save()
                     existInvitation = true
                 }
@@ -95,6 +95,7 @@ router.post("/friend/handleInvitation",async(req,res)=>{
             }
             // accepted invitation case
             if (req.body.IsAccepted){ 
+                
                 // push inviter id to user's friend list
                 User.findOneAndUpdate({_id:userObjectId},{$push:{friend:inviterObjectId}}).exec(function(err){
                     if(err){
@@ -141,7 +142,7 @@ router.post("/friend/delete",async(req,res)=>{
             if(!JSON.stringify(results.friend).includes(JSON.stringify(frdObjectId))){
                 return res.status(400).json({msg:"This user is not your friend"})
             }else{
-                results.friend.pop(frdObjectId)
+                results.friend = results.friend.filter(e=>!e.equals(frdObjectId))
                 results.save()
                 User.findOne({_id:frdObjectId}).exec(function(err,frdres){
                 if(err){
@@ -150,11 +151,11 @@ router.post("/friend/delete",async(req,res)=>{
                 }else{
                     if (frdres.friend!=null){
                         if(frdres.friend.includes(userObjectId)){
-                            frdres.friend.pop(userObjectId)
+                            frdres.friend = frdres.friend.filter(e=>!e.equals(userObjectId))
                             frdres.save()
                         }
                     }
-                    res.status(400).json({msg:"Deleted"})
+                    res.status(200).json({msg:"Deleted"})
                 }})
             }
         }
