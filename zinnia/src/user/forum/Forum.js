@@ -115,7 +115,4 @@ class Forum extends React.Component{
         );
     }
 }
-
-
-
-export default Forum
+*/
