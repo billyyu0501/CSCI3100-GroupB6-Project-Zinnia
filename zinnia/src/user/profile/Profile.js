@@ -216,6 +216,7 @@ class FrdContent extends React.Component{
 }
 
 // for udpate info
+//changed photo not done 
 class UpdateContent extends React.Component{
   constructor(props){
     super(props);
@@ -237,6 +238,7 @@ class UpdateContent extends React.Component{
       .then(res=>res.json())
       .then(json=>{
           this.setState({data:json})
+          this.setState({changeUsername:json.username, changeDescription:json.description})
           this.setState({img:Buffer.from(json.photo,"base64").toString("ascii")})
       })
   }
@@ -313,12 +315,12 @@ class UpdateContent extends React.Component{
                   <br/>
                   <label>
                       Username:
-                      <input type="text" name = "changeUsername" value ={this.state.changeUsername}  onChange={this.handleChange} className = 'form-control' />
+                      <input type="text" name = "changeUsername" value ={this.state.changeUsername}  onChange={this.handleChange} className = 'form-control' required/>
                   </label>
                   <br/>
                   <label>
                       Description:
-                      <textarea type='text' name = "changeDescription" value ={this.state.changeDescription} onChange={this.handleChange} rows={6} cols={100} className = 'form-control' />
+                      <textarea type='text' name = "changeDescription" value ={this.state.changeDescription} onChange={this.handleChange} rows={6} cols={100} className = 'form-control' required/>
                   </label>             
                   <div className="d-flex ">
                       <button type = 'submit'  className = "button">Update</button>
@@ -334,12 +336,12 @@ class UpdateContent extends React.Component{
                 <form onSubmit = { this.handleReset }>
                     <label className="">
                         New Password:
-                        <input type='password' name='password' value ={this.state.password} onChange={this.handleChange } className='form-control' />
+                        <input type='password' name='password' value ={this.state.password} onChange={this.handleChange } className='form-control' required/>
                     </label>
                     <br></br>
                     <label>
                         Confirmed Password:
-                        <input type='password' name='passwordConfirm' value ={this.state.passwordConfirm} onChange={this.handleChange } className='form-control' />
+                        <input type='password' name='passwordConfirm' value ={this.state.passwordConfirm} onChange={this.handleChange } className='form-control' required/>
                     </label>
                     <br/><br/>
                     <div className="d-flex justify-content-start">
