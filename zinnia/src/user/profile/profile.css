@@ -1,4 +1,4 @@
-* {
+/* * {
   background-color: rgb(64, 66, 79);
 }
 
@@ -20,20 +20,24 @@ div {
   color: white;
   font-family: "Quicksand", sans-serif;
 }
-.icon-bar {
-  width: 100%;
-  overflow: auto;
+
+} */
+
+/* testing */
+
+.content {
+  border: 1px solid #99cced;
 }
 
-.icon-bar a {
-  float: right;
-  width: 5%;
-  color: rgb(125, 129, 151);
-  text-align: center;
-  padding: 5px 0;
-  font-size: 25px;
+.info {
+  margin: -80px 0px 20px 0px;
 }
+/* here have problem*/
 
-.icon-bar a:hover {
-  color: rgb(255, 255, 255);
+.info img {
+  height: 200px;
+  width: 200px;
+}
+.info h5 {
+  margin: 15px 0px 5px 0px;
 }
