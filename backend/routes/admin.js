@@ -9,7 +9,7 @@
 const router = require('express').Router();
 let User = require("../models/user.model");
 let {PrivateChat,GroupChat} = require("../models/chat.model")
-let getUserObjectId = require("../common");
+let getUserObjectId = require("../common").getUserObjectId;
 let {Post,Comment} = require("../models/post.model");
 const { findOneAndUpdate } = require('../models/user.model');
 
