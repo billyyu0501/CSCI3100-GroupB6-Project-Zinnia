@@ -215,7 +215,7 @@ class FrdContent extends React.Component {
               ></button>
             </div>
             <div className={this.state.showfrd ? "" : "d-none"}>
-              <table className="table border text-light text-center">
+              {/* <table className="table border text-light text-center">
                 <thead>
                   <th> Id</th>
                   <th>Name </th>
@@ -244,7 +244,45 @@ class FrdContent extends React.Component {
                     </tr>
                   ))}
                 </tbody>
-              </table>
+              </table> */}
+
+              {/* testing */}
+
+              {this.state.frd.map((frd, index) => (
+                <div class="friend" key={index}>
+                  <div class="row">
+                    <div class="col-2">
+                      <img
+                        src={
+                          this.state.img == ""
+                            ? "/img/blankProfilePic.png"
+                            : this.state.img
+                        }
+                        className="rounded-circle profile-photo"
+                      />
+                    </div>
+                    <div class="col-8">
+                      <span class="text-muted">#{frd.userId} </span>
+                      <span class="h5">
+                        <Link
+                          to={`/user/${this.props.userId}/searchUser/profile/${frd.userId}`}
+                        >
+                          {frd.username}
+                        </Link>
+                      </span>
+                    </div>
+                    <div class="col-2">
+                      <button
+                        type="button"
+                        onClick={this.deleteFrd}
+                        value={frd.userId}
+                        className="btn-close btn-close-white"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 

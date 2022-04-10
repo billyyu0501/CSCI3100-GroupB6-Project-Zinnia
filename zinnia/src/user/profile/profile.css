@@ -41,3 +41,15 @@ div {
 .info h5 {
   margin: 15px 0px 5px 0px;
 }
+
+.friend {
+  padding: 20px 0;
+  /* border-top: 1px solid #f1f2f2; */
+  border-bottom: 1px solid #f1f2f2;
+  margin-bottom: 20px;
+}
+
+.friend img {
+  height: 80px;
+  width: 80px;
+}
