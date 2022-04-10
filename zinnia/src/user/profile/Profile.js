@@ -99,7 +99,7 @@ class UserContent extends React.Component {
                   <hr />
                   <span>{this.state.data.email}</span>
                   <hr />
-                  <span>{this.state.data.description}</span>
+                  <span><pre>{this.state.data.description}</pre></span>
                 </div>
               </div>
             </div>
@@ -420,6 +420,7 @@ class UpdateContent extends React.Component {
     super(props);
     this.state = {
       img: "",
+      changeImg:"",
       changeUsername: "",
       changeDescription: "",
       password: "",
@@ -432,7 +433,7 @@ class UpdateContent extends React.Component {
     this.handleReset = this.handleReset.bind(this);
   }
   async componentDidMount() {
-    fetch(`http://localhost:8080/${this.props.userId}/profile`)
+    fetch(`${url}/${this.props.userId}/profile`)
       .then((res) => res.json())
       .then((json) => {
         this.setState({ data: json });
@@ -443,16 +444,17 @@ class UpdateContent extends React.Component {
         this.setState({
           img: Buffer.from(json.photo, "base64").toString("ascii"),
         });
+        this.setState({changeImg:this.state.img})
       });
   }
   getFile(file) {
-    this.setState({ img: file.base64 });
+    this.setState({ changeImg: file.base64 });
   }
 
   async handleSubmit(event) {
     event.preventDefault();
     //console.log(this.state.userId);
-    await fetch(`http://localhost:8080/admin/${this.props.userId}/profile`, {
+    await fetch(`${url}/${this.props.userId}/updateProfile`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -460,6 +462,7 @@ class UpdateContent extends React.Component {
       body: JSON.stringify({
         changeUsername: this.state.changeUsername,
         changeDescription: this.state.changeDescription,
+        changeImg: this.state.changeImg
       }),
       mode: "cors",
     })
@@ -475,7 +478,7 @@ class UpdateContent extends React.Component {
       window.alert("the password is not match ");
     } else {
       //console.log(this.state.userId);
-      await fetch(`http://localhost:8080/admin/${this.props.userId}/resetPw`, {
+      await fetch(`${url}/${this.props.userId}/resetPw`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
