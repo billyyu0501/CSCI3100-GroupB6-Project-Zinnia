@@ -114,7 +114,7 @@ class UserContent extends React.Component {
 class FrdContent extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { data: [], frd: [], inv: [], showfrd: false, showInv: false };
+    this.state = { data: [], frd: [], inv: [], showfrd: false, showInv: false, img:""};
     this.handleFrdList = this.handleFrdList.bind(this);
     this.handleInvList = this.handleInvList.bind(this);
     this.acceptInv = this.acceptInv.bind(this);
@@ -125,8 +125,9 @@ class FrdContent extends React.Component {
     fetch(`${url}/${this.props.userId}/profile`)
       .then((res) => res.json())
       .then((json) => {
-        this.setState({ frd: json.friend, inv: json.frdInvitation });
-        console.log(json);
+        this.setState({ frd: json.friend, inv: json.frdInvitation }); 
+        //console.log(this.state.frd[1].photo.data)
+        //console.log(json);
       });
   }
   handleFrdList(event) {
@@ -203,7 +204,7 @@ class FrdContent extends React.Component {
       <div>
         <div>
           <div id="frd list">
-            <div className="d-flex p-2">
+            <div className=" p-2">
               <h2 className="m-2">Friend list</h2>
               <button
                 className={
@@ -254,9 +255,9 @@ class FrdContent extends React.Component {
                     <div class="col-2">
                       <img
                         src={
-                          this.state.img == ""
+                          frd.photo.data.length ==0
                             ? "/img/blankProfilePic.png"
-                            : this.state.img
+                            : Buffer.from(frd.photo, "base64").toString("ascii")
                         }
                         className="rounded-circle profile-photo"
                       />
