@@ -15,7 +15,8 @@ class LoginPage extends React.Component{
         super(props)
         this.state = {email: "",
                       passport: "",
-                      isUser:false,
+                      isUser: false,
+                      isAdmin: false,
                       userId: "",
                     }
         this.handleChange = this.handleChange.bind(this)
@@ -66,7 +67,9 @@ class LoginPage extends React.Component{
                         this.setState({isUser:true})
                         //saved the login info in session 
                         this.setToken(this.state.userId,"user")
-                    } 
+                    } else if (response.status==201){
+                        this.setState({ isAdmin: true})
+                    }
                 })
             })
         }
@@ -76,6 +79,7 @@ class LoginPage extends React.Component{
 
         return(
             <>
+            {this.state.isAdmin?<Navigate to={`admin`}/>:<></>}
             {this.state.isUser?<Navigate to={`user/${this.state.userId}`}/>:<></>}
             <div >
                 <br/>

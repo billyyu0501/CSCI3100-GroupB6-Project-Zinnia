@@ -1,7 +1,7 @@
 const router = require('express').Router();
 let {Post, Comment} = require("../models/post.model");
 
-let getUserObjectId = require("../common")
+let getUserObjectId = require("../common").getUserObjectId;
 /*
 1. create Post [done]
 2. list out all post [done]
