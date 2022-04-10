@@ -99,7 +99,9 @@ class UserContent extends React.Component {
                   <hr />
                   <span>{this.state.data.email}</span>
                   <hr />
-                  <span><pre>{this.state.data.description}</pre></span>
+                  <span>
+                    <pre>{this.state.data.description}</pre>
+                  </span>
                 </div>
               </div>
             </div>
@@ -420,7 +422,7 @@ class UpdateContent extends React.Component {
     super(props);
     this.state = {
       img: "",
-      changeImg:"",
+      changeImg: "",
       changeUsername: "",
       changeDescription: "",
       password: "",
@@ -444,7 +446,7 @@ class UpdateContent extends React.Component {
         this.setState({
           img: Buffer.from(json.photo, "base64").toString("ascii"),
         });
-        this.setState({changeImg:this.state.img})
+        this.setState({ changeImg: this.state.img });
       });
   }
   getFile(file) {
@@ -462,7 +464,7 @@ class UpdateContent extends React.Component {
       body: JSON.stringify({
         changeUsername: this.state.changeUsername,
         changeDescription: this.state.changeDescription,
-        changeImg: this.state.changeImg
+        changeImg: this.state.changeImg,
       }),
       mode: "cors",
     })
@@ -502,8 +504,8 @@ class UpdateContent extends React.Component {
   }
   render() {
     return (
-      <div>
-        <div id="udpate info" className="align-middle">
+      <div class="row">
+        {/* <div id="udpate info" className="align-middle">
           <h1>Update information</h1>
           <form onSubmit={this.handleSubmit} className="">
             <div id="photo">
@@ -596,6 +598,124 @@ class UpdateContent extends React.Component {
                 </button>
               </div>
             </form>
+          </div>
+        </div> */}
+        <div id="update info" class="col-8 border-right">
+          <div class="row p-3 pb-2">
+            <div class="col-4"></div>
+            <div class="col-8">
+              <h4>Update information</h4>
+            </div>
+            <br />
+          </div>
+          <form onSubmit={this.handleSubmit} class="row">
+            <div id="photo" class="col-4 border-right">
+              <div class="d-flex flex-column text-center p-3 py-0">
+                <label>
+                  <img
+                    class=""
+                    width="200px"
+                    height="200px"
+                    src={
+                      this.state.img == ""
+                        ? "/img/blankProfilePic.png"
+                        : this.state.img
+                    }
+                  />
+                </label>
+                <br />
+                <FileBase64 multiple={false} onDone={this.getFile} />
+              </div>
+            </div>
+            <div class="col-8 border-right" id="input">
+              <div class="row mt-3">
+                <div class="col-md-2">
+                  <label class="labels">User ID:</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    value={this.state.data.userId}
+                    disabled
+                  />
+                </div>
+                <div class="col-md-10">
+                  <label class="labels">Username:</label>
+                  <input
+                    type="text"
+                    name="changeUsername"
+                    value={this.state.changeUsername}
+                    onChange={this.handleChange}
+                    class="form-control"
+                    required
+                  />
+                </div>
+              </div>
+              <br />
+              <label class="labels">Email:</label>
+              <input
+                type="text"
+                class="form-control"
+                value={this.state.data.email}
+                disabled
+              />
+              <br />
+              <label class="labels">Description:</label>
+              <textarea
+                type="text"
+                name="changeDescription"
+                value={this.state.changeDescription}
+                onChange={this.handleChange}
+                rows={6}
+                cols={100}
+                class="form-control"
+              ></textarea>
+              <br />
+              <div className="d-flex ">
+                <button type="submit" className="button">
+                  Update
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="col-4">
+          <div class="reset pw p-3">
+            <div class="d-flex">
+              <h4 className="d-flex">Reset Password</h4>
+            </div>
+            <br />
+            <div class="col-12">
+              <form onSubmit={this.handleReset}>
+                <label class="labels" for="pw">
+                  New Passwords
+                </label>
+                <input
+                  type="password"
+                  class="form-control pw"
+                  value={this.state.password}
+                  onChange={this.handleChange}
+                  required
+                />
+                <br />
+                <label class="labels" for="passwordConfirm">
+                  Confirmed Password:
+                </label>
+                <input
+                  type="password"
+                  class="form-control passwordConfirm"
+                  value={this.state.passwordConfirm}
+                  onChange={this.handleChange}
+                  required
+                />
+                <br />
+                <div className="d-flex justify-content-start">
+                  <button type="submit" class="button">
+                    Reset Password
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
