@@ -114,7 +114,14 @@ class UserContent extends React.Component {
 class FrdContent extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { data: [], frd: [], inv: [], showfrd: false, showInv: false, img:""};
+    this.state = {
+      data: [],
+      frd: [],
+      inv: [],
+      showfrd: false,
+      showInv: false,
+      img: "",
+    };
     this.handleFrdList = this.handleFrdList.bind(this);
     this.handleInvList = this.handleInvList.bind(this);
     this.acceptInv = this.acceptInv.bind(this);
@@ -125,7 +132,7 @@ class FrdContent extends React.Component {
     fetch(`${url}/${this.props.userId}/profile`)
       .then((res) => res.json())
       .then((json) => {
-        this.setState({ frd: json.friend, inv: json.frdInvitation }); 
+        this.setState({ frd: json.friend, inv: json.frdInvitation });
         //console.log(this.state.frd[1].photo.data)
         //console.log(json);
       });
@@ -204,7 +211,7 @@ class FrdContent extends React.Component {
       <div>
         <div>
           <div id="frd list">
-            <div className=" p-2">
+            <div className="d-flex p-2">
               <h2 className="m-2">Friend list</h2>
               <button
                 className={
@@ -255,14 +262,14 @@ class FrdContent extends React.Component {
                     <div class="col-2">
                       <img
                         src={
-                          frd.photo.data.length ==0
+                          frd.photo.data.length == 0
                             ? "/img/blankProfilePic.png"
                             : Buffer.from(frd.photo, "base64").toString("ascii")
                         }
                         className="rounded-circle profile-photo"
                       />
                     </div>
-                    <div class="col-8">
+                    <div class="col-9">
                       <span class="text-muted">#{frd.userId} </span>
                       <span class="h5">
                         <Link
@@ -272,7 +279,7 @@ class FrdContent extends React.Component {
                         </Link>
                       </span>
                     </div>
-                    <div class="col-2">
+                    <div class="col-1">
                       <button
                         type="button"
                         onClick={this.deleteFrd}
@@ -299,7 +306,8 @@ class FrdContent extends React.Component {
                 onClick={this.handleInvList}
               ></button>
             </div>
-            <table
+
+            {/* <table
               className={
                 this.state.showInv ? "table text-light border" : "d-none"
               }
@@ -340,7 +348,64 @@ class FrdContent extends React.Component {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </table> */}
+
+            {/* testing */}
+            <div className={this.state.showInv ? "" : "d-none"}>
+              {this.state.inv.map((inv, index) => (
+                <div className="friend" key={index}>
+                  <div className="row">
+                    <div className="col-2">
+                      {/* <img
+                        src={
+                          inv.inviter.photo.data.length == 0
+                            ? "/img/blankProfilePic.png"
+                            : Buffer.from(inv.inviter.photo, "base64").toString(
+                                "ascii"
+                              )
+                        }
+                        className="rounded-circle profile-photo"
+                      /> */}
+                    </div>
+                    <div className="col-6">
+                      <span className="text-muted">#{inv.inviter.userId} </span>
+                      <span className="h5">
+                        <Link
+                          to={`/user/${this.props.userId}/searchUser/profile/${inv.inviter.userId}`}
+                        >
+                          {inv.inviter.username}
+                        </Link>
+                      </span>
+                    </div>
+                    <div className="col-2">
+                      <span>
+                        <Fromnow date={inv.time} />
+                      </span>
+                    </div>
+                    <div className="col-1">
+                      <button
+                        value={true}
+                        inviter={inv.inviter.userId}
+                        onClick={this.acceptInv}
+                        className="btn btn-primary btn-sm"
+                      >
+                        Accept
+                      </button>
+                    </div>
+                    <div class="col-1">
+                      <button
+                        value={false}
+                        inviter={inv.inviter.userId}
+                        onClick={this.acceptInv}
+                        className="btn btn-danger btn-sm"
+                      >
+                        Reject
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
