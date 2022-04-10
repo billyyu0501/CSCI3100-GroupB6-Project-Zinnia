@@ -10,10 +10,67 @@
 . list out all message in a group [done]
 */
 
+const Pusher = require('pusher');
+const mongoose = require('mongoose');
 const router = require('express').Router();
 let User = require("../models/user.model")
 let {GroupChat} = require("../models/chat.model") 
-let getUserObjectId = require("../common")
+let getUserObjectId = require("../common").getUserObjectId
+let getUsername = require("../common").getUsername;
+
+const pusher = new Pusher({
+    appId: "1368918",
+    key: "9bfa9c67db40709d3f03",
+    secret: "f08e4e49490ba7e38409",
+    cluster: "ap1",
+    useTLS: true
+})
+
+const db = mongoose.connection;
+db.once('open', () => {
+    const chatHistoryCollection = db.collection('groupchats');
+    const invitaionCollection = db.collection('users')
+    const chatChangeStream = chatHistoryCollection.watch();
+    const invitationChangeStream = invitaionCollection.watch();
+    chatChangeStream.on("change", (change) => {
+        if (change.operationType === 'update') {
+            db.collection('groupchats').find().sort({'updatedAt':-1}).toArray((err, results) => {
+                const resultsDetails = results[0].chatHistory;
+                const latestMessage = resultsDetails[resultsDetails.length-1];
+                pusher.trigger('groupMessages', 'insertedGroupMessages',
+                {
+                    speaker: {_id: latestMessage.speaker, userId: latestMessage.userId, username: latestMessage.username},
+                    text: latestMessage.text, time: latestMessage.time, _id: change.documentKey._id
+                });
+            });
+        }
+        if (change.operationType === 'insert') {
+            const chatDetails = change.fullDocument;
+            var host;
+            User.findOne({_id:chatDetails.host}, (err, doc) => {
+                host = doc;
+                pusher.trigger('rooms', 'insertedRooms',
+                {
+                    chatHistory: [], createdAt: chatDetails.createdAt, updatedAt: chatDetails.updatedAt,
+                    host: {_id:host._id, userId: host.userId, username: host.username}, __v: chatDetails.__v, _id: chatDetails._id
+                });
+            })  
+        }
+    });
+    invitationChangeStream.on("change", (change) => {
+        if (change.operationType === 'update') {
+            console.log(change.fullDocument);
+            db.collection('users').find().sort({'updatedAt':-1}).toArray((err,results) => {
+                const resultsDetails = results[0].gpInvitation;
+                const latestInvitation = resultsDetails[resultsDetails.length-1];
+                // pusher.trigger('invitations', 'insertedInvitations',
+                // {
+                //     room:
+                // })
+            })
+        }
+    })
+});
 
 //create a group chat
 //host is also inclued in the member array
@@ -47,7 +104,7 @@ router.post("/group/createGroup",async(req,res)=>{
 //body input: roomObjectId, invitedUser (in format, UserId)
 router.post("/group/inviteMember",async(req,res)=>{
     //convert userId to userObjectId and check if it exists
-    userObjectId = await getUserObjectId(req.body.invitedUser)
+    const userObjectId = await getUserObjectId(req.body.invitedUser)
     if (userObjectId == ""){
         return res.status(400).json({msg:"The user doesn't exist"}) 
     }
@@ -83,7 +140,7 @@ router.post("/group/inviteMember",async(req,res)=>{
 // user accept/reject group invitation
 //body input: roomObjectId, userId, IsAccepted(boolean)
 router.post("/group/acceptInvitation",async(req,res)=>{
-    userObjectId = await getUserObjectId(req.body.userId)
+    const userObjectId = await getUserObjectId(req.body.userId)
     if (userObjectId==""){
         return res.status(400).json({msg:"This user doesn't exist"})
     }
@@ -132,7 +189,7 @@ router.post("/group/acceptInvitation",async(req,res)=>{
 
 // list all group invitation of a specific user
 router.get("/:userId/gpInvitation",async(req,res)=>{
-    userObjectId = await getUserObjectId(req.body.userId)
+    const userObjectId = await getUserObjectId(req.body.userId)
     if (userObjectId==""){
         return res.status(400).json({msg:"This user doesn't exist"})
     }
@@ -148,7 +205,7 @@ router.get("/:userId/gpInvitation",async(req,res)=>{
             ]
         },
         options:{sort:{'time':-1}}
-    })
+    })  
     .exec(function(err,results){
         if (err){
             console.log(err)
@@ -162,7 +219,7 @@ router.get("/:userId/gpInvitation",async(req,res)=>{
 //delete a group (must be done by host)
 //body input: userId, roomObjectId
 router.post("/group/deleteGroup",async(req,res)=>{
-    userObjectId = await getUserObjectId(req.body.userId)
+    const userObjectId = await getUserObjectId(req.body.userId)
     GroupChat.findOne({_id:req.body.roomObjectId}).exec(function(err,results){
         if (err){
             console.log(err)
@@ -192,7 +249,7 @@ router.post("/group/deleteGroup",async(req,res)=>{
 //quit group (host cannot quit)
 //body: userId, roomObjectId
 router.post("/group/quitGroup",async(req,res)=>{
-    userObjectId = await getUserObjectId(req.body.userId)
+    const userObjectId = await getUserObjectId(req.body.userId)
     GroupChat.findOne({_id:req.body.roomObjectId}).exec(function(err,results){
         if (err){
             console.log(err)
@@ -230,6 +287,7 @@ router.get("/group/:userId/viewAllGroup",async(req,res)=>{
     GroupChat.find({user:userObjectId})
     .sort({"updatedAt":-1})
     .populate({path:"member",select:["userId","username"]})
+    .populate("room")
     .exec(function(err,results){
         if(err){
             console.log(err)
@@ -241,13 +299,14 @@ router.get("/group/:userId/viewAllGroup",async(req,res)=>{
 })
 
 // send message in a group chat
-// body input: userId[speaker],roomObjectId, content
+// body input: userId[speaker],rooomObjectId, content
 router.post("/group/sendMessage",async(req,res)=>{
     //convert UserId to UserObjectId if it exists. Check the content is blank or not
     const userObjectId = await getUserObjectId(req.body.userId)
+    const username = await getUsername(req.body.userId);
     if (userObjectId==""){
         return res.status(400).json({msg:"This user doesn't exist"})
-    }else if(req.body.content ==""){
+    }else if(req.body.text ==""){
         return res.status(400).json({msg:"The message can't be blank"})
     }
     // add message to ChatHistory of the corresponding group 
@@ -261,7 +320,7 @@ router.post("/group/sendMessage",async(req,res)=>{
             }else if (! results.member.includes(userObjectId)){
                 return res.status(400).json({msg:"The user is not a member for this group"})
             }
-            results.chatHistory.push({speaker:userObjectId,text:req.body.content,time:Date()})
+            results.chatHistory.push({speaker:userObjectId,userId:req.body.userId,username:username,text:req.body.text,time:Date()})
             results.save()
             return res.status(200).json({msg:"Messages are sent"})
         }
@@ -271,22 +330,36 @@ router.post("/group/sendMessage",async(req,res)=>{
 //display all message that a group Chat have
 //body input: userId?(need to discuss), roomObjectId 
 router.post("/group/displayMessage",async(req,res)=>{
-    GroupChat.findOne({_id:req.body.roomObjectId})
-    .select(["chatHistory","room"])
+    const new_id = mongoose.Types.ObjectId(req.body.roomObjectId);
+    GroupChat.findOne({_id:new_id})
+    .select(["chatHistory", "member"])
     .sort({"chatHistory.time":-1})
     .populate("chatHistory.speaker",["username","userId"])
-    .populate("host",['username','userId'])
-    .populate("member",["username","userId"])
+    .populate("member", ["username", "userId"])
+    .populate("room")
     .exec(function(err,results){
         if (err){
             console.log(err)
             return res.status(400).json({msg:"Sth goes wrong"})
         }else{
             res.status(200).json(results)
-            console.log('done')
         }
     })
 })
 
+// get friendlist
+router.post("/group/friendlist", async(req,res)=>{
+    User.findOne({userId:req.body.userId})
+    .select(["friend"])
+    .sort()
+    .exec((err, results) => {
+        if (err){
+            console.log(err);
+            return res.status(400).json({msg:"Sth goes wrong"});
+        } else {
+            return res.status(200).json(results);
+        }
+    })
+})
 
 module.exports = router;

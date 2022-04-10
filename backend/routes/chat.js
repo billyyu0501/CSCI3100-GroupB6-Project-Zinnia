@@ -5,10 +5,60 @@
 8. list out all message that a chat have[ done]
 
 */
+
+const Pusher = require('pusher');
+const mongoose = require('mongoose');
 const router = require('express').Router();
 let User = require("../models/user.model")
 let {PrivateChat} = require("../models/chat.model") 
-let getUserObjectId = require("../common")
+let getUserObjectId = require("../common").getUserObjectId;
+let getUsername = require("../common").getUsername;
+const e = require('express');
+
+//setting up pusher
+const pusher = new Pusher({
+    appId: "1368918",
+    key: "9bfa9c67db40709d3f03",
+    secret: "f08e4e49490ba7e38409",
+    cluster: "ap1",
+    useTLS: true
+})
+
+const db = mongoose.connection;
+db.once('open', () => {
+    const chatHistoryCollection = db.collection('privatechats');
+    const changeStream = chatHistoryCollection.watch();
+    changeStream.on("change", (change) => {
+        if (change.operationType === 'update') {
+            db.collection('privatechats').find().sort({'updatedAt':-1}).toArray((err, results) => {
+                const resultsDetails = results[0].chatHistory;
+                const latestMessage = resultsDetails[resultsDetails.length-1];
+                pusher.trigger('messages', 'insertedMessages', 
+                {
+                    speaker: {_id: latestMessage.speaker, userId: latestMessage.userId, username: latestMessage.username},
+                    text: latestMessage.text, time: latestMessage.time, _id: change.documentKey._id
+                });
+            });
+        } 
+        if (change.operationType === 'insert') {
+            const chatDetails = change.fullDocument;
+            var user0, user1;
+            User.findOne({_id:chatDetails.user[0]._id}, (err,doc0) => {
+                user0 = doc0;
+                User.findOne({_id:chatDetails.user[1]._id}, (err,doc1) => {
+                    user1 = doc1;
+                    pusher.trigger('chats', 'insertedChats',
+                    {
+                        chatHistory: [], createdAt: chatDetails.createdAt, updatedAt: chatDetails.updatedAt,
+                        user: [ {_id:user0._id, userId: user0.userId, username: user0.username},
+                                {_id:user1._id, userId: user1.userId, username: user1.username} ],
+                        __v: chatDetails.__v, _id: chatDetails._id
+                    });
+                });
+            });
+        }
+    });
+});
 //start a Private Chat
 
 //check whether the Private Chat already existed by searching the 2 users
@@ -22,6 +72,7 @@ var IsPrivateChatExisted= async(users)=>{
     }
     return existed
 }
+
 //create a new Private Chat
 // body input: user1, user2
 router.post("/private/createChat",async(req,res)=>{
@@ -42,9 +93,9 @@ router.post("/private/createChat",async(req,res)=>{
     }
     PrivateChat.create({user:[user1,user2]},function(err,results){
         if(err){
-            res.status(400).json({msg:"Sth goes wrong"})
+            res.json({msg:"Sth goes wrong"})
         }else{
-            res.status(200).json(results)
+            res.json(results)
         }
     }) 
 })
@@ -58,7 +109,7 @@ router.get("/private/:userId/viewAllChat",async(req,res)=>{
     }
     PrivateChat.find({user:userObjectId})
     .sort({"updatedAt":-1})
-    .populate({path:"user",select:["userId","username"]})
+    .populate({path:"user",select:["userId","username", "photo"]})
     .exec(function(err,results){
         if(err){
             console.log(err)
@@ -72,10 +123,11 @@ router.get("/private/:userId/viewAllChat",async(req,res)=>{
 // send message in a private chat
 // body input: userId[speaker],chatObjectId, content
 router.post("/private/sendMessage",async(req,res)=>{
-    const userObjectId = await getUserObjectId(req.body.userId)
+    const userObjectId = await getUserObjectId(req.body.userId);
+    const username = await getUsername(req.body.userId);
     if (userObjectId==""){
         return res.status(400).json({msg:"This user doesn't exist"})
-    }else if(req.body.content ==""){
+    }else if(req.body.text ==""){
         return res.status(400).json({msg:"The message can't be blank"})
     }
     PrivateChat.findOne({_id:req.body.chatObjectId}).exec(function(err,results){
@@ -86,7 +138,7 @@ router.post("/private/sendMessage",async(req,res)=>{
             if(results== null){
                 return res.status(400).json({msg:"This Chat doesn't exist"})
             }
-            results.chatHistory.push({speaker:userObjectId,text:req.body.content,time:Date()})
+            results.chatHistory.push({speaker:{_id:userObjectId},userId:req.body.userId,username:username,text:req.body.text,time:Date()})
             results.save()
             return res.status(200).json({msg:"Messages are sent"})
         }
@@ -96,18 +148,35 @@ router.post("/private/sendMessage",async(req,res)=>{
 //display all message that a Private Chat have
 //body input: userId?(need to discuss), ChatObjectId 
 router.post("/private/displayMessage",async(req,res)=>{
-    PrivateChat.findOne({_id:req.body.chatObjectId})
-    .select(["chatHistory"])
+    const new_id = mongoose.Types.ObjectId(req.body.chatObjectId);
+    PrivateChat.findOne({_id:new_id})
+    .select(["chatHistory", "user"])
     .sort({"chatHistory.time":-1})
     .populate("chatHistory.speaker",["username","userId"])
-    .populate("user",['username','userId'])
+    .populate("user", ["username", "userId", "photo"])
     .exec(function(err,results){
         if (err){
-            console.log(err)
-            return res.status(400).json({msg:"Sth goes wrong"})
+            console.log(err);
+            return res.status(400).json({msg:"Sth goes wrong"});
         }else{
-            res.status(200).json(results)
+            return res.status(200).json(results);
         }
     })
 })
+
+//get friendlist
+router.post("/private/friendlist", async(req,res)=>{
+    User.findOne({userId:req.body.userId})
+    .select(["friend"])
+    .populate("friend", ["username", "userId", "photo"])
+    .exec((err, results) => {
+        if (err){
+            console.log(err);
+            return res.status(400).json({msg:"Sth goes wrong"});
+        } else {
+            return res.status(200).json(results);
+        }
+    })
+})
+
 module.exports = router;
