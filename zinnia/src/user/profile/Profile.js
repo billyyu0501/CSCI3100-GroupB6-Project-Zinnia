@@ -633,7 +633,7 @@ class UpdateContent extends React.Component {
                   <input
                     type="text"
                     className="form-control"
-                    value={this.state.data.userId}
+                    placeholder={this.state.data.userId}
                     disabled
                   />
                 </div>
@@ -654,7 +654,7 @@ class UpdateContent extends React.Component {
               <input
                 type="text"
                 className="form-control"
-                value={this.state.data.email}
+                placeholder={this.state.data.email}
                 disabled
               />
               <br />
