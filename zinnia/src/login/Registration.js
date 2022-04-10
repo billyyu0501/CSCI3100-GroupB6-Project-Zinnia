@@ -78,7 +78,7 @@ class Registration extends React.Component{
                     
                     <br/>
                     <div >
-                    <label id="email;">
+                    <label id="emai;">
                         Email:
                         <input type='text' name = 'email' value ={this.state.email} onChange={this.handleChange} className = 'form-control' />
                     </label>

@@ -5,7 +5,7 @@
 
 const router = require('express').Router();
 let User = require("../models/user.model")
-let getUserObjectId = require("../common").getUserObjectId;
+let getUserObjectId = require("../common")
 
 //search for user
 //input: query || /search?userId=xxx OR /search?username=XXXX

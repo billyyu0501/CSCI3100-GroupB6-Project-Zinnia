@@ -46,29 +46,3 @@
 #likebutton:hover{
     background-color: rgb(87, 89, 107);
 }
-
-.search-box{
-    display: flex;
-    width: 100%;
-    position: relative;   
-}
-
-#search{
-    border-top: 0;
-    border-left: 0;
-    border-right: 0;
-    border-bottom:0;
-    background-color: transparent;
-    color: aliceblue;
-    outline:none;
-}
-.search-box:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
-#search:focus{
-    border-bottom: 1;
-    border-color: rgb(155, 155, 155);
-}
-.search::placeholder{
-    color:rgb(109, 109, 109)
-}

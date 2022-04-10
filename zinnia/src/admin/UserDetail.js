@@ -8,11 +8,10 @@ class UserDetail extends React.Component{
         this.state = {
             userId:this.props.match.params.userId,
             data:[],
-            photo:"",
+            img:"",
             update:false,
             changeUsername:"",
-            changeDescription: "",
-            changePassword: ""
+            changeDescription: ""
         }
         this.getFile = this.getFile.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this)
@@ -30,13 +29,13 @@ class UserDetail extends React.Component{
             this.setState({data:json})
             //for test; can delete console log at final version 
             //console.log(json)
-            //convert photo from buffer to base64 and save it in this.state.photo
-            this.setState({photo:Buffer.from(this.state.data.photo,"base64").toString("ascii")})
-            console.log(this.state.photo=="")
+            //convert photo from buffer to base64 and save it in this.state.img
+            this.setState({img:Buffer.from(this.state.data.photo,"base64").toString("ascii")})
+            console.log(this.state.img=="")
         })
     }
     getFile(file){
-        this.setState({photo:file.base64})
+        this.setState({img:file.base64})
     }
     handleUpdate(){
         this.setState({update:true})
@@ -53,13 +52,7 @@ class UserDetail extends React.Component{
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ changeUsername: this.state.changeUsername,
-                                   changeDescription: this.state.changeDescription,
-                                   changePassword: this.state.changePassword,
-                                   photo: this.state.photo,
-                                   username: this.state.data.username,
-                                   description: this.state.data.description,
-                                   password: this.state.data.password
-                                }),
+                                    changeDescription: this.state.changeDescription }),
             mode: 'cors'
         })
         .then(response => response.json())
@@ -72,7 +65,6 @@ class UserDetail extends React.Component{
         this.setState({[event.target.name]:event.target.value})
         console.log(this.state.changeUsername)
         console.log(this.state.changeDescription)
-        console.log(this.state.changePassword)
     }
     render(){
         return(
@@ -84,7 +76,7 @@ class UserDetail extends React.Component{
             <div className={this.state.update?"d-none":""}>
                 <div className="d-flex flex-row">
                     <div className = "p-2 border">
-                    <img className = 'p-2' width="250" height = "250" src ={this.state.photo==""?"./img/blankProfilePic.png":this.state.photo}/>
+                    <img className = 'p-2' width="250" height = "250" src ={this.state.img==""?"/img/blankProfilePic.png":this.state.img}/>
                     </div>
                     <table className = "p-2 table-bordered border text-white">
                         <tbody>
@@ -131,7 +123,7 @@ class UserDetail extends React.Component{
                     <form onSubmit={this.handleSubmit} className="d-flex">
                         <div id = "photo">
                             <label>
-                                <img width="250" height = "250"src = {this.state.photo==""?"./img/blankProfilePic.png":this.state.photo}/>
+                                <img width="250" height = "250"src = {this.state.img==""?"/img/blankProfilePic.png":this.state.img}/>
                                 <FileBase64 multiple={false} onDone={this.getFile} />
                             </label>
                         </div>
@@ -149,11 +141,11 @@ class UserDetail extends React.Component{
                                 Description:
                                 <input type='text' name = "changeDescription" value ={this.state.changeDescription} onChange={this.handleChange} className = 'form-control' />
                             </label>
-
-                            <label>
-                                Password:
-                                <input type='password' name = "changePassword" value ={this.state.changePassword} onChange={this.handleChange} className = 'form-control' />
-                            </label>
+                           
+{/*                             <label>
+                                isVerified:
+                                <input type='text' name = "confirmPw" value ={this.state.change.isVerified}  onChange={this.handleChange} className = 'form-control' />
+                            </label> */}
                             
                             <div className="d-flex ">
                                 <button type = 'submit'  className = "btn btn-primary">Update</button>
@@ -162,8 +154,9 @@ class UserDetail extends React.Component{
                         </div>
                     </form>
                 </div>
-            </div>  
-            </div>                      
+                
+            </div>
+            </div>                        
         );
     }
 }

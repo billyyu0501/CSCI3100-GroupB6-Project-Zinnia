@@ -1,7 +1,8 @@
+
 const router = require('express').Router();
 let User = require("../models/user.model");
 let {PrivateChat,GroupChat} = require("../models/chat.model")
-let getUserObjectId = require("../common").getUserObjectId;
+let getUserObjectId = require("../common");
 let {Post,Comment} = require("../models/post.model");
 const { findOneAndUpdate } = require('../models/user.model');
 let bcrypt = require("bcryptjs")
@@ -112,41 +113,69 @@ router.post("/admin/delete/groupChat",async(req,res)=>{
 })
 
 router.post("/admin/:userId/profile", (req, res) => {
-    if (req.body.changeUsername == "" && req.body.changeDescription == "" && req.body.photo == "" && req.body.changePassword == ""){
+    if (req.body.changeUsername == "" && req.body.changeDescription == ""){
         return res.status(400).send({msg: "Please fill in the blanks if you want to update profile."})
     }
-    else {
+
+    if (req.body.changeUsername != "" && req.body.changeDescription == ""){
+        User.findOne({ username: req.body.changeUsername }, (err, user) => {
+            if (user){
+                return res.status(401).send({msg: "Username existed. Please choose another username."})
+            }  
+        })
+        User.findOne({ userId: req.params.userId, }, (err, user) => {
+            if(!user){
+                return res.status(401).send({msg: "We cannot find this user to update."})
+            }
+            else {
+                user.username = req.body.changeUsername
+                user.save(() => {
+                    if (err){
+                        return res.status(500).send({msg: err.message});
+                    }
+                    else{
+                        return res.status(201).send({msg: "Username has been update"});
+    
+                    }
+                })
+            }
+        })
+    }
+    if (req.body.changeUsername == "" && req.body.changeDescription != ""){
+        User.findOne({ userId: req.params.userId, }, (err, user) => {
+            if(!user){
+                return res.status(401).send({msg: "We cannot find this user to update."})
+            }
+            else{
+                user.description = req.body.changeDescription
+                user.save(() => {
+                    if (err){
+                        return res.status(500).send({msg: err.message});
+                    }
+                    else{
+                        return res.status(200).send({msg: "Description has been update"});
+
+                    }
+                })
+            }
+
+        })
+    }
+
+    if (req.body.changeUsername != "" && req.body.changeDescription != ""){
         User.findOne({ username: req.body.changeUsername }, (err, user) => {
             if (user){
                 return res.status(401).send({msg: "Username existed. Please choose another username."})
             }  
         })
 
-        User.findOne({ userId: req.params.userId, }, async (err, user) => {
+        User.findOne({ userId: req.params.userId, }, (err, user) => {
             if(!user){
                 return res.status(401).send({msg: "We cannot find this user to update."})
             }
             else {
-                //username update
-                if (req.body.changeUsername == ""){
-                    user.username = req.body.username
-                } else {user.username = req.body.changeUsername}
-                //description update
-                if (req.body.changeDescription == ""){
-                    user.description = req.body.description
-                } else {user.description = req.body.changeDescription}
-
-                 //password update
-                if (req.body.changePassword == ""){
-                    user.password = req.body.password
-                } 
-                else {
-                    const hashedPassword = await bcrypt.hash(req.body.changePassword, 10)
-                    user.password = hashedPassword
-                }
-
-                //photo update
-                user.photo = req.body.photo
+                user.username = req.body.changeUsername
+                user.description = req.body.changeDescription
                 user.save(() => {
                     if (err){
                         return res.status(500).send({msg: err.message});
@@ -164,7 +193,7 @@ router.post("/admin/:userId/profile", (req, res) => {
 })
 
 //not done reset password
-/* router.post("/admin/:userId/resetPw",async(req,res)=>{
+router.post("/admin/:userId/resetPw",async(req,res)=>{
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
     console.log(req.params.userId)
     User.findOne({userId:req.params.userId}).exec(function(err,results){
@@ -180,5 +209,5 @@ router.post("/admin/:userId/profile", (req, res) => {
         }
     })
     
-}) */
+})
 module.exports = router;
