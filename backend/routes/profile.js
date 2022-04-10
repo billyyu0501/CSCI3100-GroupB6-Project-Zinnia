@@ -7,7 +7,7 @@
 
 const router = require('express').Router();
 let User = require("../models/user.model")
-let getUserObjectId = require("../common").getUserObjectId;
+let getUserObjectId = require("../common");
 const { json } = require('express');
 //get profile
 router.get("/:userId/profile", (req, res) => {

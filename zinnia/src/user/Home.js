@@ -8,8 +8,7 @@ The logout button will be put on this page.
 import React from "react";
 import './home.css'
 
-// import Chatlanding from "./chat/Chatlanding";
-import Chat from "./chat/private/Chat";
+import Chat from "./chat/Chat";
 import Forum from "./forum/Forum";
 import {Profile} from "./profile/Profile";
 import SearchUser from "./searchUser/SearchUser";
