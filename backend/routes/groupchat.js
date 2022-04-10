@@ -153,7 +153,9 @@ router.post("/group/acceptInvitation",async(req,res)=>{
             //pop out all invitation with the required inviter from the gpinvitation list 
             for(invitation of results.gpInvitation){
                 if (invitation.room.equals(req.body.roomObjectId)){
-                    results.gpInvitation.pop(invitation)
+                    //results.gpInvitation.pop(invitation)
+                    results.gpInvitation = results.gpInvitation.filter(e=>!e.equals(invitation))
+                    
                     results.save()
                     existInvitation = true
                 }
@@ -266,7 +268,8 @@ router.post("/group/quitGroup",async(req,res)=>{
                 return res.json({msg:"You are not in the group"})
             }
             // pop the userId out of the member array
-            results.member.pop(userObjectId)
+            //results.member.pop(userObjectId)
+            results.member = results.member.filter(e=>!e.equals(userObjectId))
             results.save()
             res.status(200).json({msg:"Quitted "})
         }
