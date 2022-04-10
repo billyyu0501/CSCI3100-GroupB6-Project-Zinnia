@@ -600,20 +600,19 @@ class UpdateContent extends React.Component {
             </form>
           </div>
         </div> */}
-        <div id="update info" class="col-8 border-right">
-          <div class="row p-3 pb-2">
-            <div class="col-4"></div>
-            <div class="col-8">
+        <div id="update info" className="col-8 border-right">
+          <div className="row p-3 pb-2">
+            <div className="col-4"></div>
+            <div className="col-8">
               <h4>Update information</h4>
             </div>
             <br />
           </div>
-          <form onSubmit={this.handleSubmit} class="row">
-            <div id="photo" class="col-4 border-right">
-              <div class="d-flex flex-column text-center p-3 py-0">
+          <form onSubmit={this.handleSubmit} className="row">
+            <div id="photo" className="col-4 border-right pt-4">
+              <div className="d-flex flex-column text-center p-3 py-0">
                 <label>
                   <img
-                    class=""
                     width="200px"
                     height="200px"
                     src={
@@ -627,39 +626,39 @@ class UpdateContent extends React.Component {
                 <FileBase64 multiple={false} onDone={this.getFile} />
               </div>
             </div>
-            <div class="col-8 border-right" id="input">
-              <div class="row mt-3">
-                <div class="col-md-2">
-                  <label class="labels">User ID:</label>
+            <div className="col-8 border-right" id="input">
+              <div className="row mt-3">
+                <div className="col-md-2">
+                  <label className="labels">User ID:</label>
                   <input
                     type="text"
-                    class="form-control"
+                    className="form-control"
                     value={this.state.data.userId}
                     disabled
                   />
                 </div>
-                <div class="col-md-10">
-                  <label class="labels">Username:</label>
+                <div className="col-md-10">
+                  <label className="labels">Username:</label>
                   <input
                     type="text"
                     name="changeUsername"
                     value={this.state.changeUsername}
                     onChange={this.handleChange}
-                    class="form-control"
+                    className="form-control"
                     required
                   />
                 </div>
               </div>
               <br />
-              <label class="labels">Email:</label>
+              <label className="labels">Email:</label>
               <input
                 type="text"
-                class="form-control"
+                className="form-control"
                 value={this.state.data.email}
                 disabled
               />
               <br />
-              <label class="labels">Description:</label>
+              <label className="labels">Description:</label>
               <textarea
                 type="text"
                 name="changeDescription"
@@ -667,7 +666,7 @@ class UpdateContent extends React.Component {
                 onChange={this.handleChange}
                 rows={6}
                 cols={100}
-                class="form-control"
+                className="form-control"
               ></textarea>
               <br />
               <div className="d-flex ">
@@ -679,38 +678,38 @@ class UpdateContent extends React.Component {
           </form>
         </div>
 
-        <div class="col-4">
-          <div class="reset pw p-3">
-            <div class="d-flex">
+        <div className="col-4">
+          <div className="reset pw p-3">
+            <div className="d-flex">
               <h4 className="d-flex">Reset Password</h4>
             </div>
             <br />
-            <div class="col-12">
+            <div className="col-12">
               <form onSubmit={this.handleReset}>
-                <label class="labels" for="pw">
+                <label className="labels" for="pw">
                   New Passwords
                 </label>
                 <input
                   type="password"
-                  class="form-control pw"
+                  className="form-control pw"
                   value={this.state.password}
                   onChange={this.handleChange}
                   required
                 />
                 <br />
-                <label class="labels" for="passwordConfirm">
+                <label className="labels" for="passwordConfirm">
                   Confirmed Password:
                 </label>
                 <input
                   type="password"
-                  class="form-control passwordConfirm"
+                  className="form-control passwordConfirm"
                   value={this.state.passwordConfirm}
                   onChange={this.handleChange}
                   required
                 />
                 <br />
                 <div className="d-flex justify-content-start">
-                  <button type="submit" class="button">
+                  <button type="submit" className="button">
                     Reset Password
                   </button>
                 </div>
