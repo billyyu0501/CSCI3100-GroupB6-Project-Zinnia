@@ -50,7 +50,7 @@ function Chat() {
     }
 
     //Obtaining chats
-    const getChats = async (user_id) => {
+    const initialChats = async (user_id) => {
         await fetch(`http://localhost:8080/private/${user_id}/viewAllChat`)
         .then(res => {
             return res.json();
@@ -96,7 +96,32 @@ function Chat() {
             }
         })
     }
-
+    //Obtaining chats
+    const getChats = async (user_id) => {
+        await fetch(`http://localhost:8080/private/${user_id}/viewAllChat`)
+        .then(res => {
+            return res.json();
+        })
+        .then(chats => {
+            console.log(chats);
+            if (chats.length != 0) 
+                setChats(chats);
+            return chats;
+        })
+        .then(chats => {
+            if (chats.length != 0) {
+                setCurrentChatId(chats[0]._id);
+                return chats[0]._id;
+            } else return chats
+        })
+        .then(chat_id => {
+            console.log(currentChatId);
+            if (!Array.isArray(chat_id)) {
+                console.log(chat_id);
+                getMessages(chat_id);
+            }
+        })
+    }
     //Quick create chats
     const createChat = async (user_id) => {
         fetch(`http://localhost:8080/private/createChat`, {
@@ -120,7 +145,8 @@ function Chat() {
     useEffect(() => {
         pusher.current = new Pusher('9bfa9c67db40709d3f03', {cluster: 'ap1'});
         setDidMount(true);
-        getChats(userId);
+        console.log("update")
+        initialChats(userId);
     }, []);
 
     // useEffect for changing between chats
