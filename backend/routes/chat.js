@@ -110,11 +110,13 @@ router.get("/private/:userId/viewAllChat",async(req,res)=>{
     PrivateChat.find({user:userObjectId})
     .sort({"updatedAt":-1})
     .populate({path:"user",select:["userId","username", "photo"]})
+    .populate({path:"chatHistory.speaker",select:["userId","username"]})
     .exec(function(err,results){
         if(err){
             console.log(err)
             return res.status(400).json({msg:"Sth goes wrong"})
         }else{
+            console.log(results[0].chatHistory)
             return res.status(200).json(results)
         }
     })
