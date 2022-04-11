@@ -1,0 +1,40 @@
+
+.form {
+    display:flex
+}
+.search-box{
+    display: flex;
+    width: 80%;
+    position: relative;
+}
+#search{
+    background-color: transparent;
+    color: rgb(247, 247, 247);
+    outline:none;
+
+}
+.search-box:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+#search::placeholder{
+    color:rgb(156, 156, 156);
+    font-size: large;
+}
+
+#select {
+    background-color: transparent;
+    width: auto;
+    height: auto;
+    color:antiquewhite;
+    border: 0;
+    font-size: 18px;
+    outline: none;
+}
+#select select{
+    background-color: transparent;
+    
+}
+#select:hover{
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}

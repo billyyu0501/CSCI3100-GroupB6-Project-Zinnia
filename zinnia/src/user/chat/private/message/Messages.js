@@ -11,7 +11,6 @@ function Messages({messages, user_id, chat_id, participants}){
     const user1 = participants[1]?.username;
     const [input, setInput] = useState("");
     const ref = useRef(null);
-
     // Send messages
     const sendMessage = async (e) => {
         if (chatId !== "") {
@@ -36,7 +35,14 @@ function Messages({messages, user_id, chat_id, participants}){
     return (
         <div className="messages">
             <div className="messages-header">
-                <img alt="" height="100" width="100" src={(userId == participants[0]?.userId) ? (participants[1] && Buffer.from(participants[1]?.photo,"base64").toString("ascii")) : (participants[0] && Buffer.from(participants[0]?.photo,"base64").toString("ascii"))    }/>
+                <img alt="" 
+                    height="100" 
+                    width="100" 
+                    src={(userId == participants[0]?.userId) 
+                        ? (participants[1] && (participants[1].photo.data.length==0? "/img/blankProfilePic.png": Buffer.from(participants[1]?.photo,"base64").toString("ascii"))) 
+                        : (participants[0] && (participants[0].photo.data.length==0? "/img/blankProfilePic.png": Buffer.from(participants[0]?.photo,"base64").toString("ascii")))    
+                        }
+                />
                 <div className="messages-headerInfo">
                     {(userId == participants[0]?.userId) ? <h2>{user1}</h2> : <h2>{user0}</h2>}
                 </div>

@@ -136,7 +136,7 @@ class FrdContent extends React.Component {
       .then((json) => {
         this.setState({ frd: json.friend, inv: json.frdInvitation });
         //console.log(this.state.frd[1].photo.data)
-        //console.log(json);
+        console.log(json);
       });
   }
   handleFrdList(event) {
@@ -225,39 +225,6 @@ class FrdContent extends React.Component {
               ></button>
             </div>
             <div className={this.state.showfrd ? "" : "d-none"}>
-              {/* <table className="table border text-light text-center">
-                <thead>
-                  <th> Id</th>
-                  <th>Name </th>
-                </thead>
-                <tbody>
-                  {this.state.frd.map((frd, index) => (
-                    <tr key={index}>
-                      <td>{frd.userId}</td>
-                      <td>{frd.username}</td>
-                      <td>
-                        <Link
-                          to={`/user/${this.props.userId}/searchUser/profile/${frd.userId}`}
-                        >
-                          Go to profile
-                        </Link>
-                      </td>
-                      <td>
-                        <button
-                          type="button"
-                          onClick={this.deleteFrd}
-                          value={frd.userId}
-                          className="btn-close btn-close-white"
-                          aria-label="Close"
-                        ></button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table> */}
-
-              {/* testing */}
-
               {this.state.frd.map((frd, index) => (
                 <div class="friend" key={index}>
                   <div class="row">
@@ -271,7 +238,7 @@ class FrdContent extends React.Component {
                         className="rounded-circle profile-photo"
                       />
                     </div>
-                    <div class="col-9">
+                    <div class="col-8">
                       <span class="text-muted">#{frd.userId} </span>
                       <span class="h5">
                         <Link
@@ -280,17 +247,27 @@ class FrdContent extends React.Component {
                           {frd.username}
                         </Link>
                       </span>
+                      <div class="row col-2 p-2">
+                        <Link 
+                          to={`/user/${this.props.userId}/chat/${frd.userId}`}
+                          type="button"
+                          className="btn btn-primary btn-sm"
+                        >
+                              Chat
+                        </Link>
+                      </div>
                     </div>
                     <div class="col-1">
                       <button
                         type="button"
                         onClick={this.deleteFrd}
                         value={frd.userId}
-                        className="btn-close btn-close-white"
+                        className="btn-close btn-close-white p-2"
                         aria-label="Close"
                       ></button>
                     </div>
                   </div>
+
                 </div>
               ))}
             </div>
@@ -309,56 +286,12 @@ class FrdContent extends React.Component {
               ></button>
             </div>
 
-            {/* <table
-              className={
-                this.state.showInv ? "table text-light border" : "d-none"
-              }
-            >
-              <thead>
-                <th>Inviter Id</th>
-                <th>Inviter </th>
-                <th>Invited time</th>
-              </thead>
-              <tbody>
-                {this.state.inv.map((inv, index) => (
-                  <tr key={index}>
-                    <td>{inv.inviter.userId}</td>
-                    <td>{inv.inviter.username}</td>
-                    <td>
-                      <Fromnow date={inv.time} />
-                    </td>
-                    <td>
-                      <button
-                        value={true}
-                        inviter={inv.inviter.userId}
-                        onClick={this.acceptInv}
-                        className="btn btn-primary btn-sm"
-                      >
-                        Accept
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        value={false}
-                        inviter={inv.inviter.userId}
-                        onClick={this.acceptInv}
-                        className="btn btn-danger btn-sm"
-                      >
-                        Reject
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table> */}
-
-            {/* testing */}
             <div className={this.state.showInv ? "" : "d-none"}>
               {this.state.inv.map((inv, index) => (
                 <div className="friend" key={index}>
                   <div className="row">
                     <div className="col-2">
-                      {/* <img
+                      <img
                         src={
                           inv.inviter.photo.data.length == 0
                             ? "/img/blankProfilePic.png"
@@ -367,9 +300,9 @@ class FrdContent extends React.Component {
                               )
                         }
                         className="rounded-circle profile-photo"
-                      /> */}
+                      />
                     </div>
-                    <div className="col-6">
+                    <div className="col-5">
                       <span className="text-muted">#{inv.inviter.userId} </span>
                       <span className="h5">
                         <Link
@@ -499,8 +432,6 @@ class UpdateContent extends React.Component {
   }
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
-    //console.log(this.state.changeUsername)
-    //console.log(this.state.changeDescription)
   }
   render() {
     return (
@@ -616,9 +547,9 @@ class UpdateContent extends React.Component {
                     width="200px"
                     height="200px"
                     src={
-                      this.state.img == ""
+                      this.state.changeImg == ""
                         ? "/img/blankProfilePic.png"
-                        : this.state.img
+                        : this.state.changeImg
                     }
                   />
                 </label>
@@ -629,7 +560,7 @@ class UpdateContent extends React.Component {
             <div className="col-8 border-right" id="input">
               <div className="row mt-3">
                 <div className="col-md-2">
-                  <label className="labels">User ID:</label>
+                  <label className="labels">ID:</label>
                   <input
                     type="text"
                     className="form-control"
@@ -692,6 +623,7 @@ class UpdateContent extends React.Component {
                 <input
                   type="password"
                   className="form-control pw"
+                  name = "password"
                   value={this.state.password}
                   onChange={this.handleChange}
                   required
@@ -703,6 +635,7 @@ class UpdateContent extends React.Component {
                 <input
                   type="password"
                   className="form-control passwordConfirm"
+                  name = "passwordConfirm"
                   value={this.state.passwordConfirm}
                   onChange={this.handleChange}
                   required

@@ -14,7 +14,7 @@ let bcrypt = require("bcryptjs")
 router.get("/:userId/profile", (req, res) => {
     User.findOne({userId:req.params.userId})
     .populate({path:"friend",select:["userId","username","photo"]})
-    .populate({path:"frdInvitation",populate:{path:"inviter",select:["userId","username"]},options:{sort:{"time":-1}}})
+    .populate({path:"frdInvitation",populate:{path:"inviter",select:["userId","username","photo"]},options:{sort:{"time":-1}}})
     .exec(function(err,results){
         if (err){
             console.log(err)

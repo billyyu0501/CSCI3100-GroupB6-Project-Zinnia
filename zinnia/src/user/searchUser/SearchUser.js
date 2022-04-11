@@ -9,6 +9,10 @@ expected function:
 
 import React from "react";
 import {Link} from "react-router-dom"
+import "./searchUser.css"
+
+import {Buffer} from "buffer"
+
 class SearchUser extends React.Component{
     constructor(props){
         super(props)
@@ -33,10 +37,17 @@ class SearchUser extends React.Component{
     async handleSubmit(event){
         event.preventDefault();
         await fetch(`http://localhost:8080/search?${this.state.type}=${this.state.keyword}`)
-        .then((res) => res.json())
-        .then((json) => {
-            this.setState({ data: json,keyword:"",isSearch:true});
-            //console.log(json);
+        .then((res) => {
+            if (res.status!=200){
+                res.json().then(df=>{
+                    window.alert(df.msg)
+                })
+            }else{
+                res.json().then(df=>{
+                    this.setState({ data: df,keyword:"",isSearch:true});
+                    console.log(df)
+                })
+            }
       });
     }
     invite(event){
@@ -69,47 +80,53 @@ class SearchUser extends React.Component{
         return(
             <div className="container">
             <h1>Search User</h1>
-            <form class="form-inline d-flex justify-content-center" onSubmit={this.handleSubmit}>
-                <div className="mx-sm-3 mb-2">
-                    <select id ="type" onChange={this.handleSelect} className="form-select mx-sm-3 mb-2">
-                        <option className="bg-white" value="userId">userId</option>
-                        <option className="bg-white" value="username">username</option>
+            <div style={{paddingTop:10}}/>
+            <form class="form" onSubmit={this.handleSubmit}>
+                <div className="mx-sm-3 mb-2 align-self-center">
+                    <select id="select" onChange={this.handleSelect} className="form-select mx-sm-3 mb-2">
+                        <option   value="userId">userId</option>
+                        <option   value="username">username</option>
                     </select>
                 </div>
-                <div className="form-group mx-sm-3 mb-2">
-                    <input type="text" className ="form-control" value = {this.state.keyword} onChange={this.handleKeyword} placeholder="keyword"/>
-                </div>
-                <div>
-                    <button type="submit button" className =" btn btn-primary mx-sm-3 mb-2">Search</button>
+                <div className="search-box mx-sm-3 mb-2">
+                    <input id="search" type="text" className ="form-control" value = {this.state.keyword} onChange={this.handleKeyword} placeholder="keyword"/>
+                    <button type="submit" className ="fa fa-search btn"></button>
                 </div>
             </form>
-            <table className={this.state.isSearch?"table text-light":"d-none"}>
-                <thead>
-                    <tr>
-                        <th scope="col">UserId</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">email</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                {this.state.data.map((user,index)=>
-                <tr key ={index} >
-                    <td>{user.userId}</td>
-                    <td>{user.username}</td>
-                    <td>{user.email}</td>
-                    <td><Link to={`/user/${this.props.userId}/searchUser/profile/${user.userId}`} className = "nav-link">Go to profile</Link></td>
-                    <td>
+            <div style={{paddingTop:10}}/>
+            {this.state.data.map((user, index) => (
+                <div class="friend" key={index}>
+                  <div class="row">
+                    <div class="col-2">
+                      <img
+                        src={
+                          user.photo.data.length == 0
+                            ? "/img/blankProfilePic.png"
+                            : Buffer.from(user.photo, "base64").toString("ascii")
+                        }
+                        className="rounded-circle profile-photo"
+                        />
+                    </div>
+                    <div class="col-8">
+                      <span class="text-muted">#{user.userId} </span>
+                      <span class="h5">
+                        <Link
+                          to={`/user/${this.props.userId}/searchUser/profile/${user.userId}`}
+                        >
+                          {user.username}
+                        </Link>
+                      </span>
+                    </div>
+                    <div class="col-2">
                     {this.props.userId ==user.userId?null:
                         this.checkIsFrd(user.userId)?
-                    <button className="btn btn-primary">Already Friend</button>:
-                    <button className="btn btn-primary" value = {user.userId} onClick={this.invite}>Add Friend</button>
+                    <button className="btn btn-primary ">Friend</button>:
+                    <button className="btn btn-primary " value = {user.userId} onClick={this.invite}>Invite</button>
                     }
-                    </td>
-                </tr>
-                )}
-                </tbody>
-            </table>
+                    </div>
+                  </div>
+                </div>
+              ))}
             {this.state.isSearch && this.state.data.length == 0?<h1>no match result</h1>:null}
             </div>
             

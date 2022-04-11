@@ -52,7 +52,7 @@ class Home extends React.Component{
                 <div className="icon-bar" >  
                     <a href="/" onClick={this.removeCookies}><i className="fa fa-sign-out" ></i></a> 
                     <a href={`/user/${params}/profile`}><i className="fa fa-user"></i></a> 
-                    <a href={`/user/${params}/chat`}><i className="fa fa-envelope"></i></a> 
+                    <a href={`/user/${params}/chat/0`}><i className="fa fa-envelope"></i></a> 
                     <a href={`/user/${params}/searchUser`} ><i className="fa fa-search"></i></a> 
                 </div>
                
@@ -61,7 +61,7 @@ class Home extends React.Component{
                     <Route path = "/*" element={<Forum userId={params}/>}/>
                     <Route path = "/profile" element={<Profile userId={params}/>}/>
                     <Route path = "/searchUser" element={<SearchUser userId={params}/>}/>
-                    <Route path = "/chat" element={< Chat userId={params}/>}/>
+                    <Route path = "/chat/:id" element={< Chat userId={params}/>}/>
                     <Route path = "/newpost" element={<NewPost userId={params}/>}/>
                     <Route path = "/post/:userId/:postId" element={<Showpost userId={params}/>}/>
                     <Route path = "/searchUser/profile/:searchedId" element ={<OtherProfile userId={params}/>} />
