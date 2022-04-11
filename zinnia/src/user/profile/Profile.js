@@ -14,7 +14,7 @@ import { Buffer } from "buffer";
 import Fromnow from "react-fromnow";
 import { Link } from "react-router-dom";
 import FileBase64 from "react-file-base64";
-const url = "http://localhost:8080";
+const {REACT_APP_URL} = process.env;
 
 //this class is used to display user info, will be exported to other Profile
 class UserContent extends React.Component {
@@ -24,7 +24,7 @@ class UserContent extends React.Component {
   }
   componentDidMount() {
     //get the userId and search the database by the UserId, async function is used as setState takes time
-    fetch(`http://localhost:8080/${this.props.userId}/profile`)
+    fetch(`${REACT_APP_URL}/${this.props.userId}/profile`)
       .then((res) => res.json())
       .then((json) => {
         this.setState({ data: json });
@@ -131,7 +131,7 @@ class FrdContent extends React.Component {
   }
   componentDidMount() {
     //get the userId and search the database
-    fetch(`${url}/${this.props.userId}/profile`)
+    fetch(`${REACT_APP_URL}/${this.props.userId}/profile`)
       .then((res) => res.json())
       .then((json) => {
         this.setState({ frd: json.friend, inv: json.frdInvitation });
@@ -167,7 +167,7 @@ class FrdContent extends React.Component {
         IsAccepted: IsAccepted,
       })
     );
-    fetch(`${url}/friend/handleInvitation`, {
+    fetch(`${REACT_APP_URL}/friend/handleInvitation`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -190,7 +190,7 @@ class FrdContent extends React.Component {
     const friendId = event.target.value;
     console.log(friendId);
     if (confirmation) {
-      await fetch(`${url}/friend/delete`, {
+      await fetch(`${REACT_APP_URL}/friend/delete`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -368,7 +368,7 @@ class UpdateContent extends React.Component {
     this.handleReset = this.handleReset.bind(this);
   }
   async componentDidMount() {
-    fetch(`${url}/${this.props.userId}/profile`)
+    fetch(`${REACT_APP_URL}/${this.props.userId}/profile`)
       .then((res) => res.json())
       .then((json) => {
         this.setState({ data: json });
@@ -389,7 +389,7 @@ class UpdateContent extends React.Component {
   async handleSubmit(event) {
     event.preventDefault();
     //console.log(this.state.userId);
-    await fetch(`${url}/${this.props.userId}/updateProfile`, {
+    await fetch(`${REACT_APP_URL}/${this.props.userId}/updateProfile`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -413,7 +413,7 @@ class UpdateContent extends React.Component {
       window.alert("the password is not match ");
     } else {
       //console.log(this.state.userId);
-      await fetch(`${url}/${this.props.userId}/resetPw`, {
+      await fetch(`${REACT_APP_URL}/${this.props.userId}/resetPw`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

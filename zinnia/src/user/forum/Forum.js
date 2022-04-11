@@ -9,7 +9,7 @@ expected function:
 import React from "react";
 import './forum.css'
 import Fromnow from 'react-fromnow';
-
+const {REACT_APP_URL} = process.env;
 
 
 class Forum extends React.Component{
@@ -20,7 +20,7 @@ class Forum extends React.Component{
         this.handleSearch = this.handleSearch.bind(this)
     }
     async componentDidMount(){
-        const response = await fetch(`http://localhost:8080/listAllPost`)
+        const response = await fetch(`${REACT_APP_URL}/listAllPost`)
         await response.json()
 
         .then(json=>{

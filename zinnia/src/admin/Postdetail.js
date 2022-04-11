@@ -4,6 +4,7 @@ import React from "react";
 import moment from "moment";
 import {Link,Navigate} from "react-router-dom"
 import {deleteComment, deletePost} from "./deleteFunc"
+const {REACT_APP_URL} = process.env;
 class Postdetail extends React.Component{
     constructor(props){
         super(props);
@@ -14,7 +15,7 @@ class Postdetail extends React.Component{
         
     }
     componentDidMount(){
-        fetch(`http://localhost:8080/post/${this.state.postId}`)
+        fetch(`${REACT_APP_URL}/post/${this.state.postId}`)
         .then(res=>res.json())
         .then(json=>{
             this.setState({data:json})

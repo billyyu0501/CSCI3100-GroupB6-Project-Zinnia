@@ -1,6 +1,8 @@
 
 import React from "react";
 import './NewPost.css'
+const {REACT_APP_URL} = process.env;
+
 
 class NewPost extends React.Component{
     constructor(props){
@@ -36,7 +38,7 @@ class NewPost extends React.Component{
         }
         console.log(databody)
         
-        await fetch('http://localhost:8080/createPost', {
+        await fetch(`${REACT_APP_URL}/createPost`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

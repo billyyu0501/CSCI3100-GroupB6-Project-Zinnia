@@ -8,6 +8,8 @@ import ManageUser from "./ManageUser";
 import UserDetail from "./UserDetail";
 import Postdetail from "./Postdetail";
 import ChatDetail from "./ChatDetail";
+
+
 class Home extends React.Component{
 
     render(){

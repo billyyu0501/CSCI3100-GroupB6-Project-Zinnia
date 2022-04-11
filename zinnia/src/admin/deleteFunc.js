@@ -1,6 +1,6 @@
-
+const {REACT_APP_URL} = process.env;
 export async function deleteUser(userId){
-    await fetch("http://localhost:8080/admin/delete/user",{
+    await fetch(`${REACT_APP_URL}/admin/delete/user`,{
                 method: "POST",
                 headers: {
                 'Content-Type': 'application/json'
@@ -17,7 +17,7 @@ export async function deleteUser(userId){
 }
 
 export async function deletePost(postObjectId){
-    await fetch("http://localhost:8080/admin/delete/post",{
+    await fetch(`${REACT_APP_URL}/admin/delete/post`,{
                 method: "POST",
                 headers: {
                 'Content-Type': 'application/json'
@@ -35,7 +35,7 @@ export async function deletePost(postObjectId){
 }
 
 export async function deleteComment(commentObjectId){
-    await fetch("http://localhost:8080/admin/delete/comment",{
+    await fetch(`${REACT_APP_URL}/admin/delete/comment`,{
                 method: "POST",
                 headers: {
                 'Content-Type': 'application/json'
@@ -52,7 +52,7 @@ export async function deleteComment(commentObjectId){
 }
 
 export async function deletePrivateChat(chatObjectId){
-    await fetch("http://localhost:8080/admin/delete/privateChat",{
+    await fetch(`${REACT_APP_URL}/admin/delete/privateChat`,{
                 method: "POST",
                 headers: {
                 'Content-Type': 'application/json'
@@ -69,7 +69,7 @@ export async function deletePrivateChat(chatObjectId){
 }
 
 export async function deleteGroupChat(roomObjectId){
-    await fetch("http://localhost:8080/admin/delete/groupChat",{
+    await fetch(`${REACT_APP_URL}/admin/delete/groupChat`,{
                 method: "POST",
                 headers: {
                 'Content-Type': 'application/json'

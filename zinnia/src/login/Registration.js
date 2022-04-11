@@ -5,7 +5,7 @@ import React from "react";
 import {Link,Navigate} from "react-router-dom";
 import FileBase64 from "react-file-base64";
 import './Registration.css'
-
+const {REACT_APP_URL} = process.env;
 /*To-do list: 
 (1)photo 
 (2)warning handle(either do it here or throw to backend)
@@ -34,7 +34,7 @@ class Registration extends React.Component{
         }else{
             console.log(this.state.photo)
             this.setState({IsWrong:false})
-            fetch("http://localhost:8080/register",{
+            fetch(`${REACT_APP_URL}/register`,{
                 method: "POST",
                 headers: {
                 'Content-Type': 'application/json'

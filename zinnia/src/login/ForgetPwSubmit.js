@@ -5,7 +5,7 @@ This js is for forget password submit
 import React,{useState} from "react";
 import {Link,Navigate,useNavigate} from "react-router-dom";
 import { useParams } from "react-router-dom"
-
+const {REACT_APP_URL} = process.env;
 const ForgotPwSubmit= ()=>{
     const [password, setPassWord]= useState("");
     const [passwordConfirm, setpasswordConfirm]= useState("");
@@ -24,13 +24,13 @@ const ForgotPwSubmit= ()=>{
 
     const handleSubmit = async(event)=>{
         event.preventDefault();
-        console.log(`http://localhost:8080/forgotpw/${email}/${token}`)
+        console.log(`${REACT_APP_URL}/forgotpw/${email}/${token}`)
         if (password === ""){
             window.alert("Please fill in all the blanks")
         } else if (password !== passwordConfirm){
             window.alert("Confirmed Password is not match with Password")
         } else {
-            await fetch(`http://localhost:8080/forgotpw/${email}/${token}`, {
+            await fetch(`${REACT_APP_URL}/forgotpw/${email}/${token}`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

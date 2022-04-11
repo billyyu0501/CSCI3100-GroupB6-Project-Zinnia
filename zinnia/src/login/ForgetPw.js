@@ -4,6 +4,7 @@ This js is for forget password
 
 import React from "react";
 import {Link,Navigate,useNavigate} from "react-router-dom";
+const {REACT_APP_URL} = process.env;
 class ForgotPw extends React.Component{
     constructor(props){
         super(props)
@@ -22,7 +23,7 @@ class ForgotPw extends React.Component{
         if (this.state.email === ""){
             window.alert("Please fill in all the blanks")
         } else {
-            await fetch("http://localhost:8080/forgotpw", {
+            await fetch(`${REACT_APP_URL}/forgotpw`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

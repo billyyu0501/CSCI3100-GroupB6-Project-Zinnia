@@ -12,7 +12,7 @@ import {Link} from "react-router-dom"
 import "./searchUser.css"
 
 import {Buffer} from "buffer"
-
+const {REACT_APP_URL} = process.env;
 class SearchUser extends React.Component{
     constructor(props){
         super(props)
@@ -24,7 +24,7 @@ class SearchUser extends React.Component{
         this.componentDidMount = this.componentDidMount(this)
     }
     async componentDidMount(){
-        const response = await fetch(`http://localhost:8080/${this.props.userId}/viewAllfrd`);
+        const response = await fetch(`${REACT_APP_URL}/${this.props.userId}/viewAllfrd`);
         const res = await response.json();
         this.setState({frd:res.friend})
     }
@@ -36,7 +36,7 @@ class SearchUser extends React.Component{
     }
     async handleSubmit(event){
         event.preventDefault();
-        await fetch(`http://localhost:8080/search?${this.state.type}=${this.state.keyword}`)
+        await fetch(`${REACT_APP_URL}/search?${this.state.type}=${this.state.keyword}`)
         .then((res) => {
             if (res.status!=200){
                 res.json().then(df=>{
@@ -51,7 +51,7 @@ class SearchUser extends React.Component{
       });
     }
     invite(event){
-        fetch("http://localhost:8080/friend/invite",{
+        fetch(`${REACT_APP_URL}/friend/invite`,{
                 method: "POST",
                 headers: {
                 'Content-Type': 'application/json'

@@ -8,7 +8,7 @@ import React from "react";
 import {Link,Navigate,useNavigate} from "react-router-dom";
 import { instanceOf } from "prop-types";
 import Cookies from "universal-cookie"
-
+const {REACT_APP_URL} = process.env;
 
 class LoginPage extends React.Component{
     constructor(props){
@@ -51,7 +51,7 @@ class LoginPage extends React.Component{
         if (this.state.email === "" || this.state.password === ""){
             window.alert("Please fill in all the blanks")
         } else {
-            await fetch("http://localhost:8080/login", {
+            await fetch(`${REACT_APP_URL}/login`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

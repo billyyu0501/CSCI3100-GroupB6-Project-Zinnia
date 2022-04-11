@@ -9,6 +9,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 import { deletePost } from "./deleteFunc";
 var moment = require('moment')
+const {REACT_APP_URL} = process.env;
 class ManagePost extends React.Component{
     constructor(props){
         super(props);
@@ -17,7 +18,7 @@ class ManagePost extends React.Component{
     }
 
     componentDidMount(){
-        fetch("http://localhost:8080/listAllPost",{
+        fetch(`${REACT_APP_URL}/listAllPost`,{
             method: "GET",
             headers: {
             'Content-Type': 'application/json'

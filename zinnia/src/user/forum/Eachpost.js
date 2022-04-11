@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import DialogTitle from '@mui/material/DialogTitle';
 
-
+const {REACT_APP_URL} = process.env;
 //import { border } from "@mui/material/node_modules/@mui/system";
 //the above link seems not work 
 //import {border} from "@mui/system"
@@ -50,7 +50,7 @@ function Showpost(props){
         userId:props.userId,
         postObjectId:postId
        }
-       await fetch('http://localhost:8080/likePost', {
+       await fetch(`${REACT_APP_URL}/likePost`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -79,7 +79,7 @@ function Showpost(props){
        userId:props.userId,
        commentObjectId:commentId
       }
-      await fetch('http://localhost:8080/likeComment', {
+      await fetch(`${REACT_APP_URL}/likeComment`, {
        method: 'POST',
        headers: {
            'Content-Type': 'application/json'
@@ -108,7 +108,7 @@ function Showpost(props){
      postObjectId:postObjId,
      comment:text,
     }
-    fetch('http://localhost:8080/comment', {
+    fetch(`${REACT_APP_URL}/comment`, {
      method: 'POST',
      headers: {
          'Content-Type': 'application/json'
@@ -135,7 +135,7 @@ function Showpost(props){
     useEffect(() =>{
         
         const fetchPost = async () => {
-            const response = await fetch(`http://localhost:8080/post/${postId}`);
+            const response = await fetch(`${REACT_APP_URL}/post/${postId}`);
             const res = await response.json();
             
                 setPostObjId(res._id) 
