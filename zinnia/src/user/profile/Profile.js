@@ -43,44 +43,6 @@ class UserContent extends React.Component {
     return (
       <>
         <h1>Profile</h1>
-        {/*<div>
-          <table id="first" className="table border text-light p-2 text-center">
-            <thead></thead>
-            <tbody>
-              <tr>
-                <td colSpan={2}>
-                  <img
-                    width="250"
-                    height="250"
-                    src={
-                      this.state.img == ""
-                        ? "/img/blankProfilePic.png"
-                        : this.state.img
-                    }
-                  />
-                </td>
-              </tr>
-              <tr>
-                <th>User ID</th>
-                <td>{this.state.data.userId}</td>
-              </tr>
-              <tr>
-                <th>User Name</th>
-                <td>{this.state.data.username}</td>
-              </tr>
-              <tr>
-                <th>Email</th>
-                <td>{this.state.data.email}</td>
-              </tr>
-              <tr>
-                <th>Description</th>
-                <td>{this.state.data.description}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div> */}
-
-        {/* testing */}
         <div className="container">
           <div className="row mt-5">
             <div className="offset-lg-3 col-lg-6 mt-5 content text-center">
@@ -135,8 +97,7 @@ class FrdContent extends React.Component {
       .then((res) => res.json())
       .then((json) => {
         this.setState({ frd: json.friend, inv: json.frdInvitation });
-        //console.log(this.state.frd[1].photo.data)
-        console.log(json);
+        //console.log(json);
       });
   }
   handleFrdList(event) {
@@ -159,14 +120,14 @@ class FrdContent extends React.Component {
       IsAccepted = true;
     }
     const inviterId = event.target.getAttribute("inviter");
-    console.log(inviterId);
+    /*console.log(inviterId);
     console.log(
       JSON.stringify({
         inviterId: inviterId,
         userId: this.props.userId,
         IsAccepted: IsAccepted,
       })
-    );
+    );*/
     fetch(`${REACT_APP_URL}/friend/handleInvitation`, {
       method: "POST",
       headers: {
@@ -188,7 +149,7 @@ class FrdContent extends React.Component {
   async deleteFrd(event) {
     let confirmation = window.confirm("Are you sure to delete this friend?");
     const friendId = event.target.value;
-    console.log(friendId);
+    //console.log(friendId);
     if (confirmation) {
       await fetch(`${REACT_APP_URL}/friend/delete`, {
         method: "POST",
@@ -226,9 +187,9 @@ class FrdContent extends React.Component {
             </div>
             <div className={this.state.showfrd ? "" : "d-none"}>
               {this.state.frd.map((frd, index) => (
-                <div class="friend" key={index}>
-                  <div class="row">
-                    <div class="col-2">
+                <div className="friend" key={index}>
+                  <div className="row">
+                    <div className="col-2">
                       <img
                         src={
                           frd.photo.data.length == 0
@@ -238,16 +199,16 @@ class FrdContent extends React.Component {
                         className="rounded-circle profile-photo"
                       />
                     </div>
-                    <div class="col-8">
-                      <span class="text-muted">#{frd.userId} </span>
-                      <span class="h5">
+                    <div className="col-8">
+                      <span className="text-muted">#{frd.userId} </span>
+                      <span className="h5">
                         <Link
                           to={`/user/${this.props.userId}/searchUser/profile/${frd.userId}`}
                         >
                           {frd.username}
                         </Link>
                       </span>
-                      <div class="row col-2 p-2">
+                      <div className="row col-2 p-2">
                         <Link 
                           to={`/user/${this.props.userId}/chat/${frd.userId}`}
                           type="button"
@@ -257,7 +218,7 @@ class FrdContent extends React.Component {
                         </Link>
                       </div>
                     </div>
-                    <div class="col-1">
+                    <div className="col-1">
                       <button
                         type="button"
                         onClick={this.deleteFrd}
@@ -327,7 +288,7 @@ class FrdContent extends React.Component {
                         Accept
                       </button>
                     </div>
-                    <div class="col-1">
+                    <div className="col-1">
                       <button
                         value={false}
                         inviter={inv.inviter.userId}
@@ -435,102 +396,7 @@ class UpdateContent extends React.Component {
   }
   render() {
     return (
-      <div class="row">
-        {/* <div id="udpate info" className="align-middle">
-          <h1>Update information</h1>
-          <form onSubmit={this.handleSubmit} className="">
-            <div id="photo">
-              <label>
-                <img
-                  width="250"
-                  height="250"
-                  src={
-                    this.state.img == ""
-                      ? "/img/blankProfilePic.png"
-                      : this.state.img
-                  }
-                />
-              </label>
-              <br />
-              <FileBase64 multiple={false} onDone={this.getFile} />
-            </div>
-            <div id="input">
-              <label>UserId: {this.state.data.userId}</label>
-              <br />
-              <label>Email: {this.state.data.email}</label>
-              <br />
-              <label>
-                Username:
-                <input
-                  type="text"
-                  name="changeUsername"
-                  value={this.state.changeUsername}
-                  onChange={this.handleChange}
-                  className="form-control"
-                  required
-                />
-              </label>
-              <br />
-              <label>
-                Description:
-                <textarea
-                  type="text"
-                  name="changeDescription"
-                  value={this.state.changeDescription}
-                  onChange={this.handleChange}
-                  rows={6}
-                  cols={100}
-                  className="form-control"
-                  required
-                />
-              </label>
-              <div className="d-flex ">
-                <button type="submit" className="button">
-                  Update
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-        <br />
-        <div id="reset pw">
-          <h3 className="d-flex justify-content-start">Reset Password</h3>
-          <br />
-          <div className="d-flex justify-content-start align-middle">
-            <form onSubmit={this.handleReset}>
-              <label className="">
-                New Password:
-                <input
-                  type="password"
-                  name="password"
-                  value={this.state.password}
-                  onChange={this.handleChange}
-                  className="form-control"
-                  required
-                />
-              </label>
-              <br></br>
-              <label>
-                Confirmed Password:
-                <input
-                  type="password"
-                  name="passwordConfirm"
-                  value={this.state.passwordConfirm}
-                  onChange={this.handleChange}
-                  className="form-control"
-                  required
-                />
-              </label>
-              <br />
-              <br />
-              <div className="d-flex justify-content-start">
-                <button type="submit" className="button">
-                  Reset Password
-                </button>
-              </div>
-            </form>
-          </div>
-        </div> */}
+      <div className="row">
         <div id="update info" className="col-8 border-right">
           <div className="row p-3 pb-2">
             <div className="col-4"></div>
@@ -617,7 +483,7 @@ class UpdateContent extends React.Component {
             <br />
             <div className="col-12">
               <form onSubmit={this.handleReset}>
-                <label className="labels" for="pw">
+                <label className="labels">
                   New Passwords
                 </label>
                 <input
@@ -629,7 +495,7 @@ class UpdateContent extends React.Component {
                   required
                 />
                 <br />
-                <label className="labels" for="passwordConfirm">
+                <label className="labels" >
                   Confirmed Password:
                 </label>
                 <input

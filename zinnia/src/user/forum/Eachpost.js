@@ -90,9 +90,9 @@ function Showpost(props){
      })
      .then(res=>res.json())
      .then(res=>{
-          window.alert(res.msg)
-          console.log(userId)
-         console.log('liked a post',res)
+        window.alert(res.msg)
+        console.log(userId)
+        console.log('liked a post',res)
      })
      .catch((error)=>{
          console.log('failed to like a post',error)
@@ -146,9 +146,9 @@ function Showpost(props){
                 setLikes(res.like) 
                 setComment(res.comment) 
                 setCreatedAt(res.createdAt)
-                console.log(res)
-                console.log(res)
-                console.log(postObjId)
+                //console.log(res)
+                //console.log(res)
+                //console.log(postObjId)
         };
 
         fetchPost(); 
@@ -170,7 +170,7 @@ function Showpost(props){
 
             <div>
                 <p style={{fontSize:24}}>Comment: #1 {title}</p>
-              < textarea name="comment" type="text" id="comment" class="form-control" placeholder="Write Something..." rows={6} cols={100} autoFocus  required />
+              < textarea name="comment" type="text" id="comment" className="form-control" placeholder="Write Something..." rows={6} cols={100} autoFocus  required />
             </div>
        
               <button className="button" type="submit">Post</button>

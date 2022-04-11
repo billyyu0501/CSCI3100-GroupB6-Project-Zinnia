@@ -7,11 +7,10 @@ const {REACT_APP_URL} = process.env;
 class NewPost extends React.Component{
     constructor(props){
         super(props);
-        this.state={user:"3",title:"", content:""}
+        this.state={user:"3",title:"", content:"",userId:this.props.userId}
         this.handleTitleChange = this. handleTitleChange.bind(this)
         this.handleContentChange = this. handleContentChange.bind(this)
         this.createPost = this.createPost.bind(this)
-        this.setState({userId:this.props.userId})
     }
     handleTitleChange(event){
      this.setState({ title: event.target.value});
@@ -20,10 +19,9 @@ class NewPost extends React.Component{
 
     handleContentChange(event){
         this.setState({ content: event.target.value });
-        
-       }
+    }
 
-       handleSubmit(event) {
+    handleSubmit(event) {
         alert('Your Post' + this.state.title +"has been created!");
         event.preventDefault();
         //console.log(this.state)
@@ -64,19 +62,19 @@ class NewPost extends React.Component{
                  <div style={{paddingTop:10}}/>
                 <h3>Create Post</h3>
                 <form onSubmit={this.handleSubmit}>
-                <div class="form-group">
+                <div className="form-group">
                     <label for="title" >Title</label>
-                    <input type="text" value={this.state.title} onChange={this.handleTitleChange.bind(this)} name="title" id="title" class="form-control" required autoFocus />
+                    <input type="text" value={this.state.title} onChange={this.handleTitleChange.bind(this)} name="title" id="title" className="form-control" required autoFocus />
                 </div>
                 
-                <div class="form-group">
+                <div className="form-group">
                     <label for="content">Content</label>
-                    <textarea name="content" value={this.state.content} onChange={this.handleContentChange.bind(this)} id="content" class="form-control" placeholder="Write Something..." rows={10} required></textarea>
+                    <textarea name="content" value={this.state.content} onChange={this.handleContentChange.bind(this)} id="content" className="form-control" placeholder="Write Something..." rows={10} required></textarea>
                 </div>
                 
                 </form>
-                <button type="submit" class="button" onClick={this.createPost}>Submit</button>
-                <a href={`/user/${this.props.userId}`}> <button class="button">Cancel </button> </a>
+                <button type="submit" className="button" onClick={this.createPost}>Submit</button>
+                <a href={`/user/${this.props.userId}`}> <button className="button">Cancel </button> </a>
 
             
             

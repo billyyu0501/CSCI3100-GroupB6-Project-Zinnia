@@ -15,8 +15,7 @@ const {REACT_APP_URL} = process.env;
 class Forum extends React.Component{
     constructor(props){
         super(props);
-        this.state={posts:[],showposts:[], likes:"",userId:""}
-        this.setState({userId:this.props.userId})
+        this.state={posts:[],showposts:[], likes:"",userId:this.props.userId}
         this.handleSearch = this.handleSearch.bind(this)
     }
     async componentDidMount(){
@@ -25,7 +24,7 @@ class Forum extends React.Component{
 
         .then(json=>{
             this.setState({posts:json,showposts:json})
-            console.log(json) 
+            //console.log(json) 
             //console.log(this.state.posts[0].writer.userId) 
         })   
         //this.setState({revposts:this.state.posts.reverse()})

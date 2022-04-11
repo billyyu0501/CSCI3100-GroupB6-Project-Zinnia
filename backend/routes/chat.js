@@ -116,7 +116,7 @@ router.get("/private/:userId/viewAllChat",async(req,res)=>{
             console.log(err)
             return res.status(400).json({msg:"Sth goes wrong"})
         }else{
-            console.log(results[0].chatHistory)
+            //console.log(results[0].chatHistory)
             return res.status(200).json(results)
         }
     })

@@ -45,7 +45,7 @@ class SearchUser extends React.Component{
             }else{
                 res.json().then(df=>{
                     this.setState({ data: df,keyword:"",isSearch:true});
-                    console.log(df)
+                    //console.log(df)
                 })
             }
       });
@@ -81,7 +81,7 @@ class SearchUser extends React.Component{
             <div className="container">
             <h1>Search User</h1>
             <div style={{paddingTop:10}}/>
-            <form class="form" onSubmit={this.handleSubmit}>
+            <form className="form" onSubmit={this.handleSubmit}>
                 <div className="mx-sm-3 mb-2 align-self-center">
                     <select id="select" onChange={this.handleSelect} className="form-select mx-sm-3 mb-2">
                         <option   value="userId">userId</option>
@@ -95,9 +95,9 @@ class SearchUser extends React.Component{
             </form>
             <div style={{paddingTop:10}}/>
             {this.state.data.map((user, index) => (
-                <div class="friend" key={index}>
-                  <div class="row">
-                    <div class="col-2">
+                <div className="friend" key={index}>
+                  <div className="row">
+                    <div className="col-2">
                       <img
                         src={
                           user.photo.data.length == 0
@@ -107,9 +107,9 @@ class SearchUser extends React.Component{
                         className="rounded-circle profile-photo"
                         />
                     </div>
-                    <div class="col-8">
-                      <span class="text-muted">#{user.userId} </span>
-                      <span class="h5">
+                    <div className="col-8">
+                      <span className="text-muted">#{user.userId} </span>
+                      <span className="h5">
                         <Link
                           to={`/user/${this.props.userId}/searchUser/profile/${user.userId}`}
                         >
@@ -117,7 +117,7 @@ class SearchUser extends React.Component{
                         </Link>
                       </span>
                     </div>
-                    <div class="col-2">
+                    <div className="col-2">
                     {this.props.userId ==user.userId?null:
                         this.checkIsFrd(user.userId)?
                     <button className="btn btn-primary ">Friend</button>:

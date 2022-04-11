@@ -43,7 +43,7 @@ function Chat() {
             return res.json();
         })
         .then(data => {
-            console.log(data);
+            //console.log(data);
             setParticipants(data.user);
             setMessages(data.chatHistory);
         })
@@ -56,43 +56,44 @@ function Chat() {
             return res.json();
         })
         .then(chats => {
-            console.log(chats);
+            //console.log(chats);
             if (chats.length != 0) 
                 setChats(chats);
             return chats;
         })
-        .then(chats =>{
-            if (chats.length != 0) {
-                //it handles case that click from home page 
-                if(id==0){
-                    setCurrentChatId(chats[0]._id);
+        .then(async chats =>{    
+            //it handles case that click from home page 
+            if(id==0){
+                if(chats.length!=0){
+                    setCurrentChatId(chats[0]._id)
                     return chats[0]._id;
-                }else{
-                    // it handle case that click from profile 
-                    let chat_id= chats[0]._id
-                    let hvChat = false 
-                    let findchatId = chats.map(chat=>{
-                        if(chat.user[0].userId == id||chat.user[1].userId== id){
-                            hvChat = true
-                            chat_id = chat._id
-                        }
-                    })
-                    console.log(hvChat)
-                    if(hvChat==false){
-                        console.log("no existing chat. Now creating a new one ")
-                        createChat(id)
-                    }
-                    setCurrentChatId(chat_id)
-                    return chat_id;
                 }
-                
-            } else return chats
+                return chats
+            }else{
+                // it handle case that click from profile 
+                let chat_id
+                let hvChat = false 
+                let findchatId = chats.map(chat=>{
+                    console.log(chat)
+                    if(chat.user[0].userId == id||chat.user[1].userId== id){
+                        hvChat = true
+                        setCurrentChatId(chat._id)
+                        chat_id = chat._id
+                    }
+                })
+                if(hvChat==false){
+                    console.log("no existing chat. Now creating a new one ")
+                    await createChat(id)
+                    }
+                return chat_id;
+            }
         })
         .then(chat_id => {
-            console.log(currentChatId);
             if (!Array.isArray(chat_id)) {
                 console.log(chat_id);
-                getMessages(chat_id);
+                //console.log("rendering message")
+            }else{
+                //console.log("no message")
             }
         })
     }
