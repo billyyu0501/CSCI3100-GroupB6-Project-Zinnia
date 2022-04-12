@@ -13,7 +13,18 @@ function Groupchat({user_id}) {
     const [rooms, setRooms] = useState([]);
     const [didMount, setDidMount] = useState(false);
     const [roomname, setRoomname] = useState("");
-    const [rerender, setRerender] = useState(1);
+    const [rerender, setRerender] = useState(0);
+
+    //Pusher for leaving room
+    // var pusher;
+    // if (pusher) {
+    //     const channel = pusher.subscribe('memberChange');
+    //     channel.bind('NewMemberChange', () => {
+    //         getRooms(rooms => ({
+    //             ...rooms
+    //         }));
+    //     })
+    // }
 
     const handleClick = (new_room_id) => {
         setCurrentRoomId(new_room_id);
@@ -36,7 +47,6 @@ function Groupchat({user_id}) {
 
     //Obtaining rooms
     const getRooms = async () => {
-        console.log("rerendered")
         await fetch(`http://localhost:8080/group/${userId}/viewAllGroup`)
         .then(res => {
             return res.json();
@@ -56,6 +66,7 @@ function Groupchat({user_id}) {
 
     //componentDidMount
     useEffect(() => {
+        // pusher = new Pusher('9bfa9c67db40709d3f03', {cluster: 'ap1'});
         setDidMount(true);
         getRooms(userId);
     }, []);
@@ -69,7 +80,6 @@ function Groupchat({user_id}) {
 
     useEffect(() => {
         getRooms(userId);
-        console.log("rerendered");
     }, [rerender])
 
     // Pusher for updating messages
@@ -92,7 +102,6 @@ function Groupchat({user_id}) {
     useEffect(() => {
         const pusher = new Pusher('9bfa9c67db40709d3f03', {cluster: 'ap1'});
         const channel = pusher.subscribe('rooms');
-        console.log("triggered");
         channel.bind('insertedRooms', (newRoom) => {
             setRooms(() => {
                 const unsorted = [...rooms, newRoom];
@@ -110,19 +119,18 @@ function Groupchat({user_id}) {
         }
     }, [rooms]);
 
-
-    return (
+    return (    
         <div className="chat">
             <div className="chat-body">
                 <div className="sidebar">
                 <Create user_id={userId} rerender={setRerender}/>
-                <Invitations user_id={userId}/>
+                <Invitations user_id={userId} rerender={setRerender}/>
                     <div className="chats">
                         {rooms.map((room) => (
                             <div className="sidebarChat" onClick={() => handleClick(room._id)} key={room._id}>
                                 <div className="sidebarChat-info">
                                     {room.room && <h2>{room.room}</h2>}
-                                    {room.chatHistory[room.chatHistory.length-1] ? <p>{room.chatHistory[room.chatHistory.length-1].username}: {room.chatHistory[room.chatHistory.length-1].text}</p> : <p>&nbsp;</p>}
+                                    {room.chatHistory[room.chatHistory.length-1] ? <p>{room.chatHistory[room.chatHistory.length-1].username}: {room.chatHistory[room.chatHistory.length-1].text}</p> : <p><br></br></p>}
                                 </div>  
                             </div>
                         ))}

@@ -50,7 +50,7 @@ class Home extends React.Component{
                 <div className="icon-bar" >  
                     <a href="/" onClick={this.removeCookies}><i className="fa fa-sign-out" ></i></a> 
                     <a href={`/user/${params}/profile`}><i className="fa fa-user"></i></a> 
-                    <a href={`/user/${params}/chat/0`}><i className="fa fa-envelope"></i></a> 
+                    <a href={`/user/${params}/chat/private/0`}><i className="fa fa-envelope"></i></a> 
                     <a href={`/user/${params}/searchUser`} ><i className="fa fa-search"></i></a> 
                 </div>
                

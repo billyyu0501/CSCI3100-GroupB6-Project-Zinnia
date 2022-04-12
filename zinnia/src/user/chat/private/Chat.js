@@ -10,7 +10,8 @@ expected function:
 */
 
 import React, {useEffect, useState, useRef} from "react";
-import "./Chat.css" 
+import {useParams} from 'react-router-dom';
+import "./Chat.css" ;
 import Messages from "./message/Messages";
 import Searchbar from "./Searchbar";
 import Pusher from 'pusher-js';
@@ -21,6 +22,7 @@ function Chat({user_id}) {
     const userId = user_id;
     // id is userId of the initial message shown. id ==0 when it is clicked from home page
     const id = useParams().id;  
+    console.log(id);
     const [currentChatId, setCurrentChatId] = useState("");
     const [messages, setMessages] = useState([]);
     const [chats, setChats] = useState([]);
@@ -199,7 +201,6 @@ function Chat({user_id}) {
                         <Searchbar placeholder="Search to start new chat" user_id={userId} className="chats"/>
                         {chats.map((chat) => (
                             <div className="sidebarChat" onClick={() => handleClick(chat._id)} key={chat._id}>
-                                
                                 <img alt="" 
                                     height="80" 
                                     width="80" 

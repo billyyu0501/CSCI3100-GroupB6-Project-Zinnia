@@ -9,15 +9,15 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import IconButton from '@mui/material/IconButton';
 import Done from '@mui/icons-material/Done';
 import Close from '@mui/icons-material/Close';
-import { DialogTitle } from '@mui/material';
+import DialogTitle from '@mui/material/DialogTitle';
+import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-function Invitations({user_id}) {
+function Invitations({user_id, rerender}) {
 
     const userId = user_id;
     const [open, setOpen] = useState(false);
     const [invitations, setInvitations] = useState([]);
-    // const pusher = useRef(null);
 
     const handleOpen = () => {
         setOpen(true);
@@ -37,6 +37,7 @@ function Invitations({user_id}) {
         })
         .then(data => {
             console.log(data);
+            rerender(Math.random());
         })
     }
 
@@ -51,28 +52,12 @@ function Invitations({user_id}) {
     }
 
     useEffect(() => {
-        // pusher.current = new Pusher('9bfa9c67db40709d3f03', {cluster: 'ap1'});
         fetchInvitations();
     },[])
 
-    //Pusher for adding new invitation
-    // useEffect(() => {
-    //     const channel = pusher.current.subscribe('invitations');
-    //     channel.bind('insertedInvitations', (newInvitation) => {
-    //         setInvitations(() => {
-    //             const unsorted = [...invitations, newInvitation];
-    //             unsorted.sort((a, b) => {
-    //                 return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-    //             })
-    //             return unsorted;
-    //         })
-    //     });
-
-    //     return () => {
-    //         channel.unbind_all();
-    //         channel.unsubscribe();
-    //     }
-    // }, [invitations]);
+    useEffect(() => {
+        fetchInvitations();
+    }, [invitations]);
 
     const theme = createTheme({
         palette: {
@@ -91,8 +76,8 @@ function Invitations({user_id}) {
             </ThemeProvider>
             <Dialog onClose={() => handleClose()} open={open}>
                 <DialogTitle sx={{backgroundColor: '#40424f', color: '#ffffff'}}>Group Invitations</DialogTitle>
+                {invitations.length == 0 && <Typography sx={{backgroundColor: '#40424f', color: '#ffffff', paddingLeft: '15px'}}>There are no invitations</Typography>}
                 <List dense={true} sx={{backgroundColor: '#40424f', color: '#ffffff'}}>
-                    {console.log(invitations)}
                     {invitations.map((invitation) => {
                         return (<ListItem key={invitation.room._id}>
                             <ListItemText primary={invitation.room.room}/>

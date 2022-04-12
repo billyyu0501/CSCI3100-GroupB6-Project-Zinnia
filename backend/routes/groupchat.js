@@ -28,12 +28,57 @@ const pusher = new Pusher({
 
 const db = mongoose.connection;
 db.once('open', () => {
-    const groupCollection = db.collection('groupchats');
-    const invitaionCollection = db.collection('users')
+    // const groupCollection = db.collection('groupchats');
+    // const groupCreateChangeStream = groupCollection.watch();
+    // const memberModifiedChangeStream = groupCollection.watch([{
+    //     $match: {
+    //         $and: [
+    //             { "updateDescription.updatedFields.member": { $exists: true } },
+    //             { operationType: "update" }]
+    //     }
+    // }], { fullDocument: 'updateLookup' });
+    // const chatInsertedChangeStream = groupCollection.watch([{
+    //     $match: {
+    //         $and: [
+    //             { "updateDescription.updatedFields.chatHistory": { $exists: true } },
+    //             { operationType: "update" }]
+    //     }
+    // }], { fullDocument: 'updateLookup' })
+    // chatInsertedChangeStream.on("change", (change) => {
+    //     db.collection('groupchats').find().sort({'updatedAt':-1}).toArray((err, results) => {
+    //         const resultsDetails = results[0].chatHistory;
+    //         const latestMessage = resultsDetails[resultsDetails.length-1];
+    //         pusher.trigger('groupMessages', 'insertedGroupMessages',
+    //         {
+    //             speaker: {_id: latestMessage.speaker, userId: latestMessage.userId, username: latestMessage.username},
+    //             text: latestMessage.text, time: latestMessage.time, _id: change.documentKey._id
+    //         });
+    //     });
+    // })
+    // groupCreateChangeStream.on("change", (change) => {
+    //     if (change.operationType === 'insert') {
+    //         const roomDetails = change.fullDocument;
+    //         var host;
+    //         User.findOne({_id:roomDetails.host}, (err, doc) => {
+    //             host = doc;
+    //             pusher.trigger('rooms', 'insertedRooms',
+    //             {
+    //                 chatHistory: [], createdAt: roomDetails.createdAt, updatedAt: roomDetails.updatedAt,
+    //                 host: {_id:host._id, userId: host.userId, username: host.username},
+    //                 member: [{_id:host._id, userId: host.userId, username: host.username}],
+    //                 room: roomDetails.room, updatedAt: roomDetails.updatedAt, __v: roomDetails.__v, _id: roomDetails._id
+    //             });
+    //         })  
+    //     }
+    // });
+    // memberModifiedChangeStream.on("change", (change) => {
+        
+    // })
+    const groupCollection = db.collection('groupchats');   
     const groupChangeStream = groupCollection.watch();
-    const invitationChangeStream = invitaionCollection.watch();
     groupChangeStream.on("change", (change) => {
-        if (change.operationType === 'update') {
+        console.log(change);
+        if (change.operationType === 'update' && change.updateDescription.updatedFields.chatHistory) {
             db.collection('groupchats').find().sort({'updatedAt':-1}).toArray((err, results) => {
                 const resultsDetails = results[0].chatHistory;
                 const latestMessage = resultsDetails[resultsDetails.length-1];
@@ -46,11 +91,9 @@ db.once('open', () => {
         }
         if (change.operationType === 'insert') {
             const roomDetails = change.fullDocument;
-            console.log(roomDetails);
             var host;
             User.findOne({_id:roomDetails.host}, (err, doc) => {
                 host = doc;
-                console.log(host);
                 pusher.trigger('rooms', 'insertedRooms',
                 {
                     chatHistory: [], createdAt: roomDetails.createdAt, updatedAt: roomDetails.updatedAt,
@@ -60,23 +103,7 @@ db.once('open', () => {
                 });
             })  
         }
-        if (change.operationType === 'delete') {
-            console.log(change.fullDocument);
-        }
     });
-    invitationChangeStream.on("change", (change) => {
-        if (change.operationType === 'update') {
-            // console.log(change.fullDocument);
-            db.collection('users').find().sort({'updatedAt':-1}).toArray((err,results) => {
-                const resultsDetails = results[0].gpInvitation;
-                const latestInvitation = resultsDetails[resultsDetails.length-1];
-                // pusher.trigger('invitations', 'insertedInvitations',
-                // {
-                //     room:
-                // })
-            })
-        }
-    })
 });
 
 //create a group chat
@@ -358,8 +385,8 @@ router.post("/group/displayMessage",async(req,res)=>{
 router.post("/group/friendlist", async(req,res)=>{
     User.findOne({userId:req.body.userId})
     .select(["friend"])
-    .sort()
-    .exec((err, results) => {
+    .populate("friend", ["username", "userId", "photo"])
+    .exec((err, results) => {   
         if (err){
             console.log(err);
             return res.status(400).json({msg:"Sth goes wrong"});
