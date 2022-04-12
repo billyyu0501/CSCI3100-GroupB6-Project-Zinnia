@@ -35,7 +35,7 @@ router.get("/admin/group/viewAllChat", (req, res) => {
             console.log(err)
             return res.status(400).json({msg:"Sth goes wrong"})
         }else{
-            console.log(results)
+            //console.log(results)
             return res.status(200).json(results)
         }
     })
@@ -43,42 +43,96 @@ router.get("/admin/group/viewAllChat", (req, res) => {
 
 //delete user and all of his post + comment + private chat + frd + quit all group chat and delete his conversation in the group
 router.post("/admin/delete/user",async(req,res)=>{
+    console.log("START DELETE USER")
     let userObjectId = await getUserObjectId(req.body.userId)
     // Delete all comment in all deleted post 
     const posts = await Post.find({writer:userObjectId})
     posts.map(post=>{
         Comment.deleteMany({_id:{$in: post.comment}}).then(function(){
             console.log("Comment in Post deleted")
-        }).catch(function(error){
+        }).catch(function(err){
+            console.log(err)
             return res.status(400).json({msg:"Fail to delete post comment"})
         })
     })
     //Delete all posts 
     await Post.deleteMany({writer:userObjectId}).then(function(){
-        console.log("Post deleted")
-    }).catch(function(error){
+        console.log("---Post deleted---")
+    }).catch(function(err){
+        console.log(err)
         return res.status(400).json({msg:"Fail to delete post"})
     })
     //Delete all Comment
     await Comment.deleteMany({commenter:userObjectId}).then(function(){
-        console.log("Comment deleted")
-    }).catch(function(error){
+        console.log("---Comment deleted---")
+    }).catch(function(err){
         console.log(err)
         return res.status(400).json({msg:"Fail to delete Comment"})
     })
-    //return res.status(400).json({msg:"all deleted"})
-    
-    //Delete user from other users' friend list 
 
-    
-    User.findOneAndDelete({_id:userObjectId}).exec(function(err,deleteUser){
-        if(err){
-            console.log(err)
-            return res.status(400).json({msg:"Sth goes wrong"})
-        }else{
-            //console.log(deleteUser)
-            return res.status(200).json({msg:"deleted!"})
-        }
+    //Clear frd 
+    await User.find({friend:userObjectId}).select(["_id","friend"]).then(function(results){
+        results.map(user=>{
+            user.friend = user.friend.filter(e=>!e.equals(userObjectId))
+            User.updateOne({id:user._id},{friend:user.friend}).exec()
+        })
+        User.updateOne({_id:userObjectId},{friend:[]}).exec()
+        console.log("---friend deleted---")
+    }).catch(function(err){
+        console.log(err)
+        return res.status(400).json({msg:"Fail to delete friend"})
+    })
+    //clear all sent invitation
+    await User.find({"frdInvitation.inviter":userObjectId})
+    .select(["username"])
+    .populate({path:"frdInvitation",select:["username","userId"]})
+    .then(function(users){
+        console.log(userObjectId)
+        users.map(user=>{
+            user.frdInvitation = user.frdInvitation.filter(e=>!e.inviter.equals(userObjectId))
+            User.findOneAndUpdate({_id:user._id},{frdInvitation:user.frdInvitation}).exec()
+        })
+        console.log("---frd invitation deleted---")
+    }).catch(function(err){
+        console.log(err)
+        res.status(400).json({msg:"Fail to delete Frd Invitation"})
+    })
+    //clear all private chat
+    await PrivateChat.find({user:userObjectId}).then(function(chats){
+        chats.map(chat=>{
+            PrivateChat.deleteOne({_id:chat._id}).exec()
+        })
+        console.log("---Private chat deleted---")
+    }).catch(function(err){
+        console.log(err)
+        return res.status(400).json({msg:"Fail to deletet Private Chat"})
+    })
+
+    await GroupChat.find({member:userObjectId})
+    .populate({path:"chatHistory"})
+    .then(function(chats){
+        //for each room, delete the room if deleted user is host, otherwise quit group
+        chats.map(chat=>{
+            if(!chat.host.equals(userObjectId)){
+                chat.member = chat.member.filter(e=>!e.equals(userObjectId))
+                GroupChat.updateOne({_id:chat._id},{member:chat.member}).exec()
+            }else{
+                GroupChat.deleteOne({_id:chat._id}).exec()
+            }
+        })
+        console.log("---Group Chat deleted---")
+    }).catch(function(err){
+        console.log(err)
+        return res.status(400).json(({msg:"Fail to delete GroupChat"}))
+    })
+
+    //delete the user
+    User.findOneAndDelete({_id:userObjectId}).then(function(user){
+        console.log("USER DELETED")
+        return res.status(200).json({msg:"User deleted!"})
+    }).catch(function(err){
+        console.log(err)
+        return res.status(400).json({msg:"Fail to delete user"})
     })
 })
 

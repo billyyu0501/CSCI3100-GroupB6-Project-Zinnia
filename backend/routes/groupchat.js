@@ -343,6 +343,7 @@ router.post("/group/displayMessage",async(req,res)=>{
     .sort({"chatHistory.time":-1})
     .populate("chatHistory.speaker",["username","userId"])
     .populate("member", ["username", "userId"])
+    .populate("host",['username',"userId"])
     .populate("room")
     .exec(function(err,results){
         if (err){

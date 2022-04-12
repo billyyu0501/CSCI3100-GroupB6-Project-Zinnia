@@ -55,7 +55,7 @@ export default class ChatDetail extends React.Component{
             </div>
             
             {this.props.match.params.chatType=="private"? null:
-            <p>Host: {this.state.host.username}</p>}
+            <p>Host:{this.state.host.username}</p>}
             <div className="d-flex">
             <p className="m-2">Member: </p>
             {this.state.member.map((member,index)=>
@@ -69,7 +69,7 @@ export default class ChatDetail extends React.Component{
             {this.state.chatHistory.map((message,index)=>
                 <div key ={index} className="border-top border-bottom" >
                     <div className="d-flex justify-content-between">
-                        <p>{message.speaker.username}</p>
+                        <p>{message.speaker?message.speaker.username:"deleted User"}</p>
                         <p className="">{moment(message.createdAt).format("LLL")}</p>
                     </div>
                     <p>{message.text}</p>

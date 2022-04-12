@@ -44,10 +44,10 @@ class UserContent extends React.Component {
       <>
         <h1>Profile</h1>
         <div className="container">
-          <div className="row mt-5">
-            <div className="offset-lg-3 col-lg-6 mt-5 content text-center">
-              <div className="row info">
-                <div className="col-lg-12">
+          <div className="row mt-5 ">
+            <div className="col-lg-6 offset-lg-3 mt-6 content text-center justify-content-lg-center">
+              <div className="row info ">
+                <div className="col-lg-12 ">
                   <img
                     src={
                       this.state.img == ""
