@@ -32,6 +32,7 @@ function Create({user_id, rerender}) {
             handleClose();
             create();
             rerender(Math.random());
+            window.location.reload();
         }
     };
 

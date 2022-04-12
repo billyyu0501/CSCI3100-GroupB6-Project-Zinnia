@@ -38,7 +38,8 @@ function Leave({user_id, room_id, roomname, rerender}) {
         .then(data => {
             if (data)
                 alert(data.msg);
-            setOpen(false);
+            else
+                window.location.reload();
         })
     }
 
