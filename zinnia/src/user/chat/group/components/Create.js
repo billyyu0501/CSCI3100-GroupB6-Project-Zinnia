@@ -31,7 +31,7 @@ function Create({user_id, rerender}) {
         else {
             handleClose();
             create();
-            // rerender(Math.random());
+            rerender(Math.random());
         }
     };
 

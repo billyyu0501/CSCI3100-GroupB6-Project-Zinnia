@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -41,6 +41,10 @@ function Leave({user_id, room_id, roomname, rerender}) {
             setOpen(false);
         })
     }
+
+    useEffect(() => {
+
+    })
 
     const theme = createTheme({
         palette: {

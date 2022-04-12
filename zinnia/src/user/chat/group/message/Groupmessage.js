@@ -14,7 +14,6 @@ function Groupmessage ({messages, user_id, room_id, roomname, rerender}) {
 
     // Send messages
     const sendMessage = async (e) => {
-        console.log(userId + roomId + input);
         if (roomId !== "") {
             e.preventDefault();
             await fetch("http://localhost:8080/group/sendMessage", {
@@ -46,7 +45,7 @@ function Groupmessage ({messages, user_id, room_id, roomname, rerender}) {
             </div>
             <div className="messages-body" ref={ref}>
                 {messages && messages.map((message) => (
-                    <p className={`message ${message.speaker && ((message.speaker.userId == user_id) && "received")}`} key={message._id}>
+                    <p className={message.speaker && ((message.speaker.userId == user_id) ? "message" : "message-received")} key={message._id}>
                         <span className="message-name">
                             {message.speaker && (message.speaker.userId != user_id && message.speaker.username)}
                         </span>

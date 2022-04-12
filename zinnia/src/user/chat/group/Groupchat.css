@@ -16,7 +16,6 @@
     flex-direction: column;
     flex: 0.25;
     min-width: 0;
-    background-color: transparent;
 }
 
 .chats {

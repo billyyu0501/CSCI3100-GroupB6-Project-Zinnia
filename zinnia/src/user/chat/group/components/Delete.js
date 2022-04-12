@@ -39,7 +39,7 @@ function Delete({user_id, room_id, roomname, rerender}) {
             if (data)
                 alert(data.msg);
             setOpen(false);
-            rerender();
+            rerender(Math.random());
         })
     }
 

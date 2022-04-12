@@ -56,7 +56,6 @@ function Invite({user_id, room_id, roomname}) {
             return res.json();
         })
         .then(data => {
-            console.log(data);
             if(data.length != 0)
                 setFriends(data.friend);
         })
@@ -83,7 +82,7 @@ function Invite({user_id, room_id, roomname}) {
             </ThemeProvider>
             <Dialog onClose={() => handleClose()} open={open}>
                 <DialogTitle sx={{backgroundColor: '#40424f', color: '#ffffff'}}>Click to invite to {roomname && roomname}</DialogTitle>
-                <List dense={true}>
+                <List dense={true} sx={{backgroundColor: '#40424f', color: '#ffffff'}}>
                     {friends.map((friend) => (
                         <ListItem button onClick={() => handleInvite(friend.userId)} key={friend.userId}>
                             <ListItemAvatar>
