@@ -16,7 +16,7 @@ import Messages from "./message/Messages";
 import Searchbar from "./Searchbar";
 import Pusher from 'pusher-js';
 import {Buffer} from 'buffer';
-
+import {useParams} from "react-router-dom"
 function Chat({user_id}) {
 
     const userId = user_id;

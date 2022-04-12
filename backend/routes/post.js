@@ -48,6 +48,7 @@ router.get("/listAllPost",function(req,res){
     Post.find({})
     .sort({"updatedAt":-1})
     .populate({path:"writer",select:["userId","username"]})
+    .populate({path:"like",select:['username','userId']})
     .exec(function(err,docs){
         if (err){
             console.log(err)

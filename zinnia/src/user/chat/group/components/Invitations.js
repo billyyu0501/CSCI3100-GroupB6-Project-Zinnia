@@ -48,6 +48,7 @@ function Invitations({user_id, rerender}) {
         })
         .then(data => {
             setInvitations(data.gpInvitation);
+            console.log(data)
         })
     }
 

@@ -84,8 +84,8 @@ class SearchUser extends React.Component{
             <form className="form" onSubmit={this.handleSubmit}>
                 <div className="mx-sm-3 mb-2 align-self-center">
                     <select id="select" onChange={this.handleSelect} className="form-select mx-sm-3 mb-2">
-                        <option   value="userId">userId</option>
-                        <option   value="username">username</option>
+                        <option id="option" value="userId">userId</option>
+                        <option id="option" value="username">username</option>
                     </select>
                 </div>
                 <div className="search-box mx-sm-3 mb-2">

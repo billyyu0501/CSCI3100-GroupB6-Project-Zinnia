@@ -9,7 +9,7 @@
 }
 #search{
     background-color: transparent;
-    color: rgb(247, 247, 247);
+    color: aliceblue;
     outline:none;
 
 }
@@ -31,10 +31,7 @@
     font-size: 18px;
     outline: none;
 }
-#select select{
-    background-color: transparent;
-    
-}
+
 #select:hover{
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
