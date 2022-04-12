@@ -75,7 +75,7 @@ router.post("/register", async (req,res) => {
                         if (err) { 
                             return res.status(500).json({msg:'Technical Issue!, Please click on resend for verify your Email.'});
                          }
-                        return res.status(200).json({msg:'A verification email has been sent to ' + results.email + '.'});
+                        return res.status(200).json({msg:'A verification email has been sent to ' + results.email + '. It will be expire after one day. If you not get verification Email click on resend token.'});
                     });
                 })
             } 
