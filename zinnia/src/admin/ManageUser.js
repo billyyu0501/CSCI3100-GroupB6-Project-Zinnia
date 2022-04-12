@@ -7,7 +7,7 @@ import React from "react";
 import {Link} from "react-router-dom"
 import {deleteUser} from "./deleteFunc"
 
-const url = "http://localhost:8080"
+const {REACT_APP_URL} = process.env;
 class ManageUser extends React.Component{
     constructor(props){
         super(props);
@@ -15,7 +15,8 @@ class ManageUser extends React.Component{
         this.handleDelete = this.handleDelete.bind(this)
     }
     componentDidMount(){
-        fetch(`${url}/search`,{
+        console.log(process.env.REACT_APP_URL)
+        fetch(`${REACT_APP_URL}/search`,{
             method: "GET",
             headers: {
             'Content-Type': 'application/json'

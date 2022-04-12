@@ -2,6 +2,7 @@ import React from "react";
 import {Buffer} from "buffer";
 import { Link } from "react-router-dom";
 import FileBase64 from "react-file-base64";
+const {REACT_APP_URL} = process.env;
 class UserDetail extends React.Component{
     constructor(props){
         super(props);
@@ -24,7 +25,7 @@ class UserDetail extends React.Component{
     }
     async componentDidMount(){
         //console.log(this.state.userId)
-        fetch(`http://localhost:8080/${this.state.userId}/profile`)
+        fetch(`${REACT_APP_URL}/${this.state.userId}/profile`)
         .then(res=>res.json())
         .then(json=>{
             this.setState({data:json})
@@ -47,7 +48,7 @@ class UserDetail extends React.Component{
     async handleSubmit(event){
         event.preventDefault();
         console.log(this.state.userId);
-        await fetch(`http://localhost:8080/admin/${this.state.userId}/profile`, {
+        await fetch(`${REACT_APP_URL}/admin/${this.state.userId}/profile`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

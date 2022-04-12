@@ -92,7 +92,10 @@ function Searchbar({placeholder, user_id}) {
             <div className="search-results" >
                 {filteredData.map((data) => {
                     return <div className="data-item" onClick={() => {createChat(data.userId)}} key={data.userId}>
-                            <img alt="" height="40" width="40" src={data.photo && Buffer.from(data.photo,"base64").toString("ascii")}/>
+                            <img alt="" 
+                                height="40" 
+                                width="40" 
+                                src={data.photo.data.length==0?"/img/blankProfilePic.png":Buffer.from(data.photo,"base64").toString("ascii")}/>
                             <p>{data.username && data.username}</p>
                         </div>;
                 })}

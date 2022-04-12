@@ -9,11 +9,12 @@ const router = require('express').Router();
 let User = require("../models/user.model")
 let getUserObjectId = require("../common").getUserObjectId;
 const { json } = require('express');
+let bcrypt = require("bcryptjs")
 //get profile
 router.get("/:userId/profile", (req, res) => {
     User.findOne({userId:req.params.userId})
-    .populate({path:"friend",select:["userId","username"]})
-    .populate({path:"frdInvitation",populate:{path:"inviter",select:["userId","username"]},options:{sort:{"time":-1}}})
+    .populate({path:"friend",select:["userId","username","photo"]})
+    .populate({path:"frdInvitation",populate:{path:"inviter",select:["userId","username","photo"]},options:{sort:{"time":-1}}})
     .exec(function(err,results){
         if (err){
             console.log(err)
@@ -29,8 +30,9 @@ router.get("/:userId/profile", (req, res) => {
 // body input: username, description 
 router.post("/:userId/updateProfile", (req, res) => {
     User.findOneAndUpdate({userId:req.params.userId},{
-        username: req.body.username,
-        description: req.body.description
+        username: req.body.changeUsername,
+        description: req.body.changeDescription,
+        photo: req.body.changeImg
     },function(err,result){
         if(err){
             console.log(err)
@@ -41,19 +43,22 @@ router.post("/:userId/updateProfile", (req, res) => {
     })
 })
 
-//udpate password 
-//body input: hashedPassword
-router.post("/:userId/resetPassword",(req,res) =>{
-    User.findOneAndUpdate({userId:req.params.userId},{
-        password: req.body.hashedpassword
-    },function(err,result){
+//user resetPw
+router.post("/:userId/resetPw",async(req,res)=>{
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    console.log(req.params.userId)
+    User.findOne({userId:req.params.userId}).exec(function(err,results){
         if(err){
             console.log(err)
-            res.status(400).json({msg:"Sth goes wrong"})
+            res.status(400).json({msg:"sth goes wrong"})
+        }else if (!results){
+            res.status(400).json({msg:"This user doesn't exist"})
         }else{
-            res.status(200).json({msg:"updated"})
+            results.password = hashedPassword
+            results.save()
+            res.status(200).json({msg:"password changed"})
         }
-    })
+    })   
 })
 
 // accept/reject friend invitation

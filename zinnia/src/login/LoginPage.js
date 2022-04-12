@@ -8,13 +8,13 @@ import React from "react";
 import {Link,Navigate,useNavigate} from "react-router-dom";
 import { instanceOf } from "prop-types";
 import Cookies from "universal-cookie"
-
+const {REACT_APP_URL} = process.env;
 
 class LoginPage extends React.Component{
     constructor(props){
         super(props)
         this.state = {email: "",
-                      passport: "",
+                      password: "",
                       isUser: false,
                       isAdmin: false,
                       userId: "",
@@ -35,14 +35,18 @@ class LoginPage extends React.Component{
     componentDidMount(){
         const cookies = new Cookies()
         if(cookies.get("userId")!=null){
-            this.setState({isUser:true,userId:cookies.get("userId")})
+            if(cookies.get("userId")!="admin"){
+                this.setState({isUser:true,userId:cookies.get("userId")})
+            }else{
+                this.setState({isAdmin:true,userId:cookies.get("userId")})
+            }
         }
     }
     handleChange(event){
         this.setState({[event.target.name]:event.target.value})
-        console.log(this.state.email)
-        console.log(event.target.name)
-        console.log(event.target)
+        //console.log(this.state.email)
+        //console.log(event.target.name)
+        //console.log(event.target)
     }
     async handleSubmit(event){
         event.preventDefault();
@@ -51,7 +55,7 @@ class LoginPage extends React.Component{
         if (this.state.email === "" || this.state.password === ""){
             window.alert("Please fill in all the blanks")
         } else {
-            await fetch("http://localhost:8080/login", {
+            await fetch(`${REACT_APP_URL}/login`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -69,6 +73,7 @@ class LoginPage extends React.Component{
                         this.setToken(this.state.userId,"user")
                     } else if (response.status==201){
                         this.setState({ isAdmin: true})
+                        this.setToken("admin","admin")
                     }
                 })
             })
@@ -106,7 +111,7 @@ class LoginPage extends React.Component{
                 <br/>
                 <div className="d-flex justify-content-center" id="login">
                     <li style={{ listStyleType: "none"}}><Link to="/registration" id="link" >Don't have an account?</Link></li>
-                    <col/>
+                    
                     </div>
                     <div className="d-flex justify-content-center">
                     <li style={{ listStyleType: "none" }}><Link to="/forgotPassword"  id="link">Forgot Password?</Link></li>

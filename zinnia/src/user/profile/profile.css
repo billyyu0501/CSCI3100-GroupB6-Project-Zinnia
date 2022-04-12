@@ -1,39 +1,33 @@
-* {
-  background-color: rgb(64, 66, 79);
+/* testing */
+
+.content {
+  border: 1px solid #99cced;
 }
 
-h1 {
-  font-family: "Quicksand", sans-serif;
-  color: white;
-  text-decoration: none;
+.info {
+  margin: -80px 0px 20px 0px;
 }
-h1 a {
-  color: white;
-  text-decoration: none;
+/* here have problem*/
+
+.info img {
+  height: 200px;
+  width: 200px;
 }
-h1 a:hover {
-  color: white;
-  font-weight: bold;
-}
-div {
-  background-color: rgb(64, 66, 79);
-  color: white;
-  font-family: "Quicksand", sans-serif;
-}
-.icon-bar {
-  width: 100%;
-  overflow: auto;
+.info h5 {
+  margin: 15px 0px 5px 0px;
 }
 
-.icon-bar a {
-  float: right;
-  width: 5%;
-  color: rgb(125, 129, 151);
-  text-align: center;
-  padding: 5px 0;
-  font-size: 25px;
+.friend {
+  padding: 20px 0;
+  border-bottom: 1px solid #f1f2f2;
+  margin-bottom: 20px;
 }
 
-.icon-bar a:hover {
-  color: rgb(255, 255, 255);
+.friend img {
+  height: 80px;
+  width: 80px;
+}
+
+.friend:hover{
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }

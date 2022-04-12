@@ -41,14 +41,38 @@ router.get("/admin/group/viewAllChat", (req, res) => {
     })
 })
 
-//delete user
+//delete user and all of his post + comment + private chat + frd + quit all group chat and delete his conversation in the group
 router.post("/admin/delete/user",async(req,res)=>{
     let userObjectId = await getUserObjectId(req.body.userId)
-    User.deleteOne({_id:userObjectId},function(err){
+    // Delete all comment in all deleted post 
+    const posts = await Post.find({writer:userObjectId})
+    posts.map(post=>{
+        Comment.deleteMany({_id:{$in: post.comment}}).then().catch(function(error){
+            return res.status(400).json({msg:"Fail to delete post comment"})
+        })
+    })
+    //Delete all posts 
+    await Post.deleteMany({writer:userObjectId}).then().catch(function(error){
+        return res.status(400).json({msg:"Fail to delete post"})
+    })
+    //Delete all Comment
+    await Comment.deleteMany({commenter:userObjectId}).then(function(){
+        console.log("Comment deleted")
+    }).catch(function(error){
+        console.log(err)
+        return res.status(400).json({msg:"Fail to delete Comment"})
+    })
+    //return res.status(400).json({msg:"all deleted"})
+    
+    //Delete user from other users' friend list 
+
+    
+    User.findOneAndDelete({_id:userObjectId}).exec(function(err,deleteUser){
         if(err){
             console.log(err)
             return res.status(400).json({msg:"Sth goes wrong"})
         }else{
+            console.log(deleteUser)
             return res.status(200).json({msg:"deleted!"})
         }
     })

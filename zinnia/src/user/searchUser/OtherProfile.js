@@ -1,6 +1,8 @@
 import React,{useEffect, useState} from "react"
 import {useParams,Link} from "react-router-dom"
 import {UserContent} from "../profile/Profile"
+
+const {REACT_APP_URL} = process.env;
 function OtherProfile(props){
     let searchedId = useParams().searchedId
     let [isfrd, setIsfrd] = useState(false)
@@ -10,7 +12,7 @@ function OtherProfile(props){
         if(searchedId == props.userId){
             setIsUser(true)
         }
-        const response = await fetch(`http://localhost:8080/${props.userId}/viewAllfrd`);
+        const response = await fetch(`${REACT_APP_URL}/${props.userId}/viewAllfrd`);
         const res = await response.json();
         const friend = await res.friend.find(element=>{
             if (element.userId==searchedId){
@@ -20,7 +22,7 @@ function OtherProfile(props){
     })
     const invite = () =>{
         //console.log(JSON.stringify({inviter:parseInt(props.userId),invitee:searchedId}))
-        fetch("http://localhost:8080/friend/invite",{
+        fetch(`${REACT_APP_URL}/friend/invite`,{
                 method: "POST",
                 headers: {
                 'Content-Type': 'application/json'

@@ -4,6 +4,7 @@ import {Link,Routes,Route} from "react-router-dom";
 import moment from "moment";
 import { deletePrivateChat,deleteGroupChat} from "./deleteFunc";
 
+const {REACT_APP_URL} = process.env;
 export default class ManageChat extends React.Component{
     constructor(props){
         super(props);
@@ -31,7 +32,7 @@ class PrivateChat extends React.Component{
         this.handleDelete = this.handleDelete.bind(this)
     }
     componentDidMount(){
-        fetch("http://localhost:8080/admin/private/viewAllChat",{
+        fetch(`${REACT_APP_URL}/admin/private/viewAllChat`,{
                 method: "GET",
                 headers: {
                 'Content-Type': 'application/json'
@@ -42,6 +43,7 @@ class PrivateChat extends React.Component{
             .then(json=>{
                 console.log(json)
                 this.setState({data:json})
+                console.log(json[0].user[1])
             })
     }
     async handleDelete(event){
@@ -90,7 +92,7 @@ class GroupChat extends React.Component{
         this.handleDelete = this.handleDelete.bind(this)
     }
     componentDidMount(){
-        fetch("http://localhost:8080/admin/group/viewAllChat",{
+        fetch(`${REACT_APP_URL}/admin/group/viewAllChat`,{
                 method: "GET",
                 headers: {
                 'Content-Type': 'application/json'

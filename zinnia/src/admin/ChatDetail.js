@@ -3,6 +3,7 @@ import moment from "moment"
 import { deleteGroupChat,deletePrivateChat } from "./deleteFunc"
 import {Navigate} from "react-router-dom"
 
+const {REACT_APP_URL} = process.env;
 export default class ChatDetail extends React.Component{
     constructor(props){
         super(props)
@@ -15,7 +16,8 @@ export default class ChatDetail extends React.Component{
             params = JSON.stringify({roomObjectId:this.props.match.params.chatId})
             console.log("right")
         }
-        await fetch(`http://localhost:8080/${this.props.match.params.chatType}/displayMessage`,{
+        
+        await fetch(`${REACT_APP_URL}/${this.props.match.params.chatType}/displayMessage`,{
             method: "POST",
             headers: {
             'Content-Type': 'application/json'

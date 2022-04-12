@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import DialogTitle from '@mui/material/DialogTitle';
 
-
+const {REACT_APP_URL} = process.env;
 //import { border } from "@mui/material/node_modules/@mui/system";
 //the above link seems not work 
 //import {border} from "@mui/system"
@@ -50,7 +50,7 @@ function Showpost(props){
         userId:props.userId,
         postObjectId:postId
        }
-       await fetch('http://localhost:8080/likePost', {
+       await fetch(`${REACT_APP_URL}/likePost`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -79,7 +79,7 @@ function Showpost(props){
        userId:props.userId,
        commentObjectId:commentId
       }
-      await fetch('http://localhost:8080/likeComment', {
+      await fetch(`${REACT_APP_URL}/likeComment`, {
        method: 'POST',
        headers: {
            'Content-Type': 'application/json'
@@ -90,9 +90,9 @@ function Showpost(props){
      })
      .then(res=>res.json())
      .then(res=>{
-          window.alert(res.msg)
-          console.log(userId)
-         console.log('liked a post',res)
+        window.alert(res.msg)
+        console.log(userId)
+        console.log('liked a post',res)
      })
      .catch((error)=>{
          console.log('failed to like a post',error)
@@ -108,7 +108,7 @@ function Showpost(props){
      postObjectId:postObjId,
      comment:text,
     }
-    fetch('http://localhost:8080/comment', {
+    fetch(`${REACT_APP_URL}/comment`, {
      method: 'POST',
      headers: {
          'Content-Type': 'application/json'
@@ -135,7 +135,7 @@ function Showpost(props){
     useEffect(() =>{
         
         const fetchPost = async () => {
-            const response = await fetch(`http://localhost:8080/post/${postId}`);
+            const response = await fetch(`${REACT_APP_URL}/post/${postId}`);
             const res = await response.json();
             
                 setPostObjId(res._id) 
@@ -146,9 +146,9 @@ function Showpost(props){
                 setLikes(res.like) 
                 setComment(res.comment) 
                 setCreatedAt(res.createdAt)
-                console.log(res)
-                console.log(res)
-                console.log(postObjId)
+                //console.log(res)
+                //console.log(res)
+                //console.log(postObjId)
         };
 
         fetchPost(); 
@@ -170,7 +170,7 @@ function Showpost(props){
 
             <div>
                 <p style={{fontSize:24}}>Comment: #1 {title}</p>
-              < textarea name="comment" type="text" id="comment" class="form-control" placeholder="Write Something..." rows={6} cols={100} autoFocus  required />
+              < textarea name="comment" type="text" id="comment" className="form-control" placeholder="Write Something..." rows={6} cols={100} autoFocus  required />
             </div>
        
               <button className="button" type="submit">Post</button>
