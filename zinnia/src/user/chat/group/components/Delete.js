@@ -5,7 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-function Leave({user_id, room_id, roomname, rerender}) {
+function Delete({user_id, room_id, roomname, rerender}) {
 
     const userId = user_id;
     const roomId = room_id;
@@ -22,11 +22,11 @@ function Leave({user_id, room_id, roomname, rerender}) {
     const handleLeave = () => {
         setOpen(false);
         leave(userId);
-        rerender(Math.random());
+        rerender(Math.random())
     }
 
     const leave = async () => {
-        fetch(`http://localhost:8080/group/quitGroup`, {
+        fetch(`http://localhost:8080/group/deleteGroup`, {
             method: 'POST', headers: {'Content-Type': 'application/json',},
             mode: 'cors', body: JSON.stringify({userId: userId, roomObjectId: roomId})
         })
@@ -39,6 +39,7 @@ function Leave({user_id, room_id, roomname, rerender}) {
             if (data)
                 alert(data.msg);
             setOpen(false);
+            rerender();
         })
     }
 
@@ -54,11 +55,11 @@ function Leave({user_id, room_id, roomname, rerender}) {
         <React.Fragment>
             <ThemeProvider theme={theme}>
                 <Button variant="contained" onClick={() => handleOpen()}>
-                    Leave group
+                    Delete group
                 </Button>
             </ThemeProvider>
             <Dialog open={open} onClose={() => handleClose()}>
-                <DialogTitle sx={{backgroundColor: '#40424f', color: '#ffffff'}}>Leave {roomname && roomname}?</DialogTitle>
+                <DialogTitle sx={{backgroundColor: '#40424f', color: '#ffffff'}}>Delete {roomname && roomname}?</DialogTitle>
                 <DialogActions>
                     <Button onClick={() => handleClose()}>Cancel</Button>
                     <Button onClick={() => handleLeave()}>Okay</Button>
@@ -68,4 +69,4 @@ function Leave({user_id, room_id, roomname, rerender}) {
     );
 }
 
-export default Leave;
+export default Delete;

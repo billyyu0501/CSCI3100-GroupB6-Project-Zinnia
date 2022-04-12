@@ -8,7 +8,7 @@ import AdminPage from "./admin/AdminPage"
 import { BrowserRouter,Routes,Route} from "react-router-dom";
 const App =() =>{
     return(
-        <div>
+        <div style={{height: "auto", paddingBottom: "72.9vh"}}>
             <Routes>
                 <Route path = '/' element = {<LoginPage />}/>
                 <Route path ="/registration"element = {<Registration/>}/>

@@ -1,0 +1,15 @@
+.content {
+    display: flex;
+}
+
+.private, .group {
+    flex: 50%;
+    padding-top: 23vh;
+    padding-left: 11.5vw;
+}
+
+#private-btn, #group-btn {
+    display:block;
+    width:20vw;
+    height:20vh;   
+} 

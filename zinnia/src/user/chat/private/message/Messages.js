@@ -43,9 +43,9 @@ function Messages({messages, user_id, chat_id, participants}){
             </div>
             <div className="messages-body" ref={ref}>
                 {messages && messages.map((message) => (
-                    <p className={`message`} id={`${message.speaker && ((message.speaker.userId == userId) && "received")}`} key={message._id}>
+                    <p className="message" key={message._id}>
                         <span className="message-name">
-                            {message.speaker && (message.speaker.userId != userId && message.speaker.username)}
+                            {message.speaker && message.speaker.username}
                         </span>
                             {message.text}
                         <span className="message-timestamp">

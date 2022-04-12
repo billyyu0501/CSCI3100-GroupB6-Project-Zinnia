@@ -7,10 +7,15 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-function Create({user_id}) {
+function Create({user_id, rerender}) {
 
+    const [input, setInput] = useState("");
     const [open, setOpen] = useState(false);
     const userId = user_id;
+
+    const handleInput = (e) => {
+        setInput(e.target.value);
+    };
 
     const handleOpen = () => {
         setOpen(true);
@@ -21,22 +26,41 @@ function Create({user_id}) {
     };
 
     const handleCreate = () => {
-        setOpen(false);
-        create();
-    }
+        if (input == "")
+            alert("The room name must not be empty");
+        else {
+            handleClose();
+            create();
+            // rerender(Math.random());
+        }
+    };
 
     const create = async () => {
         fetch(`http://localhost:8080/group/createGroup`, {
             method: 'POST', headers: {'Content-Type': 'application/json',},
-            mode: 'cors', body: JSON.stringify({hostId:userId})
+            mode: 'cors', body: JSON.stringify({hostId:userId, room:input})
         })
-    }
+    };
 
     const theme = createTheme({
         palette: {
-            primary: '#fffff',
+            primary: {
+                main: '#ffffff',
+            }
         },
-    });
+        components: {
+            // Name of the component
+            MuiButton: {
+                styleOverrides: {
+                    // Name of the slot
+                    root: {
+                        // Some CSS
+                        backgroundColor: '#ffffff',
+                    }
+                }
+            }
+        }
+    })
 
     return (
         <React.Fragment>
@@ -46,9 +70,9 @@ function Create({user_id}) {
                 </Button>
             </ThemeProvider>
             <Dialog open={open} onClose={() => handleClose()}>
-                <DialogTitle>Create new group</DialogTitle>
+                <DialogTitle sx={{backgroundColor: '#40424f', color: '#ffffff'}}>Create new group</DialogTitle>
                 <DialogContent>
-                    <TextField required autoFocus margin="dense" id="groupname" label="Group Name" type="text" fullWidth variant="outlined"/>
+                    <TextField value={input} onChange={handleInput} InputLabelProps={{ shrink: true }} required autoFocus id="groupname" type="text" fullWidth variant="outlined"/>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => handleClose()}>Cancel</Button>

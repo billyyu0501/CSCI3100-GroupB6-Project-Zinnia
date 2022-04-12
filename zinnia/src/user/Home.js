@@ -8,8 +8,7 @@ The logout button will be put on this page.
 import React from "react";
 import './home.css'
 
-// import Chatlanding from "./chat/Chatlanding";
-import Chat from "./chat/private/Chat";
+import Chatlanding from "./chat/Chatlanding";
 import Forum from "./forum/Forum";
 import {Profile} from "./profile/Profile";
 import SearchUser from "./searchUser/SearchUser";
@@ -34,7 +33,6 @@ class Home extends React.Component{
     render(){
         const CallRoute = (props)=>{
             let params = useParams().userId
-            //console.log(useParams())
             const cookie = new Cookies()
             let tokenUserId= cookie.get('userId')
             if (!tokenUserId){
@@ -61,7 +59,7 @@ class Home extends React.Component{
                     <Route path = "/*" element={<Forum userId={params}/>}/>
                     <Route path = "/profile" element={<Profile userId={params}/>}/>
                     <Route path = "/searchUser" element={<SearchUser userId={params}/>}/>
-                    <Route path = "/chat" element={< Chat userId={params}/>}/>
+                    <Route path = "/chat/*" element={< Chatlanding userId={params}/>}/>
                     <Route path = "/newpost" element={<NewPost userId={params}/>}/>
                     <Route path = "/post/:userId/:postId" element={<Showpost userId={params}/>}/>
                     <Route path = "/searchUser/profile/:searchedId" element ={<OtherProfile userId={params}/>} />

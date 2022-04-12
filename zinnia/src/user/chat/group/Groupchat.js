@@ -1,17 +1,19 @@
 import React, { useEffect, useState, useRef} from "react";
-import {useParams} from 'react-router-dom';
 import Pusher from 'pusher-js';
 import Create from "./components/Create";
+import Invitations from "./components/Invitations";
+import Groupmessage from "./message/Groupmessage";
+import "./Groupchat.css"
 
-function Groupchat() {
+function Groupchat({user_id}) {
 
-    const userId = useParams();
+    const userId = user_id;
     const [currentRoomId, setCurrentRoomId] = useState("");
     const [messages, setMessages] = useState([]);
     const [rooms, setRooms] = useState([]);
     const [didMount, setDidMount] = useState(false);
     const [roomname, setRoomname] = useState("");
-    const pusher = useRef(null);
+    const [rerender, setRerender] = useState(1);
 
     const handleClick = (new_room_id) => {
         setCurrentRoomId(new_room_id);
@@ -34,6 +36,7 @@ function Groupchat() {
 
     //Obtaining rooms
     const getRooms = async () => {
+        console.log("rerendered")
         await fetch(`http://localhost:8080/group/${userId}/viewAllGroup`)
         .then(res => {
             return res.json();
@@ -53,7 +56,6 @@ function Groupchat() {
 
     //componentDidMount
     useEffect(() => {
-        pusher.current = new Pusher('9bfa9c67db40709d3f03', {cluster: 'ap1'});
         setDidMount(true);
         getRooms(userId);
     }, []);
@@ -65,9 +67,15 @@ function Groupchat() {
         }
     }, [currentRoomId])
 
+    useEffect(() => {
+        getRooms(userId);
+        console.log("rerendered");
+    }, [rerender])
+
     // Pusher for updating messages
     useEffect(() => {
-        const channel = pusher.current.subscribe('groupMessages');
+        const pusher = new Pusher('9bfa9c67db40709d3f03', {cluster: 'ap1'});
+        const channel = pusher.subscribe('groupMessages');
         channel.bind('insertedGroupMessages', (newMessage) => {
             setMessages([...messages, newMessage]);
             getRooms(userId);
@@ -76,12 +84,15 @@ function Groupchat() {
         return () => {
             channel.unbind_all();
             channel.unsubscribe();
+            pusher.disconnect();
         }
     }, [messages]);
 
     //Pusher for adding new room
     useEffect(() => {
-        const channel = pusher.current.subscribe('rooms');
+        const pusher = new Pusher('9bfa9c67db40709d3f03', {cluster: 'ap1'});
+        const channel = pusher.subscribe('rooms');
+        console.log("triggered");
         channel.bind('insertedRooms', (newRoom) => {
             setRooms(() => {
                 const unsorted = [...rooms, newRoom];
@@ -95,6 +106,7 @@ function Groupchat() {
         return () => {
             channel.unbind_all();
             channel.unsubscribe();
+            pusher.disconnect();
         }
     }, [rooms]);
 
@@ -103,9 +115,9 @@ function Groupchat() {
         <div className="chat">
             <div className="chat-body">
                 <div className="sidebar">
+                <Create user_id={userId} rerender={setRerender}/>
+                <Invitations user_id={userId}/>
                     <div className="chats">
-                        <Create user_id={userId}/>
-                        <Invitations user_id={userId}/>
                         {rooms.map((room) => (
                             <div className="sidebarChat" onClick={() => handleClick(room._id)} key={room._id}>
                                 <div className="sidebarChat-info">
@@ -116,7 +128,7 @@ function Groupchat() {
                         ))}
                     </div>
                 </div>
-                <Groupmessages key={currentRoomId} messages={messages} user_id={userId} room_id={currentRoomId} roomname={roomname}/>
+                <Groupmessage key={currentRoomId} messages={messages} user_id={userId} room_id={currentRoomId} roomname={roomname} rerender={setRerender}/>
             </div>
         </div>
     )

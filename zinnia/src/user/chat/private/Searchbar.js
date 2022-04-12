@@ -12,7 +12,7 @@ function Searchbar({placeholder, user_id}) {
     const [alertVisible, setAlertVisible] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
 
-    const fetchFriendlist = async (user_id) => {
+    const fetchFriendlist = async () => {
         fetch(`http://localhost:8080/private/friendlist`, {
             method: 'POST',
             headers: {
@@ -20,7 +20,7 @@ function Searchbar({placeholder, user_id}) {
             },
             mode: 'cors',
             body: JSON.stringify({
-                userId: user_id})
+                userId: userId})
         })
         .then(res => {
             return res.json();
@@ -79,7 +79,7 @@ function Searchbar({placeholder, user_id}) {
     },[alertVisible])
 
     useEffect(() => {
-        fetchFriendlist(user_id);
+        fetchFriendlist();
     },[])
 
   return (

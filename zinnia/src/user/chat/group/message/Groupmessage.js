@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {DateTime} from 'luxon';
-import {Buffer} from 'buffer';
 import Invite from "../components/Invite";
-import Leave from "../components/Leave"
+import Leave from "../components/Leave";
+import Delete from "../components/Delete";
 import "./Groupmessage.css";
 
-function Groupmessage ({messages, user_id, room_id, roomname}) {
+function Groupmessage ({messages, user_id, room_id, roomname, rerender}) {
 
     const roomId = room_id;
     const userId = user_id;
@@ -14,6 +14,7 @@ function Groupmessage ({messages, user_id, room_id, roomname}) {
 
     // Send messages
     const sendMessage = async (e) => {
+        console.log(userId + roomId + input);
         if (roomId !== "") {
             e.preventDefault();
             await fetch("http://localhost:8080/group/sendMessage", {
@@ -39,7 +40,8 @@ function Groupmessage ({messages, user_id, room_id, roomname}) {
                 <div className="messages-headerInfo">
                     <h2>{roomname}</h2>
                     <Invite user_id={userId} room_id={roomId} roomname={roomname}/>
-                    <Leave user_id={userId} room_id={roomId} roomname={roomname}/>
+                    <Leave user_id={userId} room_id={roomId} roomname={roomname} rerender={rerender}/>
+                    <Delete user_id={userId} room_id={roomId} roomname={roomname} rerender={rerender}/>
                 </div>
             </div>
             <div className="messages-body" ref={ref}>

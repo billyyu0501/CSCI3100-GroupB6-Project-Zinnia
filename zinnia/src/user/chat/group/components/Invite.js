@@ -8,9 +8,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
-import { createTheme, ThemeProvider } from '@emotion/react';
-
-const emails = ['username@gmail.com', 'user02@gmail.com'];
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function Invite({user_id, room_id, roomname}) {
 
@@ -64,26 +62,28 @@ function Invite({user_id, room_id, roomname}) {
         })
     }
 
-    const theme = createTheme({
-        palette: {
-            primary: '#fffff',
-        },
-    });
-
     useEffect(() => {
         fetchFriendlist();
     },[])
 
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: '#ffffff',
+            }
+        },
+    });
+
     return (
         <React.Fragment>
             <ThemeProvider theme={theme}>
-                <Button varient="contained" onClick={() => handleOpen()}>
+                <Button variant="contained" onClick={() => handleOpen()}>
                     Invite
                 </Button>
             </ThemeProvider>
             <Dialog onClose={() => handleClose()} open={open}>
-                <DialogTitle>Click to invite to {roomname && roomname}</DialogTitle>
-                <List dense={dense}>
+                <DialogTitle sx={{backgroundColor: '#40424f', color: '#ffffff'}}>Click to invite to {roomname && roomname}</DialogTitle>
+                <List dense={true}>
                     {friends.map((friend) => (
                         <ListItem button onClick={() => handleInvite(friend.userId)} key={friend.userId}>
                             <ListItemAvatar>

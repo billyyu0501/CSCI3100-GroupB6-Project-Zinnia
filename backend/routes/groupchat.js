@@ -28,11 +28,11 @@ const pusher = new Pusher({
 
 const db = mongoose.connection;
 db.once('open', () => {
-    const chatHistoryCollection = db.collection('groupchats');
+    const groupCollection = db.collection('groupchats');
     const invitaionCollection = db.collection('users')
-    const chatChangeStream = chatHistoryCollection.watch();
+    const groupChangeStream = groupCollection.watch();
     const invitationChangeStream = invitaionCollection.watch();
-    chatChangeStream.on("change", (change) => {
+    groupChangeStream.on("change", (change) => {
         if (change.operationType === 'update') {
             db.collection('groupchats').find().sort({'updatedAt':-1}).toArray((err, results) => {
                 const resultsDetails = results[0].chatHistory;
@@ -45,21 +45,28 @@ db.once('open', () => {
             });
         }
         if (change.operationType === 'insert') {
-            const chatDetails = change.fullDocument;
+            const roomDetails = change.fullDocument;
+            console.log(roomDetails);
             var host;
-            User.findOne({_id:chatDetails.host}, (err, doc) => {
+            User.findOne({_id:roomDetails.host}, (err, doc) => {
                 host = doc;
+                console.log(host);
                 pusher.trigger('rooms', 'insertedRooms',
                 {
-                    chatHistory: [], createdAt: chatDetails.createdAt, updatedAt: chatDetails.updatedAt,
-                    host: {_id:host._id, userId: host.userId, username: host.username}, __v: chatDetails.__v, _id: chatDetails._id
+                    chatHistory: [], createdAt: roomDetails.createdAt, updatedAt: roomDetails.updatedAt,
+                    host: {_id:host._id, userId: host.userId, username: host.username},
+                    member: [{_id:host._id, userId: host.userId, username: host.username}],
+                    room: roomDetails.room, updatedAt: roomDetails.updatedAt, __v: roomDetails.__v, _id: roomDetails._id
                 });
             })  
+        }
+        if (change.operationType === 'delete') {
+            console.log(change.fullDocument);
         }
     });
     invitationChangeStream.on("change", (change) => {
         if (change.operationType === 'update') {
-            console.log(change.fullDocument);
+            // console.log(change.fullDocument);
             db.collection('users').find().sort({'updatedAt':-1}).toArray((err,results) => {
                 const resultsDetails = results[0].gpInvitation;
                 const latestInvitation = resultsDetails[resultsDetails.length-1];
@@ -189,7 +196,7 @@ router.post("/group/acceptInvitation",async(req,res)=>{
 
 // list all group invitation of a specific user
 router.get("/:userId/gpInvitation",async(req,res)=>{
-    const userObjectId = await getUserObjectId(req.body.userId)
+    const userObjectId = await getUserObjectId(req.params.userId)
     if (userObjectId==""){
         return res.status(400).json({msg:"This user doesn't exist"})
     }
@@ -284,7 +291,7 @@ router.get("/group/:userId/viewAllGroup",async(req,res)=>{
         return res.status(400).json({msg:"This user doesn't exist"})
     }
     //find the group that the users have and sort in descending order(by time)
-    GroupChat.find({user:userObjectId})
+    GroupChat.find({member:userObjectId})
     .sort({"updatedAt":-1})
     .populate({path:"member",select:["userId","username"]})
     .populate("room")

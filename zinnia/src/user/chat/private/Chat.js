@@ -9,23 +9,21 @@ expected function:
 
 */
 
-import React, { useEffect, useState, useRef} from "react";
-import {useParams} from 'react-router-dom';
+import React, {useEffect, useState, useRef} from "react";
 import "./Chat.css" 
 import Messages from "./message/Messages";
 import Searchbar from "./Searchbar";
 import Pusher from 'pusher-js';
 import {Buffer} from 'buffer';
 
-function Chat() {
+function Chat({user_id}) {
 
-    const userId = useParams().userId;
+    const userId = user_id;
     const [currentChatId, setCurrentChatId] = useState("");
     const [messages, setMessages] = useState([]);
     const [chats, setChats] = useState([]);
     const [participants, setParticipants] = useState([]);
     const [didMount, setDidMount] = useState(false);
-    const pusher = useRef(null);
 
     const handleClick = (new_chat_id) => {
         setCurrentChatId(new_chat_id);
@@ -76,7 +74,6 @@ function Chat() {
 
     //componentDidMount
     useEffect(() => {
-        pusher.current = new Pusher('9bfa9c67db40709d3f03', {cluster: 'ap1'});
         setDidMount(true);
         getChats(userId);
     }, []);
@@ -90,7 +87,8 @@ function Chat() {
 
     // Pusher for updating messages
     useEffect(() => {
-        const channel = pusher.current.subscribe('messages');
+        const pusher = new Pusher('9bfa9c67db40709d3f03', {cluster: 'ap1'});
+        const channel = pusher.subscribe('messages');
         channel.bind('insertedMessages', (newMessage) => {
             setMessages([...messages, newMessage]);
             getChats(userId);
@@ -99,12 +97,14 @@ function Chat() {
         return () => {
             channel.unbind_all();
             channel.unsubscribe();
+            pusher.disconnect();
         }
     }, [messages]);
 
     //Pusher for adding new chat
     useEffect(() => {
-        const channel = pusher.current.subscribe('chats');
+        const pusher = new Pusher('9bfa9c67db40709d3f03', {cluster: 'ap1'});
+        const channel = pusher.subscribe('chats');
         channel.bind('insertedChats', (newChat) => {
             setChats(() => {
                 const unsorted = [...chats, newChat];
@@ -118,6 +118,7 @@ function Chat() {
         return () => {
             channel.unbind_all();
             channel.unsubscribe();
+            pusher.disconnect();
         }
     }, [chats]);
 
@@ -129,7 +130,6 @@ function Chat() {
                         <Searchbar placeholder="Search to start new chat" user_id={userId} className="chats"/>
                         {chats.map((chat) => (
                             <div className="sidebarChat" onClick={() => handleClick(chat._id)} key={chat._id}>
-                                {console.log(userId)}
                                 <img alt="" height="80" width="80" src={(chat.user[0].userId == userId) ? (chat.user[1].photo && Buffer.from(chat.user[1]?.photo,"base64").toString("ascii")) : (chat.user[0].photo && Buffer.from(chat.user[0]?.photo,"base64").toString("ascii"))}/>
                                 <div className="sidebarChat-info">
                                     {(chat.user[0].userId == userId) ? <h2>{chat.user[1].username && chat.user[1].username}</h2> : <h2>{chat.user[0].username && chat.user[0].username}</h2>}
