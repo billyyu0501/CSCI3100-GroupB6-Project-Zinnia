@@ -23,7 +23,7 @@ router.post("/login", (req, res) => {
         } else if (!bcrypt.compareSync(req.body.password, user.password)){
             return res.status(401).send({msg:'Wrong Password!'});
         } else if (!user.isVerified){
-            return res.status(401).send({msg:'Your Email has not been verified. Please click on resend'});
+            return res.status(401).send({msg:'Your Email has not been verified.'});
         } else{
             return res.status(200).send({msg:'User successfully logged in.',userId:user.userId});
         }
