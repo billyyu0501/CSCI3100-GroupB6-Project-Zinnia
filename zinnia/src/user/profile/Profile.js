@@ -43,9 +43,9 @@ class UserContent extends React.Component {
     return (
       <>
         <h1>Profile</h1>
-        <div className="container">
+        <div className="container ">
           <div className="row mt-5 ">
-            <div className="col-lg-6 offset-lg-3 mt-6 content text-center justify-content-lg-center">
+            <div className="col-lg-6 offset-lg-3 mt-6 content text-center justify-content-center">
               <div className="row info ">
                 <div className="col-lg-12 ">
                   <img
