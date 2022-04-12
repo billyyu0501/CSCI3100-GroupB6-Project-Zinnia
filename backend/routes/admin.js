@@ -183,13 +183,28 @@ router.post("/admin/delete/privateChat",async(req,res)=>{
 
 //delete groupChat
 router.post("/admin/delete/groupChat",async(req,res)=>{
-    GroupChat.findOneAndDelete({_id:req.body.roomObjectId}).exec(function(err){
-        if(err){
-            console.log(err)
-            return res.status(400).json({msg:"sth goes wrong"})
-        }else{
-            return res.status(200).json({msg:"group deleted"})
-        }
+    //delete all group invitation
+    let error = false
+    console.log(req.body.roomObjectId)
+    await User.find({"gpInvitation.room":req.body.roomObjectId})
+    .select(['userId',"username","gpInvitation"])
+    .then(function(users){
+        //console.log(users)
+        users.map(user=>{
+            console.log(user.grpInvitation)
+            user.gpInvitation = user.gpInvitation.filter(e=>!e.room.equals(req.body.roomObjectId))
+            User.findOneAndUpdate({_id:user._id},{gpInvitation:user.gpInvitation}).exec()
+        })
+    }).catch(function(err){
+        error = true
+        console.log(err)
+        return res.status(400).json({msg:"fail to delete all invitation"})
+    })
+    GroupChat.findOneAndDelete({_id:req.body.roomObjectId}).then(function(err){
+        return res.status(200).json({msg:"group deleted"})
+    }).catch(function(err){
+        console.log(err)
+        return res.status(400).json({msg:"fail to delete group"})
     })
 })
 
