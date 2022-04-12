@@ -210,7 +210,7 @@ class FrdContent extends React.Component {
                       </span>
                       <div className="row col-2 p-2">
                         <Link 
-                          to={`/user/${this.props.userId}/chat/${frd.userId}`}
+                          to={`/user/${this.props.userId}/chat/private/${frd.userId}`}
                           type="button"
                           className="btn btn-primary btn-sm"
                         >

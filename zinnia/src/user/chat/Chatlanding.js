@@ -10,12 +10,12 @@ function Chatlanding(userId) {
         <React.Fragment>
             <div className="content">
                 <ul className="nav nav-tabs text-light">
-                    <Link to={`/user/${userId.userId}/chat/private`} className = "nav-link">Private Chats</Link>
+                    <Link to={`/user/${userId.userId}/chat/private/0`} className = "nav-link">Private Chats</Link>
                     <Link to={`/user/${userId.userId}/chat/group`} className = "nav-link">Group Chats</Link>
                 </ul>
             </div>
             <Routes>
-                <Route path = "/private" element={<Chat user_id={userId.userId}/>}/>
+                <Route path = "/private/:id" element={<Chat user_id={userId.userId}/>}/>
                 <Route path = "/group" element={<Groupchat user_id={userId.userId}/>}/>
             </Routes>
         </React.Fragment>

@@ -24,7 +24,7 @@ class Forum extends React.Component{
 
         .then(json=>{
             this.setState({posts:json,showposts:json})
-            //console.log(json) 
+            console.log(json) 
             //console.log(this.state.posts[0].writer.userId) 
         })   
         //this.setState({revposts:this.state.posts.reverse()})

@@ -47,12 +47,16 @@ router.post("/admin/delete/user",async(req,res)=>{
     // Delete all comment in all deleted post 
     const posts = await Post.find({writer:userObjectId})
     posts.map(post=>{
-        Comment.deleteMany({_id:{$in: post.comment}}).then().catch(function(error){
+        Comment.deleteMany({_id:{$in: post.comment}}).then(function(){
+            console.log("Comment in Post deleted")
+        }).catch(function(error){
             return res.status(400).json({msg:"Fail to delete post comment"})
         })
     })
     //Delete all posts 
-    await Post.deleteMany({writer:userObjectId}).then().catch(function(error){
+    await Post.deleteMany({writer:userObjectId}).then(function(){
+        console.log("Post deleted")
+    }).catch(function(error){
         return res.status(400).json({msg:"Fail to delete post"})
     })
     //Delete all Comment
@@ -72,7 +76,7 @@ router.post("/admin/delete/user",async(req,res)=>{
             console.log(err)
             return res.status(400).json({msg:"Sth goes wrong"})
         }else{
-            console.log(deleteUser)
+            //console.log(deleteUser)
             return res.status(200).json({msg:"deleted!"})
         }
     })
