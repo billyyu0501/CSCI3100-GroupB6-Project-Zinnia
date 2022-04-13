@@ -70,7 +70,7 @@ router.post("/register", async (req,res) => {
                         to: results.email,
                         //to: "leoleung337.jp@gmail.com", 
                         subject: 'Account Verification Link', 
-                        text: 'Hello '+',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/localhost:8080\/verify\/' + results.email + '\/' + token.token + '\n\nThank You!\n' };
+                        text: 'Hello,\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/localhost:8080\/verify\/' + results.email + '\/' + token.token + '\n\nThank You!\n' };
                         transporter.sendMail(mailOptions, function (err) {
                         if (err) { 
                             return res.status(500).json({msg:'Technical Issue!, Please click on resend for verify your Email.'});
