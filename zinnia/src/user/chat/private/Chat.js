@@ -42,7 +42,6 @@ function Chat({user_id}) {
             return res.json();
         })
         .then(data => {
-            //console.log(data);
             setParticipants(data.user);
             setMessages(data.chatHistory);
         })
@@ -144,7 +143,6 @@ function Chat({user_id}) {
     //componentDidMount
     useEffect(() => {
         setDidMount(true);
-        console.log("update")
         initialChats(userId);
     }, []);
 
@@ -158,7 +156,7 @@ function Chat({user_id}) {
     // Pusher for updating messages
     useEffect(() => {
         const pusher = new Pusher('9bfa9c67db40709d3f03', {cluster: 'ap1'});
-        const channel = pusher.subscribe('messages');
+        const channel = pusher.subscribe('privateMessages');
         channel.bind('insertedMessages', (newMessage) => {
             setMessages([...messages, newMessage]);
             getChats(userId);
@@ -174,7 +172,7 @@ function Chat({user_id}) {
     //Pusher for adding new chat
     useEffect(() => {
         const pusher = new Pusher('9bfa9c67db40709d3f03', {cluster: 'ap1'});
-        const channel = pusher.subscribe('chats');
+        const channel = pusher.subscribe('privateChats');
         channel.bind('insertedChats', (newChat) => {
             setChats(() => {
                 const unsorted = [...chats, newChat];

@@ -11,6 +11,7 @@ function Messages({messages, user_id, chat_id, participants}){
     const user1 = participants[1]?.username;
     const [input, setInput] = useState("");
     const ref = useRef(null);
+    
     // Send messages
     const sendMessage = async (e) => {
         if (chatId !== "") {

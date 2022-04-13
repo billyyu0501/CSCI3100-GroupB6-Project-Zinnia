@@ -15,17 +15,6 @@ function Groupchat({user_id}) {
     const [roomname, setRoomname] = useState("");
     const [rerender, setRerender] = useState(0);
 
-    //Pusher for leaving room
-    // var pusher;
-    // if (pusher) {
-    //     const channel = pusher.subscribe('memberChange');
-    //     channel.bind('NewMemberChange', () => {
-    //         getRooms(rooms => ({
-    //             ...rooms
-    //         }));
-    //     })
-    // }
-
     const handleClick = (new_room_id) => {
         setCurrentRoomId(new_room_id);
     }
@@ -66,12 +55,11 @@ function Groupchat({user_id}) {
 
     //componentDidMount
     useEffect(() => {
-        // pusher = new Pusher('9bfa9c67db40709d3f03', {cluster: 'ap1'});
         setDidMount(true);
         getRooms(userId);
     }, []);
 
-    // changing between rooms
+    // useEffect for changing between rooms
     useEffect(() => {
         if (didMount){
             getMessages(currentRoomId);
@@ -85,7 +73,7 @@ function Groupchat({user_id}) {
     // Pusher for updating messages
     useEffect(() => {
         const pusher = new Pusher('9bfa9c67db40709d3f03', {cluster: 'ap1'});
-        const channel = pusher.subscribe('groupMessages');
+        const channel = pusher.subscribe('privateGroupMessages');
         channel.bind('insertedGroupMessages', (newMessage) => {
             setMessages([...messages, newMessage]);
             getRooms(userId);
@@ -101,7 +89,7 @@ function Groupchat({user_id}) {
     //Pusher for adding new room
     useEffect(() => {
         const pusher = new Pusher('9bfa9c67db40709d3f03', {cluster: 'ap1'});
-        const channel = pusher.subscribe('rooms');
+        const channel = pusher.subscribe('privateRooms');
         channel.bind('insertedRooms', (newRoom) => {
             setRooms(() => {
                 const unsorted = [...rooms, newRoom];

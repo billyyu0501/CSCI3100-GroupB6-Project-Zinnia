@@ -64,7 +64,7 @@ function Searchbar({placeholder, user_id}) {
             if(data) {
                 setAlertMessage(data.msg)
                 showAlert();
-            } else clearInput();
+            } else window.location.reload();
         });
     }
 

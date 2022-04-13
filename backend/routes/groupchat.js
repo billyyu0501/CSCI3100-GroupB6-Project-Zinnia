@@ -28,61 +28,18 @@ const pusher = new Pusher({
 
 const db = mongoose.connection;
 db.once('open', () => {
-    // const groupCollection = db.collection('groupchats');
-    // const groupCreateChangeStream = groupCollection.watch();
-    // const memberModifiedChangeStream = groupCollection.watch([{
-    //     $match: {
-    //         $and: [
-    //             { "updateDescription.updatedFields.member": { $exists: true } },
-    //             { operationType: "update" }]
-    //     }
-    // }], { fullDocument: 'updateLookup' });
-    // const chatInsertedChangeStream = groupCollection.watch([{
-    //     $match: {
-    //         $and: [
-    //             { "updateDescription.updatedFields.chatHistory": { $exists: true } },
-    //             { operationType: "update" }]
-    //     }
-    // }], { fullDocument: 'updateLookup' })
-    // chatInsertedChangeStream.on("change", (change) => {
-    //     db.collection('groupchats').find().sort({'updatedAt':-1}).toArray((err, results) => {
-    //         const resultsDetails = results[0].chatHistory;
-    //         const latestMessage = resultsDetails[resultsDetails.length-1];
-    //         pusher.trigger('groupMessages', 'insertedGroupMessages',
-    //         {
-    //             speaker: {_id: latestMessage.speaker, userId: latestMessage.userId, username: latestMessage.username},
-    //             text: latestMessage.text, time: latestMessage.time, _id: change.documentKey._id
-    //         });
-    //     });
-    // })
-    // groupCreateChangeStream.on("change", (change) => {
-    //     if (change.operationType === 'insert') {
-    //         const roomDetails = change.fullDocument;
-    //         var host;
-    //         User.findOne({_id:roomDetails.host}, (err, doc) => {
-    //             host = doc;
-    //             pusher.trigger('rooms', 'insertedRooms',
-    //             {
-    //                 chatHistory: [], createdAt: roomDetails.createdAt, updatedAt: roomDetails.updatedAt,
-    //                 host: {_id:host._id, userId: host.userId, username: host.username},
-    //                 member: [{_id:host._id, userId: host.userId, username: host.username}],
-    //                 room: roomDetails.room, updatedAt: roomDetails.updatedAt, __v: roomDetails.__v, _id: roomDetails._id
-    //             });
-    //         })  
-    //     }
-    // });
-    // memberModifiedChangeStream.on("change", (change) => {
-        
-    // })
     const groupCollection = db.collection('groupchats');   
     const groupChangeStream = groupCollection.watch();
     groupChangeStream.on("change", (change) => {
         console.log(change);
-        if (change.operationType === 'update' && change.updateDescription.updatedFields.chatHistory) {
+        if (change.operationType === 'update') {
+            const a = change.updateDescription.updatedFields;
+            console.log(Object.keys(a));
+            if (Object.keys(a)[2].includes('chatHistory') || a.chatHistory)
             db.collection('groupchats').find().sort({'updatedAt':-1}).toArray((err, results) => {
                 const resultsDetails = results[0].chatHistory;
                 const latestMessage = resultsDetails[resultsDetails.length-1];
-                pusher.trigger('groupMessages', 'insertedGroupMessages',
+                pusher.trigger('privateGroupMessages', 'insertedGroupMessages',
                 {
                     speaker: {_id: latestMessage.speaker, userId: latestMessage.userId, username: latestMessage.username},
                     text: latestMessage.text, time: latestMessage.time, _id: change.documentKey._id
@@ -94,7 +51,7 @@ db.once('open', () => {
             var host;
             User.findOne({_id:roomDetails.host}, (err, doc) => {
                 host = doc;
-                pusher.trigger('rooms', 'insertedRooms',
+                pusher.trigger('privateRooms', 'insertedRooms',
                 {
                     chatHistory: [], createdAt: roomDetails.createdAt, updatedAt: roomDetails.updatedAt,
                     host: {_id:host._id, userId: host.userId, username: host.username},
@@ -253,33 +210,8 @@ router.get("/:userId/gpInvitation",async(req,res)=>{
 //delete a group (must be done by host)
 //body input: userId, roomObjectId
 router.post("/group/deleteGroup",async(req,res)=>{
-    //delete all group invitation
-    console.log(req.body.roomObjectId)
-    await User.find({"gpInvitation.room":req.body.roomObjectId})
-    .select(['userId',"username","gpInvitation"])
-    .then(function(users){
-        //console.log(users)
-        users.map(user=>{
-            console.log(user.grpInvitation)
-            user.gpInvitation = user.gpInvitation.filter(e=>!e.room.equals(req.body.roomObjectId))
-            User.findOneAndUpdate({_id:user._id},{gpInvitation:user.gpInvitation}).exec()
-        })
-    }).catch(function(err){
-        error = true
-        console.log(err)
-        return res.status(400).json({msg:"fail to delete all invitation"})
-    })
-    GroupChat.findOneAndDelete({_id:req.body.roomObjectId}).then(function(err){
-        return res.status(200).json({msg:"group deleted"})
-    }).catch(function(err){
-        console.log(err)
-        return res.status(400).json({msg:"fail to delete group"})
-    })
-})
-/*
-router.post("/group/deleteGroup",async(req,res)=>{
     const userObjectId = await getUserObjectId(req.body.userId)
-    await GroupChat.findOne({_id:req.body.roomObjectId}).exec(function(err,results){
+    GroupChat.findOne({_id:req.body.roomObjectId}).exec(function(err,results){
         if (err){
             console.log(err)
             return res.status(400).json({msg:"sth goes wrong"})
@@ -304,7 +236,6 @@ router.post("/group/deleteGroup",async(req,res)=>{
         }
     })
 })
-*/
 
 //quit group (host cannot quit)
 //body: userId, roomObjectId
@@ -371,6 +302,7 @@ router.post("/group/sendMessage",async(req,res)=>{
     }
     // add message to ChatHistory of the corresponding group 
     GroupChat.findOne({_id:req.body.roomObjectId}).exec(function(err,results){
+        console.log(results);
         if(err){
             console.log(err)
             return res.status(400).json({msg:"Sth goes wrong"})

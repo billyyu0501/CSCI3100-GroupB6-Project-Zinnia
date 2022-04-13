@@ -13,7 +13,6 @@ let User = require("../models/user.model")
 let {PrivateChat} = require("../models/chat.model") 
 let getUserObjectId = require("../common").getUserObjectId;
 let getUsername = require("../common").getUsername;
-const e = require('express');
 
 //setting up pusher
 const pusher = new Pusher({
@@ -33,7 +32,7 @@ db.once('open', () => {
             db.collection('privatechats').find().sort({'updatedAt':-1}).toArray((err, results) => {
                 const resultsDetails = results[0].chatHistory;
                 const latestMessage = resultsDetails[resultsDetails.length-1];
-                pusher.trigger('messages', 'insertedMessages', 
+                pusher.trigger('privateMessages', 'insertedMessages', 
                 {
                     speaker: {_id: latestMessage.speaker, userId: latestMessage.userId, username: latestMessage.username},
                     text: latestMessage.text, time: latestMessage.time, _id: change.documentKey._id
@@ -47,7 +46,7 @@ db.once('open', () => {
                 user0 = doc0;
                 User.findOne({_id:chatDetails.user[1]._id}, (err,doc1) => {
                     user1 = doc1;
-                    pusher.trigger('chats', 'insertedChats',
+                    pusher.trigger('privateChats', 'insertedChats',
                     {
                         chatHistory: [], createdAt: chatDetails.createdAt, updatedAt: chatDetails.updatedAt,
                         user: [ {_id:user0._id, userId: user0.userId, username: user0.username},
