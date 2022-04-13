@@ -88,7 +88,7 @@ class LoginPage extends React.Component{
             {this.state.isUser?<Navigate to={`user/${this.state.userId}`}/>:<></>}
             <div >
                 <br/>
-                <h3 className ="d-flex justify-content-center">ZINNIA</h3>
+                <h1 className ="d-flex justify-content-center">ZINNIA</h1>
                 <br/>
                 <div className = "d-flex justify-content-center align-middle">
                     <form onSubmit = { this.handleSubmit }>
@@ -117,9 +117,6 @@ class LoginPage extends React.Component{
                     <li style={{ listStyleType: "none" }}><Link to="/forgotPassword"  id="link">Forgot Password?</Link></li>
                 </div>
                 <div style={{paddingTop:20}}> </div>
-                <div className="d-flex justify-content-center">
-                    <li style={{ listStyleType: "none" }}><Link to="/admin"  id="link" >Temporary Link for AdminPage</Link></li>
-                </div>
             </div>    
             </>
         )

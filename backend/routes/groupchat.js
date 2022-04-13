@@ -253,8 +253,33 @@ router.get("/:userId/gpInvitation",async(req,res)=>{
 //delete a group (must be done by host)
 //body input: userId, roomObjectId
 router.post("/group/deleteGroup",async(req,res)=>{
+    //delete all group invitation
+    console.log(req.body.roomObjectId)
+    await User.find({"gpInvitation.room":req.body.roomObjectId})
+    .select(['userId',"username","gpInvitation"])
+    .then(function(users){
+        //console.log(users)
+        users.map(user=>{
+            console.log(user.grpInvitation)
+            user.gpInvitation = user.gpInvitation.filter(e=>!e.room.equals(req.body.roomObjectId))
+            User.findOneAndUpdate({_id:user._id},{gpInvitation:user.gpInvitation}).exec()
+        })
+    }).catch(function(err){
+        error = true
+        console.log(err)
+        return res.status(400).json({msg:"fail to delete all invitation"})
+    })
+    GroupChat.findOneAndDelete({_id:req.body.roomObjectId}).then(function(err){
+        return res.status(200).json({msg:"group deleted"})
+    }).catch(function(err){
+        console.log(err)
+        return res.status(400).json({msg:"fail to delete group"})
+    })
+})
+/*
+router.post("/group/deleteGroup",async(req,res)=>{
     const userObjectId = await getUserObjectId(req.body.userId)
-    GroupChat.findOne({_id:req.body.roomObjectId}).exec(function(err,results){
+    await GroupChat.findOne({_id:req.body.roomObjectId}).exec(function(err,results){
         if (err){
             console.log(err)
             return res.status(400).json({msg:"sth goes wrong"})
@@ -279,6 +304,7 @@ router.post("/group/deleteGroup",async(req,res)=>{
         }
     })
 })
+*/
 
 //quit group (host cannot quit)
 //body: userId, roomObjectId
