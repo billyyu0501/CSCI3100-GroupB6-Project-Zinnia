@@ -31,7 +31,7 @@ router.post("/forgotpw", (req,res) => {
                     to: results.email,
                     //to: "leoleung337.jp@gmail.com", 
                     subject: 'Forgot Password Reset Link', 
-                    text: 'Hello '+',\n\n' + 'Please reset your password by clicking the link: \n http:\/\/localhost:3000\/forgotPassword\/' + results.email + '\/' + token.token + '\n\nPlease copy this token to reset your password:\n' + token.token + '\n\nThank You!\n' };
+                    text: 'Hello,\n\n' + 'Please reset your password by clicking the link: \n http:\/\/localhost:3000\/forgotPassword\/' + results.email + '\/' + token.token + '\n\n Thank You!\n' };
                     transporter.sendMail(mailOptions, function (err) {
                     if (err) { 
                         return res.status(500).send({msg:'Something go wrong. Please try again later!'});
