@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function Invitations({user_id, rerender}) {
+    // button and pop-up dialog component for viewing and accepting/declining group chat invites 
 
     const userId = user_id;
     const [open, setOpen] = useState(false);
@@ -56,6 +57,7 @@ function Invitations({user_id, rerender}) {
         fetchInvitations();
     },[])
 
+    // update list of invitations on change of invitations
     useEffect(() => {
         fetchInvitations();
     }, [invitations]);

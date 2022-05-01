@@ -6,6 +6,8 @@ import Groupmessage from "./message/Groupmessage";
 import "./Groupchat.css"
 
 function Groupchat({user_id}) {
+    // Groupchat component includes sidebar on the left and Groupmessages component on the right
+    // sidebar display all group chats a user is part of and contains Create and Invitations components
 
     const userId = user_id;
     const [currentRoomId, setCurrentRoomId] = useState("");
@@ -13,7 +15,7 @@ function Groupchat({user_id}) {
     const [rooms, setRooms] = useState([]);
     const [didMount, setDidMount] = useState(false);
     const [roomname, setRoomname] = useState("");
-    const [rerender, setRerender] = useState(0);
+    const [rerender, setRerender] = useState(0); // setRerender to be passed to child components for rerendering Groupchat
 
     const handleClick = (new_room_id) => {
         setCurrentRoomId(new_room_id);
@@ -53,7 +55,6 @@ function Groupchat({user_id}) {
         })
     }
 
-    //componentDidMount
     useEffect(() => {
         setDidMount(true);
         getRooms(userId);
@@ -66,6 +67,7 @@ function Groupchat({user_id}) {
         }
     }, [currentRoomId])
 
+    // update list of group chats on rerender
     useEffect(() => {
         getRooms(userId);
     }, [rerender])

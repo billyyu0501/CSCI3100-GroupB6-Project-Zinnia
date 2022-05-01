@@ -6,6 +6,8 @@ import Delete from "../components/Delete";
 import "./Groupmessage.css";
 
 function Groupmessage ({messages, user_id, room_id, roomname, rerender}) {
+    // display all messages in a group chat and sends messages
+    // includes the Delete, Leave and Invite components
 
     const roomId = room_id;
     const userId = user_id;
@@ -28,6 +30,7 @@ function Groupmessage ({messages, user_id, room_id, roomname, rerender}) {
         ref.current.scrollTop = ref.current.scrollHeight;
     }
 
+    // auto-scroll to bottom on new message
     useEffect(() => {
         scrollToBottom();
     },[messages])

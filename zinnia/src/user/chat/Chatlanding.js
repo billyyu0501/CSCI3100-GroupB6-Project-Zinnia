@@ -2,9 +2,10 @@ import React from "react";
 import './Chatlanding.css';
 import Chat from "./private/Chat";
 import Groupchat from "./group/Groupchat";
-import {Route, Routes, Link, useParams} from 'react-router-dom';
+import {Route, Routes, Link} from 'react-router-dom';
 
 function Chatlanding({userId}) {
+    // routing component for private and group chat, page tabs for switching between private and group chat
 
     return (
         <React.Fragment>

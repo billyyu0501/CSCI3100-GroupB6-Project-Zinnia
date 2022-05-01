@@ -7,7 +7,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-function Create({user_id, rerender}) {
+function Create({user_id}) {
+    // button and pop-out dialog component for creating new group chat
 
     const [input, setInput] = useState("");
     const [open, setOpen] = useState(false);
@@ -31,7 +32,6 @@ function Create({user_id, rerender}) {
         else {
             handleClose();
             create();
-            rerender(Math.random());
             window.location.reload();
         }
     };
@@ -50,12 +50,9 @@ function Create({user_id, rerender}) {
             }
         },
         components: {
-            // Name of the component
             MuiButton: {
                 styleOverrides: {
-                    // Name of the slot
                     root: {
-                        // Some CSS
                         backgroundColor: '#ffffff',
                     }
                 }

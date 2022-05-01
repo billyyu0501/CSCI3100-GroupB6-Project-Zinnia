@@ -23,6 +23,7 @@ const pusher = new Pusher({
     useTLS: true
 })
 
+//setting up changestream and pusher trigger
 const db = mongoose.connection;
 db.once('open', () => {
     const chatHistoryCollection = db.collection('privatechats');

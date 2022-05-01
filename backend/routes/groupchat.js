@@ -18,6 +18,7 @@ let {GroupChat} = require("../models/chat.model")
 let getUserObjectId = require("../common").getUserObjectId
 let getUsername = require("../common").getUsername;
 
+// setting up pusher
 const pusher = new Pusher({
     appId: "1368918",
     key: "9bfa9c67db40709d3f03",
@@ -26,6 +27,7 @@ const pusher = new Pusher({
     useTLS: true
 })
 
+// setting up changestream and 
 const db = mongoose.connection;
 db.once('open', () => {
     const groupCollection = db.collection('groupchats');   

@@ -4,6 +4,7 @@ import "./Searchbar.css";
 import {Alert} from 'reactstrap'
 
 function Searchbar({placeholder, user_id}) {
+    // Searchbar components for users to search from their friendlist and invite to chat
 
     const userId = user_id;
     const [rawData, setRawData] = useState([]);
@@ -32,6 +33,7 @@ function Searchbar({placeholder, user_id}) {
         })
     }
 
+    // facilitates searching by filtering by user's input
     const handleFilter = (e) => {
         const keyword = e.target.value;
         setValueEntered(keyword);
@@ -102,7 +104,6 @@ function Searchbar({placeholder, user_id}) {
             </div>
         )}
         <Alert color="danger" isOpen={alertVisible}>
-               {/* The chat already exists */}
                {alertMessage != "" && alertMessage}
         </Alert>
     </div>

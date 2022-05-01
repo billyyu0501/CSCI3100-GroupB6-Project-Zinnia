@@ -11,6 +11,8 @@ import Dialog from '@mui/material/Dialog';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function Invite({user_id, room_id, roomname}) {
+    // button and pop-up dialog component for inviting other users to the group chat
+    // pop-up dialog show list of friends to invite
 
     const userId = user_id;
     const roomId = room_id;
@@ -47,6 +49,7 @@ function Invite({user_id, room_id, roomname}) {
         })
     }
 
+    // obtain list of friends to display in pop-up dialog
     const fetchFriendlist = async () => {
         fetch(`http://localhost:8080/group/friendlist`, {
             method: 'POST', headers: {'Content-Type': 'application/json',},

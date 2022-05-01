@@ -28,6 +28,7 @@ function Messages({messages, user_id, chat_id, participants}){
         ref.current.scrollTop = ref.current.scrollHeight;
     }
 
+    // auto-scroll to bottom on new message
     useEffect(() => {
         scrollToBottom();
     },[messages])

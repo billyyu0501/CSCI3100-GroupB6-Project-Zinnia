@@ -1,14 +1,3 @@
-/* 
-This js is the chatroom service
-expected function:
-1. Group Chat
-    create group chat,invite member, delete group, quit group,
-    message, accept/reject invitation
-2. Individual Chat
-    message, start private chat
-
-*/
-
 import React, {useEffect, useState, useRef} from "react";
 import {useParams} from 'react-router-dom';
 import "./Chat.css" ;
@@ -17,11 +6,12 @@ import Searchbar from "./Searchbar";
 import Pusher from 'pusher-js';
 import {Buffer} from 'buffer';
 function Chat({user_id}) {
+    // Chat(private) component includes sidebar on the left and Messages component on the right
+    // sidebar display all private chats a user has and contains Searchbar component
 
     const userId = user_id;
-    // id is userId of the initial message shown. id ==0 when it is clicked from home page
-    const id = useParams().id;  
-    console.log(id);
+    // id is userId of the initial message shown. id == 0 when it is clicked from home page
+    const id = useParams().id;
     const [currentChatId, setCurrentChatId] = useState("");
     const [messages, setMessages] = useState([]);
     const [chats, setChats] = useState([]);
@@ -140,7 +130,7 @@ function Chat({user_id}) {
             }
         })
     }
-    //componentDidMount
+
     useEffect(() => {
         setDidMount(true);
         initialChats(userId);

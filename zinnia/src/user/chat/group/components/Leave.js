@@ -5,7 +5,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-function Leave({user_id, room_id, roomname, rerender}) {
+function Leave({user_id, room_id, roomname}) {
+    // button and pop-up dialog component for leaving group chat
 
     const userId = user_id;
     const roomId = room_id;
@@ -22,7 +23,6 @@ function Leave({user_id, room_id, roomname, rerender}) {
     const handleLeave = () => {
         setOpen(false);
         leave(userId);
-        rerender(Math.random());
     }
 
     const leave = async () => {
@@ -42,10 +42,6 @@ function Leave({user_id, room_id, roomname, rerender}) {
                 window.location.reload();
         })
     }
-
-    useEffect(() => {
-
-    })
 
     const theme = createTheme({
         palette: {
