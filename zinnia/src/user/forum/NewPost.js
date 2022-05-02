@@ -15,9 +15,9 @@ class NewPost extends React.Component{
         this.handleContentChange = this. handleContentChange.bind(this)
         this.createPost = this.createPost.bind(this)
     }
+    //take target value in responding rows
     handleTitleChange(event){
      this.setState({ title: event.target.value});
-        
     }
 
     handleContentChange(event){
@@ -37,7 +37,8 @@ class NewPost extends React.Component{
             content: this.state.content,
         }
         console.log(databody)
-        
+
+        //creating post by posting data to database
         await fetch(`${REACT_APP_URL}/createPost`, {
             method: 'POST',
             headers: {
@@ -59,6 +60,7 @@ class NewPost extends React.Component{
     }
 
     render(){
+        //creating the form
         return(
             <div className="container">
                  <div style={{paddingTop:10}}/>

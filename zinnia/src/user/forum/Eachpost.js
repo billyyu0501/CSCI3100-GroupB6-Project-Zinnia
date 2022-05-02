@@ -35,6 +35,7 @@ function Showpost(props){
     const [comment, setComment]= useState([]);
     const [createdAt, setCreatedAt]= useState([]);
 
+    //set states for creating comment
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
 
@@ -46,6 +47,7 @@ function Showpost(props){
     setOpen(false);
      };
 
+     //posting data to database when users "like" the post
      const likepost =async() =>{
        
        let data={
@@ -75,6 +77,7 @@ function Showpost(props){
       
     }
     
+     //posting data to database when users "like" any comments of the post
     const likecomment =async(commentId) =>{
       
       let data={
@@ -104,6 +107,8 @@ function Showpost(props){
      }
      reloadPage();
    }
+
+    //posting data to database when users comment on the post
    const addcomment =(text) =>{
     let data={
      userId:props.userId,
@@ -133,6 +138,8 @@ function Showpost(props){
    }
    reloadPage();
  }
+
+     //fetch all data of the posts from database (e.g. number of likes, comments, posts title, userId, etc.)
 
     useEffect(() =>{
         
