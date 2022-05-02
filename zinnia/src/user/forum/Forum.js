@@ -40,17 +40,19 @@ class Forum extends React.Component{
     }
 
     render(){
+      
         return( 
         <div className="container">
-            <a href={`/user/${this.props.userId}/newPost`}> <button  id ="createbutton"className="button" style={{color:"white"}}> Create Post </button></a>
+            <a href={`/user/${this.props.userId}/newPost`}> <button  id ="createbutton"className="button" style={{color:"white"}}> Create Post </button></a> 
             <div style={{paddingTop:60}}/>
-            <div className="search-box"style={{fontSize:18}}>
+            <div className="search-box"style={{fontSize:18}}> 
                 <i className="fa fa-search btn"></i>
                 <input id="search" type="text" placeholder="Search" value={this.keyword} onChange={this.handleSearch}/>
             </div>
             <div style={{paddingTop:10}}/>
             {this.state.showposts.length==0?<h2>No match result</h2>:null}
             {this.state.showposts.map((post,index)=>{
+                  //list out all the posts in the database
                 return <a href={`/user/${this.props.userId}/post/${post.writer.userId}/${post._id}`} key={index} id="postlink" >
                     <div className="card" id="forumpost">
                         <div className="card-body">
