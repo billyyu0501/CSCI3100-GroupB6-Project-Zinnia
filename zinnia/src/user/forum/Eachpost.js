@@ -1,3 +1,8 @@
+/*
+This js is for the post details in each posts.
+Number of likes and comments in each post will be shown.
+Users can also like and add new comments.
+*/ 
 import React, { useEffect, useState } from "react";
 import {useParams} from 'react-router-dom';
 import './forum.css'
@@ -5,12 +10,9 @@ import Fromnow from 'react-fromnow';
 import Dialog from "@material-ui/core/Dialog";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
-import DialogTitle from '@mui/material/DialogTitle';
 
 const {REACT_APP_URL} = process.env;
-//import { border } from "@mui/material/node_modules/@mui/system";
-//the above link seems not work 
-//import {border} from "@mui/system"
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -146,9 +148,6 @@ function Showpost(props){
                 setLikes(res.like) 
                 setComment(res.comment) 
                 setCreatedAt(res.createdAt)
-                //console.log(res)
-                //console.log(res)
-                //console.log(postObjId)
         };
 
         fetchPost(); 

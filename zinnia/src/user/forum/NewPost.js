@@ -1,4 +1,7 @@
-
+/*
+This js is for creating new post for the forum.
+Title and content should not be blank in order to submit.
+*/ 
 import React from "react";
 import './NewPost.css'
 const {REACT_APP_URL} = process.env;
@@ -24,7 +27,6 @@ class NewPost extends React.Component{
     handleSubmit(event) {
         alert('Your Post' + this.state.title +"has been created!");
         event.preventDefault();
-        //console.log(this.state)
         this.createPost()
       }
 
@@ -75,8 +77,6 @@ class NewPost extends React.Component{
                 </form>
                 <button type="submit" className="button" onClick={this.createPost}>Submit</button>
                 <a href={`/user/${this.props.userId}`}> <button className="button">Cancel </button> </a>
-
-            
             
             
             </div>
