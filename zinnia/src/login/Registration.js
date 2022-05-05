@@ -1,6 +1,6 @@
 /*
-This js is for registration
- 
+    This js is for registration
+
 */
 import React from "react";
 import {Link,Navigate} from "react-router-dom";
@@ -16,12 +16,14 @@ class Registration extends React.Component{
         this.handleSubmit = this.handleSubmit.bind(this);
         this.getFile = this.getFile.bind(this);
     }
+    //handle change in the form 
     handleChange(event){
         this.setState({[event.target.name]:event.target.value})
     }
+    // function for submitting the registeration form 
     handleSubmit(event){
         event.preventDefault();
-        //console.log(JSON.stringify({email: this.state.email,username:this.state.username,password: this.state.password,isAdmin:false,photo:this.state.photo}))
+        // blank input is not allowed and password must be matched with confirm password
         if(this.state.email==="" || this.state.username==="" || this.state.password === ""||this.state.confirmPw ===""){
             this.setState({alert:"Please fill in all the blanks"})
             this.setState({IsWrong:true})
@@ -29,8 +31,8 @@ class Registration extends React.Component{
             this.setState({alert:"Confirmed Password is not match with Password"})
             this.setState({IsWrong:true})
         }else{
-            console.log(this.state.photo)
             this.setState({IsWrong:false})
+            // link to backend and wait for the response
             fetch(`${REACT_APP_URL}/register`,{
                 method: "POST",
                 headers: {
@@ -49,6 +51,7 @@ class Registration extends React.Component{
 
         }   
     }
+    // get the base64 format of the photo
     getFile(file){
         this.setState({photo:file.base64})
     }

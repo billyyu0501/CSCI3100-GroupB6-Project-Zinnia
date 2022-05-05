@@ -1,8 +1,10 @@
 /*
-1. read specific user info (everything except pw in user database)
-2. udpate user info (photo, username, description) 
-3. accept/reject friend invitation[done]
-4. delete friends
+This file holds backend activities for profile which include the following functions:
+    1. get the profile of a specific user
+    2. udpate profile (photo, username, description) 
+    3. user reset password
+    4. accept/reject friend invitation[done]
+    5. delete friends
 */
 
 const router = require('express').Router();
@@ -10,7 +12,9 @@ let User = require("../models/user.model")
 let getUserObjectId = require("../common").getUserObjectId;
 const { json } = require('express');
 let bcrypt = require("bcryptjs")
-//get profile
+
+//get profile of a user
+//params input: userId
 router.get("/:userId/profile", (req, res) => {
     User.findOne({userId:req.params.userId})
     .populate({path:"friend",select:["userId","username","photo"]})
@@ -27,7 +31,8 @@ router.get("/:userId/profile", (req, res) => {
 
 
 //update profile
-// body input: username, description 
+//body input: username, description, changeImg
+//params input: userId
 router.post("/:userId/updateProfile", (req, res) => {
     User.findOneAndUpdate({userId:req.params.userId},{
         username: req.body.changeUsername,
@@ -44,6 +49,8 @@ router.post("/:userId/updateProfile", (req, res) => {
 })
 
 //user resetPw
+//body input: password
+//params input: userId
 router.post("/:userId/resetPw",async(req,res)=>{
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
     console.log(req.params.userId)
@@ -62,7 +69,7 @@ router.post("/:userId/resetPw",async(req,res)=>{
 })
 
 // accept/reject friend invitation
-// input body: userId,inviterId, IsAccepted[boolean]
+// input body: userId, inviterId, IsAccepted[boolean]
 router.post("/friend/handleInvitation",async(req,res)=>{
     //convert userid to objectId and return if they are not exist
     userObjectId = await getUserObjectId(req.body.userId)

@@ -1,3 +1,9 @@
+/* 
+This file holds backend activities for forget passord which include the following functions:
+    1. forgot password 
+    2. reset password 
+*/
+
 const router = require('express').Router();
 const bcrypt = require('bcryptjs')
 let User = require("../models/user.model")

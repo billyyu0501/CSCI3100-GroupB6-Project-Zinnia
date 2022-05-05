@@ -5,7 +5,9 @@ This js is for forget password submit
 import React,{useState} from "react";
 import {Link,Navigate,useNavigate} from "react-router-dom";
 import { useParams } from "react-router-dom"
+
 const {REACT_APP_URL} = process.env;
+
 const ForgotPwSubmit= ()=>{
     const [password, setPassWord]= useState("");
     const [passwordConfirm, setpasswordConfirm]= useState("");

@@ -1,3 +1,8 @@
+/*
+This file holds backend activities for verification which include the following functions:
+    1. verify the email token sent during register
+*/
+
 const router = require('express').Router();
 let User = require("../models/user.model")
 let Token = require("../models/token.model")

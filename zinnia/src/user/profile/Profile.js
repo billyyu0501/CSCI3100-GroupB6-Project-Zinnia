@@ -1,6 +1,6 @@
 /*
 This js is for the profile overview
-expected function:
+function:
 1. display personal profile, including:
     userID, photo, email, UserName, description
 2. edit profile, only the following items are allowed to be edited:

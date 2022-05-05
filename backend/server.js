@@ -1,3 +1,4 @@
+// This file holds all backend js files tgt and serve as the main file of the whole backend application 
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require("body-parser");

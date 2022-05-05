@@ -1,7 +1,7 @@
 /*
-This js is for use management
-Expected function:
-reset password, search user, delete user, list all user
+This js is for use management.
+It list out all users in the database and can perform delete function by clicking the cross button.
+It can also direct to Userdetail.js, which show the detail of that user, by clicking the corresponding button. 
 */
 import React from "react";
 import {Link} from "react-router-dom"
@@ -14,6 +14,8 @@ class ManageUser extends React.Component{
         this.state={userdf:[]}
         this.handleDelete = this.handleDelete.bind(this)
     }
+
+    //fetch all user in the User database and saved in userdf
     componentDidMount(){
         console.log(process.env.REACT_APP_URL)
         fetch(`${REACT_APP_URL}/search`,{
@@ -29,6 +31,8 @@ class ManageUser extends React.Component{
             console.log('get')
         })
     }
+
+    //delete user function 
     async handleDelete(event){
         await deleteUser(event.target.value)
         this.componentDidMount()
