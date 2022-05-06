@@ -14,7 +14,7 @@ import { Buffer } from "buffer";
 import Fromnow from "react-fromnow";
 import { Link } from "react-router-dom";
 import FileBase64 from "react-file-base64";
-const {REACT_APP_URL} = process.env;
+const { REACT_APP_URL } = process.env;
 
 //this class is used to display user info, will be exported to other Profile
 class UserContent extends React.Component {
@@ -39,6 +39,7 @@ class UserContent extends React.Component {
     // 24-32 fetch
   }
 
+  //profile page for the user
   render() {
     return (
       <>
@@ -169,6 +170,8 @@ class FrdContent extends React.Component {
       this.componentDidMount();
     }
   }
+
+  //friend list
   render() {
     return (
       <div>
@@ -209,12 +212,12 @@ class FrdContent extends React.Component {
                         </Link>
                       </span>
                       <div className="row col-2 p-2">
-                        <Link 
+                        <Link
                           to={`/user/${this.props.userId}/chat/private/${frd.userId}`}
                           type="button"
                           className="btn btn-primary btn-sm"
                         >
-                              Chat
+                          Chat
                         </Link>
                       </div>
                     </div>
@@ -228,12 +231,11 @@ class FrdContent extends React.Component {
                       ></button>
                     </div>
                   </div>
-
                 </div>
               ))}
             </div>
           </div>
-
+          {/* invitation list */}
           <div id="frd invitation">
             <div className="d-flex p-2">
               <h2 className="m-2">Friend invitation</h2>
@@ -394,6 +396,7 @@ class UpdateContent extends React.Component {
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
+  //update info page
   render() {
     return (
       <div className="row">
@@ -474,7 +477,7 @@ class UpdateContent extends React.Component {
             </div>
           </form>
         </div>
-
+        {/* password column */}
         <div className="col-4">
           <div className="reset pw p-3">
             <div className="d-flex">
@@ -483,25 +486,21 @@ class UpdateContent extends React.Component {
             <br />
             <div className="col-12">
               <form onSubmit={this.handleReset}>
-                <label className="labels">
-                  New Passwords
-                </label>
+                <label className="labels">New Passwords</label>
                 <input
                   type="password"
                   className="form-control pw"
-                  name = "password"
+                  name="password"
                   value={this.state.password}
                   onChange={this.handleChange}
                   required
                 />
                 <br />
-                <label className="labels" >
-                  Confirmed Password:
-                </label>
+                <label className="labels">Confirmed Password:</label>
                 <input
                   type="password"
                   className="form-control passwordConfirm"
-                  name = "passwordConfirm"
+                  name="passwordConfirm"
                   value={this.state.passwordConfirm}
                   onChange={this.handleChange}
                   required
