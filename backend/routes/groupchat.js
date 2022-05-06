@@ -27,7 +27,7 @@ const pusher = new Pusher({
     useTLS: true
 })
 
-// setting up changestream and 
+// setting up changestream and pusher trigger
 const db = mongoose.connection;
 db.once('open', () => {
     const groupCollection = db.collection('groupchats');   

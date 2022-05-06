@@ -4,6 +4,7 @@ import {Buffer} from 'buffer';
 import "./Messages.css";
 
 function Messages({messages, user_id, chat_id, participants}){
+    // displays all messages in a private chat and sends messages
 
     const userId = user_id;
     const chatId = chat_id;
