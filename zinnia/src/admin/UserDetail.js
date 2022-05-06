@@ -1,9 +1,17 @@
+/*
+    This page demonstrate the detail of a particular user.
+    Delete user action and modify user info can be performed in this page. 
+*/
+
 import React from "react";
 import {Buffer} from "buffer";
 import { Link } from "react-router-dom";
 import FileBase64 from "react-file-base64";
+
 const {REACT_APP_URL} = process.env;
+
 class UserDetail extends React.Component{
+    // userId is inherited from ManageUser.js and it identify the current user. 
     constructor(props){
         super(props);
         this.state = {
@@ -25,6 +33,8 @@ class UserDetail extends React.Component{
         this.handleFrdList = this.handleFrdList.bind(this)
         
     }
+
+    //fetch the user info when the page is loaded 
     async componentDidMount(){
         //console.log(this.state.userId)
         fetch(`${REACT_APP_URL}/${this.state.userId}/profile`)
@@ -35,22 +45,29 @@ class UserDetail extends React.Component{
             //console.log(this.state.photo)
         })
     }
+
+    // get the base64 format of the photo 
     getFile(file){
         this.setState({photo:file.base64})
     }
+
+    // show the update part if update is true, else hide it 
     handleUpdate(){
         this.setState({update:true})
     }
     cancelUpdate(){
         this.setState({update:false})   
     }
+    // show or hide the friendlist 
     handleFrdList(event) {
         if (this.state.showfrd) {
           this.setState({ showfrd: false });
         } else {
           this.setState({ showfrd: true });
         }
-      }
+    }
+
+    // function for modify the user info, include description, username, photo and password
     async handleSubmit(event){
         event.preventDefault();
         console.log(this.state.userId);
@@ -76,11 +93,10 @@ class UserDetail extends React.Component{
             })
         
     }
+
+    //handle change in the form 
     handleChange(event){
         this.setState({[event.target.name]:event.target.value})
-        //console.log(this.state.changeUsername)
-        //console.log(this.state.changeDescription)
-        //console.log(this.state.changePassword)
     }
     render(){
         return(

@@ -1,11 +1,14 @@
-//hold detail of individual post 
-
+/*
+    This page demonstrate the detail of a particular post.
+    Delete post action can be performed in this page. 
+*/
 import React from "react";
 import moment from "moment";
 import {Link,Navigate} from "react-router-dom"
 import {deleteComment, deletePost} from "./deleteFunc"
 const {REACT_APP_URL} = process.env;
 class Postdetail extends React.Component{
+    //postId is inherited from the ManagePost.js.It identify the current post
     constructor(props){
         super(props);
         this.state = {postId:this.props.match.params.postId,data:[],writer:{},comment:[],like:[],redirect:false}
@@ -14,22 +17,25 @@ class Postdetail extends React.Component{
         //console.log(this.props.match.params)
         
     }
+
+    //fetch the detail of post and saved in data
     componentDidMount(){
         fetch(`${REACT_APP_URL}/post/${this.state.postId}`)
         .then(res=>res.json())
         .then(json=>{
             this.setState({data:json})
-            //for test; can delete console log at final version 
             //console.log(this.state.data)
             this.setState({writer:json.writer})
             this.setState({comment:json.comment})
             this.setState({like:json.like})
         })
     }
+    //delete post function
     async deletePost(event){
         await deletePost(event.target.value);
         this.setState({redirect:true})
     }
+    //delete comment function
     async deleteComment(event){
         await deleteComment(event.target.value);
         this.componentDidMount()

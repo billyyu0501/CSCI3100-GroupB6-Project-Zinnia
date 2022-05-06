@@ -1,3 +1,7 @@
+/*
+    This file holds the content in one chat and it is directed from the ManageChat.js
+    All chatHistory of that chat will be demonstrated and delete action can be performed in this page as well 
+*/
 import React from "react"
 import moment from "moment"
 import { deleteGroupChat,deletePrivateChat } from "./deleteFunc"
@@ -10,13 +14,15 @@ export default class ChatDetail extends React.Component{
         this.state = {member:[],host:"",chatHistory:[],chatdf:{},redirect:false}
         this.handleDelete = this.handleDelete.bind(this)
     }
+    // list the corresponding chat according to the chatType provided [Private or Group] when the Page is load
+    // chatType is inherited from MangageChat.js
     async componentDidMount(){
         let params = JSON.stringify({chatObjectId:this.props.match.params.chatId})
         if(this.props.match.params.chatType == "group"){
             params = JSON.stringify({roomObjectId:this.props.match.params.chatId})
-            console.log("right")
+            //console.log("right")
         }
-        
+        //fetch all message of the chat and saved in chatdf
         await fetch(`${REACT_APP_URL}/${this.props.match.params.chatType}/displayMessage`,{
             method: "POST",
             headers: {
@@ -34,9 +40,10 @@ export default class ChatDetail extends React.Component{
             }else{
                 this.setState({member:json.member,host:json.host})
             }
-            console.log(json)
+            //console.log(json)
         })
     }
+    // delete the clicked chat and take the corresponding delete action according to its chatType
     async handleDelete(event){
         if(this.props.match.params.chatType == "group"){
             await deleteGroupChat(event.target.value)

@@ -1,22 +1,23 @@
 /*
-This js is for the post management
-Expected function:
-delete Post, display Post, searchPost, display comment,
-searchComment, delete Comment 
+This js is for the post management. 
+It list out all posts in the database and can perform delete function by clicking the cross button.
+It can also direct to Postdetail.js, which show the detail in the Post, by clicking the corresponding button. 
 */
 
 import React from "react";
 import {Link} from "react-router-dom";
 import { deletePost } from "./deleteFunc";
 var moment = require('moment')
+
 const {REACT_APP_URL} = process.env;
+
 class ManagePost extends React.Component{
     constructor(props){
         super(props);
         this.state = {postdf:[]}
         this.handleDelete = this.handleDelete.bind(this)
     }
-
+    //fetch all post when the page is loaded
     componentDidMount(){
         fetch(`${REACT_APP_URL}/listAllPost`,{
             method: "GET",
@@ -32,6 +33,7 @@ class ManagePost extends React.Component{
         })
     }
 
+    //delete Post function
     async handleDelete(event){
         await deletePost(event.target.value)
         this.componentDidMount()

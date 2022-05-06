@@ -1,3 +1,8 @@
+/*
+This js is for the post details in each posts.
+Number of likes and comments in each post will be shown.
+Users can also like and add new comments.
+*/ 
 import React, { useEffect, useState } from "react";
 import {useParams} from 'react-router-dom';
 import './forum.css'
@@ -5,12 +10,9 @@ import Fromnow from 'react-fromnow';
 import Dialog from "@material-ui/core/Dialog";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
-import DialogTitle from '@mui/material/DialogTitle';
 
 const {REACT_APP_URL} = process.env;
-//import { border } from "@mui/material/node_modules/@mui/system";
-//the above link seems not work 
-//import {border} from "@mui/system"
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -33,6 +35,7 @@ function Showpost(props){
     const [comment, setComment]= useState([]);
     const [createdAt, setCreatedAt]= useState([]);
 
+    //set states for creating comment
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
 
@@ -44,6 +47,7 @@ function Showpost(props){
     setOpen(false);
      };
 
+     //posting data to database when users "like" the post
      const likepost =async() =>{
        
        let data={
@@ -73,6 +77,7 @@ function Showpost(props){
       
     }
     
+     //posting data to database when users "like" any comments of the post
     const likecomment =async(commentId) =>{
       
       let data={
@@ -102,6 +107,8 @@ function Showpost(props){
      }
      reloadPage();
    }
+
+    //posting data to database when users comment on the post
    const addcomment =(text) =>{
     let data={
      userId:props.userId,
@@ -132,6 +139,8 @@ function Showpost(props){
    reloadPage();
  }
 
+     //fetch all data of the posts from database (e.g. number of likes, comments, posts title, userId, etc.)
+
     useEffect(() =>{
         
         const fetchPost = async () => {
@@ -146,9 +155,6 @@ function Showpost(props){
                 setLikes(res.like) 
                 setComment(res.comment) 
                 setCreatedAt(res.createdAt)
-                //console.log(res)
-                //console.log(res)
-                //console.log(postObjId)
         };
 
         fetchPost(); 

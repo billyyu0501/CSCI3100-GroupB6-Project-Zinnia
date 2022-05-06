@@ -1,9 +1,11 @@
 /* 
-1. list out all private chat that a specific user have [done][not check]
-3. send message in a chat[done]
-4. create a private chat [done]
-8. list out all message that a chat have[ done]
-
+This file holds backend activities for private chat which include the following functions:
+    1. pusher and pusher trigger for private chat
+    2. create a private chat 
+    3. list out all private chat that a specific user have 
+    4. send message in a chat
+    5. list out all message that a chat have
+    6. get frdlist of the user 
 */
 
 const Pusher = require('pusher');
@@ -61,7 +63,7 @@ db.once('open', () => {
 });
 //start a Private Chat
 
-//check whether the Private Chat already existed by searching the 2 users
+//function for checking whether the Private Chat has already existed by searching the 2 users
 var IsPrivateChatExisted= async(users)=>{
     var existed = false
     try{
@@ -74,7 +76,7 @@ var IsPrivateChatExisted= async(users)=>{
 }
 
 //create a new Private Chat
-// body input: user1, user2
+//body input: user1, user2
 router.post("/private/createChat",async(req,res)=>{
     // if the inputed users are the same, return warning message
     if (req.body.user1 === req.body.user2){
@@ -101,7 +103,8 @@ router.post("/private/createChat",async(req,res)=>{
 })
 
 //view all Private Chat that the inputed user have
-// The results are sorted in descending order by udpate time  
+//The results are sorted in descending order by udpate time  
+//input params: userId
 router.get("/private/:userId/viewAllChat",async(req,res)=>{
     const userObjectId = await getUserObjectId(req.params.userId)
     if (userObjectId==""){
@@ -123,7 +126,7 @@ router.get("/private/:userId/viewAllChat",async(req,res)=>{
 })
 
 // send message in a private chat
-// body input: userId[speaker],chatObjectId, content
+// body input: userId[speaker],chatObjectId, text
 router.post("/private/sendMessage",async(req,res)=>{
     const userObjectId = await getUserObjectId(req.body.userId);
     const username = await getUsername(req.body.userId);
@@ -148,7 +151,7 @@ router.post("/private/sendMessage",async(req,res)=>{
 })
 
 //display all message that a Private Chat have
-//body input: userId?(need to discuss), ChatObjectId 
+//body input: ChatObjectId 
 router.post("/private/displayMessage",async(req,res)=>{
     const new_id = mongoose.Types.ObjectId(req.body.chatObjectId);
     PrivateChat.findOne({_id:new_id})
@@ -167,6 +170,7 @@ router.post("/private/displayMessage",async(req,res)=>{
 })
 
 //get friendlist
+//body input: userId
 router.post("/private/friendlist", async(req,res)=>{
     User.findOne({userId:req.body.userId})
     .select(["friend"])

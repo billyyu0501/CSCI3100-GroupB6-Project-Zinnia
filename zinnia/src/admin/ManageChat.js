@@ -1,10 +1,18 @@
-
+/*
+    This page list all chats in the database. The chats listed are seperated to two types: private and group. 
+    The chat shown can be switched between these two types of chat by vlicking corresponding button.
+    It will direct to ChatDetail.js and view the detail of the chat by clicking corresponding button.
+    Delete chat function can also be performed in this page.
+*/
 import React from "react";
 import {Link,Routes,Route} from "react-router-dom";
 import moment from "moment";
 import { deletePrivateChat,deleteGroupChat} from "./deleteFunc";
 
 const {REACT_APP_URL} = process.env;
+
+// This class is used to hold class PrivateChat and GroupChat
+// The page will show PrivateChat Component in default and switch to GroupChat Component when button is clicked
 export default class ManageChat extends React.Component{
     constructor(props){
         super(props);
@@ -25,12 +33,14 @@ export default class ManageChat extends React.Component{
         )
     }
 }
+
 class PrivateChat extends React.Component{
     constructor(props){
         super(props);
         this.state = {data:[]}
         this.handleDelete = this.handleDelete.bind(this)
     }
+    // fetch all data in private and saved in data
     componentDidMount(){
         fetch(`${REACT_APP_URL}/admin/private/viewAllChat`,{
                 method: "GET",
@@ -46,6 +56,7 @@ class PrivateChat extends React.Component{
                 console.log(json[0].user[1])
             })
     }
+    // delete private Chat 
     async handleDelete(event){
         console.log(event.target.value)
         await deletePrivateChat(event.target.value)
@@ -85,12 +96,15 @@ class PrivateChat extends React.Component{
         );
     }
 }
+
 class GroupChat extends React.Component{
     constructor(props){
         super(props);
         this.state = {data:[]}
         this.handleDelete = this.handleDelete.bind(this)
     }
+
+    //fetch all data in GroupChat database and saved in data
     componentDidMount(){
         fetch(`${REACT_APP_URL}/admin/group/viewAllChat`,{
                 method: "GET",
@@ -105,6 +119,7 @@ class GroupChat extends React.Component{
                 this.setState({data:json})
             })
     }
+    // delete groupChat
     async handleDelete(event){
         await deleteGroupChat(event.target.value)
         this.componentDidMount()
@@ -142,5 +157,3 @@ class GroupChat extends React.Component{
         );
     }
 }
-
-//export default ManageChat;

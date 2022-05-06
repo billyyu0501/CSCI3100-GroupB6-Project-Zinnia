@@ -1,18 +1,22 @@
 /*
-1. Search specific user by username/userid 
-2. add friend
+This file holds backend activities for searching which include the following functions:
+    1. Search specific user by username/userid 
+    2. add friend
+    3. view all friends a user have
 */
 
 const router = require('express').Router();
 let User = require("../models/user.model")
 let getUserObjectId = require("../common").getUserObjectId;
 
-//search for user
-//input: query || /search?userId=xxx OR /search?username=XXXX
+//search for user by userId or username
+//input: query [/search?userId=xxx OR /search?username=XXXX]
+//return all user if query is not provided, the result are sorted in ascending order according to userId
 router.get("/search",(req,res)=>{
     const {userId,username} = req.query
     let Field = {}
     if (userId !=null && username ==null){
+        //The input of userId must be in integer
         if(!parseInt(userId)){
             return res.status(400).json({msg:"User Id must be a positive integer. Please enter again"})
         }
@@ -33,11 +37,12 @@ router.get("/search",(req,res)=>{
     })
 })
 
-//invite friend
+//invite friend, a warning message will be sent out if the users have already been invited or they are already in friend relationship
 //body input: inviterId, inviteeId
 router.post("/friend/invite",async (req,res)=>{
     inviterObjectId = await getUserObjectId(req.body.inviterId)
     inviteeObjectId = await getUserObjectId(req.body.inviteeId)
+    //return if inviter or invitee is not found
     if (inviterObjectId==""){
         return res.status(400).json({msg:"inviter doesn't exist"})
     }
@@ -64,7 +69,8 @@ router.post("/friend/invite",async (req,res)=>{
     
 })
 
-//view all friend a user hv 
+//view all friend a user have
+//params input: userId
 router.get("/:userId/viewAllfrd", (req, res) => {
     //console.log(req.params.userId)
     User.findOne({userId:req.params.userId})

@@ -23,7 +23,7 @@ class LoginPage extends React.Component{
         this.handleSubmit = this.handleSubmit.bind(this)  
                   
     }
-    //the cookie will expire in 30 min 
+    //set up a cookie that will expire in 30 min 
     setToken(userId, role){
         const d = new Date()
         const cookies = new Cookies()
@@ -32,6 +32,7 @@ class LoginPage extends React.Component{
         cookies.set("role",role,{path:"/",expires:d})
         
     }
+    //when the page is loaded, it will direct the page to user page or admin page if the user has already logged in [based on the cookie]
     componentDidMount(){
         const cookies = new Cookies()
         if(cookies.get("userId")!=null){
@@ -42,12 +43,11 @@ class LoginPage extends React.Component{
             }
         }
     }
+    //handle change in the login form 
     handleChange(event){
         this.setState({[event.target.name]:event.target.value})
-        //console.log(this.state.email)
-        //console.log(event.target.name)
-        //console.log(event.target)
     }
+    //function for submitting login form 
     async handleSubmit(event){
         event.preventDefault();
         //console.log(this.state.email);

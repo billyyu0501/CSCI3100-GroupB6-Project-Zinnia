@@ -1,13 +1,15 @@
-/*
-. create a group chat [done]
-. list out all group chat that a specific user have [done]
-. send message in a chat [done]
-. del a group chat [done]
-. quit group [done]
-. invite member to the group (send notification to invited member )[done]
-. accept/decline invitation [done]
-. display all invitation [done]
-. list out all message in a group [done]
+/* 
+This file holds backend activities for group chat which include the following functions:
+    1. pusher and pusher trigger for group chat 
+    2. create a group chat 
+    3. list out all group chat that a specific user have 
+    4. send message in a chat 
+    5. del a group chat 
+    6. quit group 
+    7. invite member to the group (send notification to invited member)
+    8. accept/decline invitation 
+    9. display all invitation 
+    10. list out all message in a group 
 */
 
 const Pusher = require('pusher');
@@ -66,7 +68,7 @@ db.once('open', () => {
 });
 
 //create a group chat
-//host is also inclued in the member array
+//host is also included in the member array
 //body input: hostId, room,   
 router.post("/group/createGroup",async(req,res)=>{
     let hostObjectId = await getUserObjectId(req.body.hostId)
@@ -93,7 +95,7 @@ router.post("/group/createGroup",async(req,res)=>{
 
 })
 
-//invite one member to a group [ can discuss see if multiple invitation at once is needed ] 
+//invite one member to a group 
 //body input: roomObjectId, invitedUser (in format, UserId)
 router.post("/group/inviteMember",async(req,res)=>{
     //convert userId to userObjectId and check if it exists
@@ -181,6 +183,7 @@ router.post("/group/acceptInvitation",async(req,res)=>{
 })
 
 // list all group invitation of a specific user
+// params input: userId
 router.get("/:userId/gpInvitation",async(req,res)=>{
     const userObjectId = await getUserObjectId(req.params.userId)
     if (userObjectId==""){
@@ -270,6 +273,7 @@ router.post("/group/quitGroup",async(req,res)=>{
 })
 
 //list all group that a specific user have 
+//params input: userId
 router.get("/group/:userId/viewAllGroup",async(req,res)=>{
     //convert userId to userObjectId if it exists 
     const userObjectId = await getUserObjectId(req.params.userId)
@@ -322,7 +326,7 @@ router.post("/group/sendMessage",async(req,res)=>{
 })
 
 //display all message that a group Chat have
-//body input: userId?(need to discuss), roomObjectId 
+//body input: roomObjectId 
 router.post("/group/displayMessage",async(req,res)=>{
     const new_id = mongoose.Types.ObjectId(req.body.roomObjectId);
     GroupChat.findOne({_id:new_id})
@@ -343,6 +347,7 @@ router.post("/group/displayMessage",async(req,res)=>{
 })
 
 // get friendlist
+// body input: userId
 router.post("/group/friendlist", async(req,res)=>{
     User.findOne({userId:req.body.userId})
     .select(["friend"])

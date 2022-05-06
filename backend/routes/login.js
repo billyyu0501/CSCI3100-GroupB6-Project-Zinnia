@@ -1,13 +1,11 @@
+/* 
+This file holds backend activities for login which include the following functions:
+    1. login
+*/
+
 const router = require('express').Router();
 let User = require("../models/user.model");
 const bcrypt = require('bcryptjs')
-
-/*
-1. login [done]
-2. forgotPw
-3. resetPw
-4. Logout [do it in frontend]
-*/
 
 //login
 //input: email, password

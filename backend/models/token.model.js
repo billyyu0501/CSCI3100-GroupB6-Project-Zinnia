@@ -1,3 +1,6 @@
+/*
+This file holds the database models for token, which is for email verification of registeration
+*/
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;

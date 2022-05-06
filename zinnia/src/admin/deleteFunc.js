@@ -1,4 +1,11 @@
+/*
+This file holds all delete functions that will be used in the admin application
+All functions in this file will be exported 
+*/
+
 const {REACT_APP_URL} = process.env;
+
+// delete User
 export async function deleteUser(userId){
     await fetch(`${REACT_APP_URL}/admin/delete/user`,{
                 method: "POST",
@@ -16,6 +23,7 @@ export async function deleteUser(userId){
             })
 }
 
+//delete Post
 export async function deletePost(postObjectId){
     await fetch(`${REACT_APP_URL}/admin/delete/post`,{
                 method: "POST",
@@ -34,6 +42,7 @@ export async function deletePost(postObjectId){
             })
 }
 
+//delete Comment
 export async function deleteComment(commentObjectId){
     await fetch(`${REACT_APP_URL}/admin/delete/comment`,{
                 method: "POST",
@@ -51,6 +60,7 @@ export async function deleteComment(commentObjectId){
             })
 }
 
+//delete Private Chat
 export async function deletePrivateChat(chatObjectId){
     await fetch(`${REACT_APP_URL}/admin/delete/privateChat`,{
                 method: "POST",
@@ -68,6 +78,7 @@ export async function deletePrivateChat(chatObjectId){
             })
 }
 
+//delete Group Chat
 export async function deleteGroupChat(roomObjectId){
     await fetch(`${REACT_APP_URL}/admin/delete/groupChat`,{
                 method: "POST",

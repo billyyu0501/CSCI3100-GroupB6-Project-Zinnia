@@ -1,5 +1,8 @@
+/*
+This file holds the database models for chat, including groupchat and private chat
+*/
 const mongoose = require("mongoose");
-//const validator = require("node-mongoose-validator")
+
 const Schema = mongoose.Schema;
 
 const PrivateChatSchema = new Schema({

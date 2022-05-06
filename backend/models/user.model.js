@@ -1,3 +1,6 @@
+/*
+This file holds the database models for user
+*/
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;

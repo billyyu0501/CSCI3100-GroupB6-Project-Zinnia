@@ -1,6 +1,7 @@
-// This js hold all common function that are used in different backend js
+// This file holds some common functions that are used in different backend js
 
 let User = require("./models/user.model");
+
 // Converting UserId to corresponding ObjectId
 var getUserObjectId = async(userId)=>{
     var writerId = ""

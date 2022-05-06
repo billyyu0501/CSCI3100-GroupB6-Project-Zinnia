@@ -1,22 +1,22 @@
+/*
+This file holds backend activities for post and comment which include the following functions:
+    1. create Post 
+    2. list out all post 
+    3. like post  
+    4. create comment 
+    5. like comment 
+    6. list the content and all comment of a specific post 
+*/
+
 const router = require('express').Router();
 let {Post, Comment} = require("../models/post.model");
 
 let getUserObjectId = require("../common").getUserObjectId;
-/*
-1. create Post [done]
-2. list out all post [done]
-3. like post [done]  
-4. create comment [done]
-5. like comment [done]
-6. list the content and all comment of a specific post [done]
-7. search post by post title/post id [hold]
-*/
-
 
 //Post 
 
 // create new post, 
-// body input:[userId,title,content], warning are done
+// body input: userId, title, content
 router.post("/createPost",async(req,res)=>{
     const userObjectId = await getUserObjectId(req.body.userId);
     if (userObjectId ==""){
@@ -42,8 +42,7 @@ router.post("/createPost",async(req,res)=>{
 })
 
 // list all posts, include titles, comment ,writerId and writer username
-// no input is needed 
-// The results are in descending order by time
+// The results are returned in descending order by time
 router.get("/listAllPost",function(req,res){
     Post.find({})
     .sort({"updatedAt":-1})
@@ -60,7 +59,7 @@ router.get("/listAllPost",function(req,res){
 })
 
 // like a post, will distinguish whether the user has liked the post or not
-//body input: [userId,postObjectId], warning are done
+//body input: userId, postObjectId
 router.post("/likePost",async(req,res)=>{
     const userObjectId = await getUserObjectId(req.body.userId);
     if (userObjectId ==""){
@@ -89,8 +88,8 @@ router.post("/likePost",async(req,res)=>{
 
 //Comment 
 
-//adding new comment, body input:[postObjectId,userId,comment]
-//Warning done: inexist UserId, blank comment, inexist PostObjectId
+//adding new comment
+//body input: postObjectId, userId, comment
 router.post("/comment",async(req,res)=>{
     const userObjectId = await getUserObjectId(req.body.userId);
     if (userObjectId ==""){
@@ -118,7 +117,7 @@ router.post("/comment",async(req,res)=>{
 })
 
 // like a comment, will distinguish whether the user has liked the comment or not
-// body input: [userId, commentObjectId], warning are done
+// body input: userId, commentObjectId
 router.post("/likeComment",async(req,res)=>{
     const userObjectId = await getUserObjectId(req.body.userId);
     if (userObjectId ==""){
@@ -146,7 +145,8 @@ router.post("/likeComment",async(req,res)=>{
 })
 
 // list all content of a specific post [title,content, writer, all comments]
-// url link input, all comments are initially sorted at ascending order by time 
+// all comments are initially sorted at ascending order by time
+// params input: postObjectId
 router.get("/post/:postObjectId",async(req,res)=>{
         Post.findOne({_id:req.params.postObjectId})
         .populate({path:"writer",select:["userId","username"]})

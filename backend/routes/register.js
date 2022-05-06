@@ -1,3 +1,7 @@
+/*
+This file holds backend activities for register which include the following functions:
+    1. register
+*/
 const router = require('express').Router();
 const bcrypt = require('bcryptjs')
 let User = require("../models/user.model")
@@ -6,15 +10,8 @@ let Token = require("../models/token.model")
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 
-
-
-
-//1. register [done]
-//2. send email
-//3. email verification
-
 //register
-//input: username, email, password
+//body input: username, email, password
 router.post("/register", async (req,res) => {
     //console.log(req.body)
     
@@ -85,27 +82,5 @@ router.post("/register", async (req,res) => {
    
 
 })
-
-
-/* router.post("/register", async (req, res) =>{
-
-
-        const hashedPassword = await bcrypt.hash(req.body.password, 10)
-        console.log(req.body)
-        //var currentId = 1;
-        //User.findOne().sort({userId:-1})
-        //if(User!=null){currentId= User.userId +1}
-        User.create({
-            //userId: currentId,
-            userId: req.body.userId,
-            username: req.body.username,
-            password: hashedPassword,
-            email: req.body.email
-        })
-        res.json("Account created ")
-        console.log("created")
-    
-}) */
-
 
 module.exports = router;
